@@ -1,0 +1,146 @@
+C51 COMPILER V7.06   交蚠_剖_例                                                            07/15/2010 16:30:19 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 交蚠_剖_例
+OBJECT MODULE PLACED IN .\obj\交通灯实例.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 交通灯实例.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\交通灯实例.lst) OBJECT(.
+                    -\obj\交通灯实例.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：红绿灯
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：1、程序目的：使用定时器学习 倒计时 红绿灯原理 
+   8                     主要程序与倒计时相同
+   9                  2、硬件要求：数码管、晶振12M
+  10                          3、P1口连接至LED用于显示红绿灯
+  11                          4、数码管用于显示时间
+  12          ------------------------------------------------*/
+  13          #include<reg52.h>//包含头文件，一般情况不需要改动，
+  14          //头文件包含特殊功能寄存器的定义
+  15          
+  16          sbit LACTCH1=P2^2;    
+  17          sbit LACTCH2=P2^3;
+  18          /*------------------------------------------------
+  19                           全局变量
+  20          ------------------------------------------------*/
+  21          bit red,green,yellow,turnred;//定义红绿黄灯标志位
+  22          
+  23          
+  24          
+  25          code unsigned char tab[]=
+  26          {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f}; 
+  27                                                  //共阴数码管 0-9 
+  28          
+  29          unsigned char Dis_Shiwei;//定义十位
+  30          unsigned char Dis_Gewei; //定义个位
+  31          /*------------------------------------------------
+  32                        
+  33          ------------------------------------------------*/
+  34          void delay(unsigned int cnt)
+  35          {
+  36   1       while(--cnt);
+  37   1      }
+  38          /*------------------------------------------------
+  39                        主程序
+  40          ------------------------------------------------*/
+  41          main()
+  42          {
+  43   1      TMOD |=0x01;//定时器设置 10ms in 12M crystal
+  44   1      TH0=0xd8;
+  45   1      TL0=0xf0;
+  46   1      IE= 0x82;   //打开中断
+  47   1      TR0=1;
+  48   1      
+  49   1      P1=0xfc;    //红灯亮
+  50   1      red =1;
+  51   1      while(1)
+  52   1        {
+  53   2        P0=Dis_Shiwei;//显示十位
+  54   2        LACTCH1=1;    //锁存
+C51 COMPILER V7.06   交蚠_剖_例                                                            07/15/2010 16:30:19 PAGE 2   
+
+  55   2        LACTCH1=0;
+  56   2        P0=0xfe; 
+  57   2        LACTCH2=1;    // 锁存
+  58   2        LACTCH2=0;
+  59   2        delay(300);   //短暂延时
+  60   2        P0=Dis_Gewei; //显示个位
+  61   2        LACTCH1=1;    //锁存
+  62   2        LACTCH1=0;
+  63   2        P0=0xfd;
+  64   2        LACTCH2=1;    // 锁存
+  65   2        LACTCH2=0;
+  66   2        delay(300);
+  67   2        }
+  68   1      
+  69   1      }
+  70          /*------------------------------------------------
+  71                       定时器0中断函数
+  72          ------------------------------------------------*/
+  73          void tim(void) interrupt 1 
+  74          {
+  75   1      static unsigned char second=60,count; //初值99
+  76   1      
+  77   1      TH0=0xd8;//重新赋值
+  78   1      TL0=0xf0;
+  79   1      count++;
+  80   1      if (count==100)
+  81   1          {
+  82   2          count=0;
+  83   2          second--;//秒减1
+  84   2              if(second==0)
+  85   2                 { 
+  86   3             if(red)
+  87   3                   {
+  88   4                        red=0;yellow=1;
+  89   4                second=5;
+  90   4                        P1=0xF3;//黄灯亮5秒
+  91   4                       }
+  92   3                 else if(yellow && !turnred)
+  93   3                   {
+  94   4                        yellow=0;green=1;
+  95   4                second=50;
+  96   4                        P1=0xCF;//绿灯亮50秒
+  97   4                       }
+  98   3                 else if(green)
+  99   3                   {
+ 100   4                       yellow=1;green=0;
+ 101   4               second=5;
+ 102   4                       P1=0xF3;//黄灯亮5秒
+ 103   4                       turnred=1;
+ 104   4                       }
+ 105   3             else if(yellow && turnred)
+ 106   3                   {
+ 107   4                   red=1;yellow=0;
+ 108   4                       P1=0xFC;//红灯亮60秒
+ 109   4               second=60;
+ 110   4                       turnred=0;
+ 111   4                       }
+ 112   3      
+ 113   3                 }
+ 114   2              Dis_Shiwei=tab[second/10];//十位显示值处理
+ 115   2          Dis_Gewei=tab[second%10]; //个位显示处理
+ 116   2          
+C51 COMPILER V7.06   交蚠_剖_例                                                            07/15/2010 16:30:19 PAGE 3   
+
+ 117   2          }
+ 118   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    199    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

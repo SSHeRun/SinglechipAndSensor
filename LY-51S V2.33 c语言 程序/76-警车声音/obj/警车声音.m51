@@ -1,0 +1,139 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  10:14:37  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\æØ≥µ…˘“Ù.obj TO .\obj\æØ≥µ…˘“Ù PRINT (.\obj\æØ≥µ…˘“Ù.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\æØ≥µ…˘“Ù.obj (____…˘“Ù)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\æØ≥µ…˘“Ù (____…˘“Ù)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?____…˘“Ù
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     UNIT         ?PR?_DELAYUS2X?____…˘“Ù
+                    0006H     0005H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0015H     UNIT         ?PR?_DELAYMS?____…˘“Ù
+            CODE    0023H     000CH     UNIT         ?PR?MAIN?____…˘“Ù
+            CODE    002FH     000CH     UNIT         ?C_C51STARTUP
+            CODE    003BH     000AH     UNIT         ?PR?INIT_TIMER0?____…˘“Ù
+            CODE    0045H     0009H     UNIT         ?PR?TIMER0_ISR?____…˘“Ù
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\æØ≥µ…˘“Ù (____…˘“Ù)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?____…˘“Ù
+
+?PR?MAIN?____…˘“Ù
+  +--> ?PR?INIT_TIMER0?____…˘“Ù
+  +--> ?PR?_DELAYMS?____…˘“Ù
+
+?PR?_DELAYMS?____…˘“Ù
+  +--> ?PR?_DELAYUS2X?____…˘“Ù
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\æØ≥µ…˘“Ù (____…˘“Ù)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  10:14:37  PAGE 2
+
+
+
+  -------         MODULE        ____…˘“Ù
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  C:000EH         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  C:0023H         PUBLIC        main
+  C:003BH         PUBLIC        Init_Timer0
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0003H         PUBLIC        _DelayUs2x
+  B:00A8H.1       PUBLIC        ET0
+  D:0008H         PUBLIC        frq
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:0045H         PUBLIC        Timer0_isr
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.2       PUBLIC        SPK
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INIT_TIMER0
+  C:003BH         LINE#         19
+  C:003BH         LINE#         20
+  C:003BH         LINE#         21
+  C:003EH         LINE#         24
+  C:0040H         LINE#         25
+  C:0042H         LINE#         26
+  C:0044H         LINE#         27
+  -------         ENDPROC       INIT_TIMER0
+  -------         PROC          MAIN
+  C:0023H         LINE#         31
+  C:0023H         LINE#         32
+  C:0023H         LINE#         33
+  C:0026H         LINE#         34
+  C:0026H         LINE#         35
+  C:0026H         LINE#         37
+  C:002BH         LINE#         38
+  C:002DH         LINE#         40
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0003H         LINE#         48
+  C:0003H         LINE#         49
+  C:0003H         LINE#         50
+  C:0005H         LINE#         51
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:000EH         LINE#         57
+  C:0010H         LINE#         58
+  C:0010H         LINE#         60
+  C:0016H         LINE#         61
+  C:0016H         LINE#         63
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  10:14:37  PAGE 3
+
+
+  C:001BH         LINE#         64
+  C:0020H         LINE#         65
+  C:0022H         LINE#         66
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          TIMER0_ISR
+  C:0045H         LINE#         69
+  C:0045H         LINE#         71
+  C:0048H         LINE#         72
+  C:004BH         LINE#         74
+  C:004DH         LINE#         76
+  -------         ENDPROC       TIMER0_ISR
+  -------         ENDMOD        ____…˘“Ù
+
+Program Size: data=10.0 xdata=0 code=73
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

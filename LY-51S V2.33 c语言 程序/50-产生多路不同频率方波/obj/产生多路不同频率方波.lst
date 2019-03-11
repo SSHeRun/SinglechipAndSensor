@@ -1,0 +1,79 @@
+C51 COMPILER V7.06   瞋蒧_嗦_不蚠芲率_讲_                                                  05/16/2010 09:51:43 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 瞋蒧_嗦_不蚠芲率_讲_
+OBJECT MODULE PLACED IN .\obj\产生多路不同频率方波.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 产生多路不同频率方波.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\产生多路不同频
+                    -率方波.lst) OBJECT(.\obj\产生多路不同频率方波.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：定时器0 
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过定时产生不同频率方波 
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit OUT1=P1^0;    //定义OUT输出端口
+  12          sbit OUT2=P1^1;
+  13          sbit OUT3=P1^2;
+  14          sbit OUT4=P1^3;
+  15          sbit OUT5=P1^4;
+  16          sbit OUT6=P1^5;
+  17          sbit OUT7=P1^6;
+  18          sbit OUT8=P1^7;
+  19          /*------------------------------------------------
+  20                              定时器初始化子程序
+  21          ------------------------------------------------*/
+  22          void Init_Timer0(void)
+  23          {
+  24   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+  25   1       //TH0=0x00;          //给定初值，这里使用定时器最大值从0开始计数一直到65535溢出
+  26   1       //TL0=0x00;
+  27   1       EA=1;            //总中断打开
+  28   1       ET0=1;           //定时器中断打开
+  29   1       TR0=1;           //定时器开关打开
+  30   1      }
+  31          /*------------------------------------------------
+  32                              主程序
+  33          ------------------------------------------------*/
+  34          main()
+  35          {
+  36   1       Init_Timer0();
+  37   1       while(1);
+  38   1      }
+  39          
+  40          /*------------------------------------------------
+  41                           定时器中断子程序
+  42          ------------------------------------------------*/
+  43          void Timer0_isr(void) interrupt 1 using 1
+  44          {
+  45   1       static unsigned char i;
+  46   1       TH0=(65536-500)/256;             //重新赋值 12M晶振计算，指令周期1uS，500x2=1mS方波
+  47   1       TL0=(65536-500)*256;         //其他路使用循环判断语句
+  48   1      
+  49   1       i++;
+  50   1       P1=i;
+  51   1      
+  52   1      
+  53   1      }
+
+C51 COMPILER V7.06   瞋蒧_嗦_不蚠芲率_讲_                                                  05/16/2010 09:51:43 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     27    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

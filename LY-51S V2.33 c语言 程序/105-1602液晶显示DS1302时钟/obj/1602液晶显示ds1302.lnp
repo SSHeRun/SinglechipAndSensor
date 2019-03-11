@@ -1,0 +1,6 @@
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\DS1302.obj",
+".\obj\main.obj" 
+TO ".\obj\1602“∫æßœ‘ æds1302" 
+PRINT(".\obj\1602“∫æßœ‘ æds1302.m51") RAMSIZE(256) 

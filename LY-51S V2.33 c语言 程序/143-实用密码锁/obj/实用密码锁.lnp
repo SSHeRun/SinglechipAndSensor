@@ -1,0 +1,6 @@
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\keyboard.obj",
+".\obj\main.obj" 
+TO ".\obj\实用密码锁" 
+PRINT(".\obj\实用密码锁.m51") RAMSIZE(256) 

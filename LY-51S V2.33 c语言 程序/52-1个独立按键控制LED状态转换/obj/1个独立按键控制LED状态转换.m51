@@ -1,0 +1,116 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/17/2010  00:13:03  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\1个独立按键控制LED状态转换.obj TO .\obj\1个独立按键控制LED状态转换 PRINT (.\obj\1个独立按
+>> 键控制LED状态转换.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\1个独立按键控制LED状态转换.obj (1_鯻懒___键控制LED譥蘝转换)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\1个独立按键控制LED状态转换 (1_鯻懒___键控制LED譥蘝转换)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0015H     UNIT         ?PR?_DELAYMS?1_鯻懒___键控制LED譥蘝转换
+            CODE    0018H     0014H     UNIT         ?PR?MAIN?1_鯻懒___键控制LED譥蘝转换
+            CODE    002CH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0038H     0003H     UNIT         ?PR?_DELAYUS2X?1_鯻懒___键控制LED譥蘝转换
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\1个独立按键控制LED状态转换 (1_鯻懒___键控制LED譥蘝转换)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?1_鯻懒___键控制LED譥蘝转换
+
+?PR?MAIN?1_鯻懒___键控制LED譥蘝转换
+  +--> ?PR?_DELAYMS?1_鯻懒___键控制LED譥蘝转换
+
+?PR?_DELAYMS?1_鯻懒___键控制LED譥蘝转换
+  +--> ?PR?_DELAYUS2X?1_鯻懒___键控制LED譥蘝...
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\1个独立按键控制LED状态转换 (1_鯻懒___键控制LED譥蘝转换)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        1_鯻懒___键控制LED譥蘝转换
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/17/2010  00:13:03  PAGE 2
+
+
+  D:00A8H         PUBLIC        IE
+  C:0003H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  C:0018H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0038H         PUBLIC        _DelayUs2x
+  B:0090H.2       PUBLIC        LED
+  D:00C8H         PUBLIC        T2CON
+  B:00B0H.3       PUBLIC        KEY
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0018H         LINE#         20
+  C:0018H         LINE#         21
+  C:0018H         LINE#         23
+  C:001AH         LINE#         24
+  C:001AH         LINE#         25
+  C:001AH         LINE#         27
+  C:001DH         LINE#         28
+  C:001DH         LINE#         29
+  C:0022H         LINE#         30
+  C:0025H         LINE#         31
+  C:0025H         LINE#         32
+  C:0028H         LINE#         33
+  C:0028H         LINE#         34
+  C:002AH         LINE#         35
+  C:002AH         LINE#         36
+  C:002AH         LINE#         37
+  C:002AH         LINE#         41
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0038H         LINE#         49
+  C:0038H         LINE#         50
+  C:0038H         LINE#         51
+  C:003AH         LINE#         52
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0003H         LINE#         58
+  C:0005H         LINE#         59
+  C:0005H         LINE#         61
+  C:000BH         LINE#         62
+  C:000BH         LINE#         64
+  C:0010H         LINE#         65
+  C:0015H         LINE#         66
+  C:0017H         LINE#         67
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        1_鯻懒___键控制LED譥蘝转换
+
+Program Size: data=9.0 xdata=0 code=59
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

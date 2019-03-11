@@ -1,0 +1,92 @@
+C51 COMPILER V7.06   DISPLAY                                                               06/12/2010 10:59:06 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE DISPLAY
+OBJECT MODULE PLACED IN .\obj\display.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE display.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\display.lst) OBJECT(.\obj\d
+                    -isplay.obj)
+
+stmt level    source
+
+   1          #include"display.h"
+   2          #include"delay.h"
+   3          
+   4          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+   5          //sbit LATCH1=P2^0;//定义锁存使能端口 段锁存
+   6          //sbit LATCH2=P2^3;//                 位锁存
+   7          
+   8          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+   9          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  10          unsigned char TempData[8]; //存储显示值的全局变量
+  11          
+  12          
+  13          /*------------------------------------------------
+  14           显示函数，用于动态扫描数码管
+  15           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+  16           如输入0表示从第一个显示。
+  17           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+  18          ------------------------------------------------*/
+  19          void Display(unsigned char FirstBit,unsigned char Num)
+  20          {
+  21   1            static unsigned char i=0;
+  22   1                
+  23   1      
+  24   1                 DataPort=0;   //清空数据，防止有交替重影
+  25   1             LATCH1=1;     //段锁存
+  26   1             LATCH1=0;
+  27   1      
+  28   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+  29   1             LATCH2=1;     //位锁存
+  30   1             LATCH2=0;
+  31   1      
+  32   1             DataPort=TempData[i]; //取显示数据，段码
+  33   1             LATCH1=1;     //段锁存
+  34   1             LATCH1=0;
+  35   1             
+  36   1                 i++;
+  37   1             if(i==Num)
+  38   1                    i=0;
+  39   1      
+  40   1      
+  41   1      }
+  42          /*------------------------------------------------
+  43                              定时器初始化子程序
+  44          ------------------------------------------------*/
+  45          void Init_Timer0(void)
+  46          {
+  47   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+  48   1       //TH0=0x00;          //给定初值
+  49   1       //TL0=0x00;
+  50   1       EA=1;            //总中断打开
+  51   1       ET0=1;           //定时器中断打开
+  52   1       TR0=1;           //定时器开关打开
+  53   1      }
+C51 COMPILER V7.06   DISPLAY                                                               06/12/2010 10:59:06 PAGE 2   
+
+  54          /*------------------------------------------------
+  55                           定时器中断子程序
+  56          ------------------------------------------------*/
+  57          void Timer0_isr(void) interrupt 1 
+  58          {
+  59   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+  60   1       TL0=(65536-2000)%256;
+  61   1       
+  62   1       Display(0,8);
+  63   1      
+  64   1      }
+  65          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     98    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

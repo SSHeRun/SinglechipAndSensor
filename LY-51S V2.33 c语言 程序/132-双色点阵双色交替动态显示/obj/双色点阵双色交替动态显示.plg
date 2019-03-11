@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\132-双色点阵双色交替动态显示\双色点阵双色交替动态显示.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 双色点阵双色交替动态显示.c...
+linking...
+Program Size: data=17.2 xdata=0 code=506
+creating hex file from ".\obj\双色点阵双色交替动态显示"...
+".\obj\双色点阵双色交替动态显示" - 0 Error(s), 0 Warning(s).

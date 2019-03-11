@@ -1,0 +1,112 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/10/2010  12:37:43  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ.obj TO .\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ PRINT (.\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ.m51) R
+>> AMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ.obj (__×ª²_Êý×Ö__Æ_²âÊÔ)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ (__×ª²_Êý×Ö__Æ_²âÊÔ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     001AH     UNIT         ?PR?_DELAY?__×ª²_Êý×Ö__Æ_²âÊÔ
+            CODE    001DH     001AH     UNIT         ?PR?MAIN?__×ª²_Êý×Ö__Æ_²âÊÔ
+            CODE    0037H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ (__×ª²_Êý×Ö__Æ_²âÊÔ)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?__×ª²_Êý×Ö__Æ_²âÊÔ
+
+?PR?MAIN?__×ª²_Êý×Ö__Æ_²âÊÔ
+  +--> ?PR?_DELAY?__×ª²_Êý×Ö__Æ_²âÊÔ
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\´®×ª²¢Êý×ÖÐ¾Æ¬²âÊÔ (__×ª²_Êý×Ö__Æ_²âÊÔ)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        __×ª²_Êý×Ö__Æ_²âÊÔ
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  B:00A0H.1       PUBLIC        INPUT
+  D:00B8H         PUBLIC        IP
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/10/2010  12:37:43  PAGE 2
+
+
+  C:001DH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  B:00A0H.0       PUBLIC        CLK
+  D:00C8H         PUBLIC        T2CON
+  C:0013H         PUBLIC        _delay
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          L?0014
+  -------         ENDPROC       L?0014
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        cnt
+  C:0013H         LINE#         18
+  C:0013H         LINE#         19
+  C:0013H         LINE#         20
+  C:001CH         LINE#         21
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0005H         SYMBOL        temp
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:001DH         LINE#         25
+  C:001DH         LINE#         26
+  C:001DH         LINE#         29
+  C:001DH         LINE#         30
+  C:001DH         LINE#         31
+  C:001FH         LINE#         32
+  C:0020H         LINE#         33
+  C:0020H         LINE#         34
+  C:0020H         LINE#         35
+  C:0020H         LINE#         36
+  C:0020H         LINE#         37
+  C:0020H         LINE#         38
+  C:0023H         LINE#         39
+  C:0027H         LINE#         40
+  C:0029H         LINE#         41
+  C:0031H         LINE#         42
+  C:0031H         LINE#         43
+  C:0031H         LINE#         44
+  C:0031H         LINE#         45
+  C:0031H         LINE#         46
+  C:0031H         LINE#         47
+  C:0034H         LINE#         48
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        __×ª²_Êý×Ö__Æ_²âÊÔ
+
+Program Size: data=9.0 xdata=0 code=67
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

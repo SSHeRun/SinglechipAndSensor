@@ -1,0 +1,95 @@
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:40:01 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+line level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºÒº¾§ÏÔÊ¾ÃÜÂëËø
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àĞ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ĞŞ¸Ä£ºÎŞ
+   7            ÄÚÈİ£ºµÚÒ»ĞĞÏÔÊ¾¹Ì¶¨ÃÜÂë£¬µÚ¶şĞĞÏÔÊ¾ÊäÈëÃÜÂë£¬ÃÜÂëÊäÈëÍê±Ïºó»áÓĞÕıÈ·»òÕß´íÎóÌáÊ¾,
+   8                  ÎªÁËÑİÊ¾·½±ã£¬ÌáÊ¾ÃÜÂë£¬ÊäÈëÃÜÂë²¿·ÖÒ²Ã»ÓĞÓÃĞÇºÅ´úÌæ¡£¿ÉÒÔ×ÔĞĞ¸ü»»³ÉĞÇºÅ
+   9          ------------------------------------------------*/
+  10          #include<reg52.h> //°üº¬Í·ÎÄ¼ş£¬Ò»°ãÇé¿ö²»ĞèÒª¸Ä¶¯£¬Í·ÎÄ¼ş°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  11          #include<stdio.h>
+  12          #include"1602.h"
+  13          #include"delay.h"
+  14          #include"keyboard.h"
+  15          
+  16          
+  17          unsigned char code password[8]={1,2,3,4,5,6,7,8};//¿ÉÒÔ¸ü¸Ä´ËÃÜÂë×ö¶à×é²âÊÔ
+  18          
+  19          /*------------------------------------------------
+  20                              Ö÷³ÌĞò
+  21          ------------------------------------------------*/
+  22          main()
+  23          {
+  24   1       unsigned char num,i,j;                  
+  25   1       unsigned char temp[8];
+  26   1       bit Flag;
+  27   1      
+  28   1       LCD_Init();         //³õÊ¼»¯Òº¾§ÆÁ
+  29   1       DelayMs(10);        //ÑÓÊ±ÓÃÓÚÎÈ¶¨£¬¿ÉÒÔÈ¥µô
+  30   1       LCD_Clear();        //ÇåÆÁ
+  31   1       LCD_Write_String(0,0,"password12345678");    //Ğ´ÈëµÚÒ»ĞĞĞÅÏ¢£¬Ö÷Ñ­»·ÖĞ²»ÔÙ¸ü¸Ä´ËĞÅÏ¢£¬ËùÒÔÔÚwhileÖ®Ç°Ğ´È
+             -ë
+  32   1       LCD_Write_String(0,1,"Input  password!");    //Ğ´ÈëµÚ¶şĞĞĞÅÏ¢£¬ÌáÊ¾ÊäÈëÃÜÂë
+  33   1      while (1)         //Ö÷Ñ­»·
+  34   1        {
+  35   2      
+  36   2      
+  37   2       num=KeyPro();  //É¨Ãè¼üÅÌ
+  38   2       if(num!=0xff)  //Èç¹ûÉ¨ÃèÊÇ°´¼üÓĞĞ§ÖµÔò½øĞĞ´¦Àí
+  39   2         { 
+  40   3          if(i==0)    //ÊäÈëÊÇµÚÒ»¸ö×Ö·ûµÄÊ±ºòĞèÒª°Ñ¸ÄĞĞÇå¿Õ£¬·½±ã¹Û¿´ÃÜÂë
+  41   3                LCD_Write_String(0,1,"                ");//Çå³ı¸ÃĞĞ
+  42   3          if(i<8)     //ÃÜÂëÊÇ8Î»£¬´óÓÚ8Î»Ê±²»ÔÙÊäÈë°´¼üÖµ
+  43   3               {
+  44   4           temp[i]=num;
+  45   4           LCD_Write_Char(i,1,num+'0');
+  46   4               }
+  47   3              i++;   //ÊäÈëÊıÖµÀÛ¼Ó
+  48   3              if(i==9)//8Î»ºóµÄ°´¼ü²»ÊäÈëÊıÖµ£¬Ïàµ±ÓÚÈ·ÈÏ°´¼ü£¨ÈÎÒâ°´¼ü¼´¿É£©
+  49   3                {
+  50   4                i=0;  //¼ÆÊıÆ÷¸´Î»
+  51   4                Flag=1;//ÏÈ°Ñ±È½ÏÎ»ÖÃ1
+  52   4                for(j=0;j<8;j++)//Ñ­»·±È½Ï8¸öÊıÖµ£¬Èç¹ûÓĞÒ»¸ö²»µÈ Ôò×îÖÕFlagÖµÎª0
+  53   4                   Flag=Flag&&(temp[j]==password[j]);//±È½ÏÊäÈëÖµºÍÒÑÓĞÃÜÂë
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:40:01 PAGE 2   
+
+  54   4      
+  55   4            if(Flag)//Èç¹û±È½ÏÈ«²¿ÏàÍ¬£¬±êÖ¾Î»ÖÃ1
+  56   4                 {
+  57   5              LCD_Write_String(0,1,"Right Open!");//ÃÜÂëÕıÈ·ÏÔÊ¾µÄĞÅÏ¢
+  58   5                      }
+  59   4                else 
+  60   4                  {
+  61   5                      LCD_Write_String(0,1,"Wrong Retry!");//ÃÜÂë´íÎó£¬ÌáÊ¾ÖØĞÂÊäÈë
+  62   5                      }
+  63   4      
+  64   4                }
+  65   3          }   
+  66   2        }
+  67   1      }
+  68          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    156    ----
+   CONSTANT SIZE    =     84    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

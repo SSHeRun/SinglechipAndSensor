@@ -1,0 +1,168 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/03/2010  10:40:26  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\串口通讯.obj, .\obj\delay.obj TO .\obj\串口通讯 PRINT (.\obj\串口通讯.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\串口通讯.obj (__口蚠裚)
+  .\obj\delay.obj (DELAY)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  .\obj\串口通讯 (__口蚠裚)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0030H     UNIT         ?CO?__口蚠裚
+            CODE    0033H     0019H     UNIT         ?C?LIB_CODE
+            CODE    004CH     0018H     UNIT         ?PR?MAIN?__口蚠裚
+            CODE    0064H     0015H     UNIT         ?PR?_DELAYMS?DELAY
+            CODE    0079H     0013H     UNIT         ?PR?_SENDSTR?__口蚠裚
+            CODE    008CH     000EH     UNIT         ?PR?INITUART?__口蚠裚
+            CODE    009AH     000CH     UNIT         ?C_C51STARTUP
+            CODE    00A6H     0008H     UNIT         ?PR?_SENDBYTE?__口蚠裚
+            CODE    00AEH     0003H     UNIT         ?PR?_DELAYUS2X?DELAY
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\串口通讯 (__口蚠裚)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?__口蚠裚
+
+?PR?MAIN?__口蚠裚
+  +--> ?PR?INITUART?__口蚠裚
+  +--> ?CO?__口蚠裚
+  +--> ?PR?_SENDSTR?__口蚠裚
+  +--> ?PR?_DELAYMS?DELAY
+
+?PR?_SENDSTR?__口蚠裚
+  +--> ?PR?_SENDBYTE?__口蚠裚
+
+?PR?_DELAYMS?DELAY
+  +--> ?PR?_DELAYUS2X?DELAY
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/03/2010  10:40:26  PAGE 2
+
+
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\串口通讯 (__口蚠裚)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        __口蚠裚
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  C:00A6H         PUBLIC        _SendByte
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  B:0098H.1       PUBLIC        TI
+  C:004CH         PUBLIC        main
+  C:0079H         PUBLIC        _SendStr
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008DH         PUBLIC        TH1
+  C:008CH         PUBLIC        InitUART
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INITUART
+  C:008CH         LINE#         21
+  C:008CH         LINE#         22
+  C:008CH         LINE#         24
+  C:008FH         LINE#         25
+  C:0092H         LINE#         26
+  C:0095H         LINE#         27
+  C:0097H         LINE#         28
+  C:0099H         LINE#         30
+  -------         ENDPROC       INITUART
+  -------         PROC          MAIN
+  C:004CH         LINE#         34
+  C:004CH         LINE#         35
+  C:004CH         LINE#         37
+  C:004FH         LINE#         41
+  C:004FH         LINE#         42
+  C:004FH         LINE#         43
+  C:0058H         LINE#         44
+  C:005DH         LINE#         45
+  C:0062H         LINE#         46
+  -------         ENDPROC       MAIN
+  -------         PROC          _SENDBYTE
+  D:0007H         SYMBOL        dat
+  C:00A6H         LINE#         52
+  C:00A6H         LINE#         53
+  C:00A6H         LINE#         54
+  C:00A8H         LINE#         55
+  C:00ABH         LINE#         56
+  C:00ADH         LINE#         57
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/03/2010  10:40:26  PAGE 3
+
+
+  -------         ENDPROC       _SENDBYTE
+  -------         PROC          _SENDSTR
+  D:0001H         SYMBOL        s
+  C:0079H         LINE#         61
+  C:0079H         LINE#         62
+  C:0079H         LINE#         63
+  C:007FH         LINE#         64
+  C:007FH         LINE#         65
+  C:0082H         LINE#         66
+  C:0089H         LINE#         67
+  C:008BH         LINE#         68
+  -------         ENDPROC       _SENDSTR
+  -------         ENDMOD        __口蚠裚
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0064H         PUBLIC        _DelayMs
+  C:00AEH         PUBLIC        _DelayUs2x
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:00AEH         LINE#         8
+  C:00AEH         LINE#         9
+  C:00AEH         LINE#         10
+  C:00B0H         LINE#         11
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0064H         LINE#         17
+  C:0066H         LINE#         18
+  C:0066H         LINE#         20
+  C:006CH         LINE#         21
+  C:006CH         LINE#         23
+  C:0071H         LINE#         24
+  C:0076H         LINE#         25
+  C:0078H         LINE#         26
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        DELAY
+
+  -------         MODULE        ?C?CLDPTR
+  C:0033H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+Program Size: data=9.0 xdata=0 code=177
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

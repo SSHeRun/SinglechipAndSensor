@@ -1,0 +1,107 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  00:13:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\T0外部计数输入.obj TO .\obj\T0外部计数输入 PRINT (.\obj\T0外部计数输入.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\T0外部计数输入.obj (T0外部计数蔩入)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\T0外部计数输入 (T0外部计数蔩入)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?PR?MAIN?T0外部计数蔩入
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0010H     UNIT         ?PR?INIT_TIMER0?T0外部计数蔩入
+            CODE    001EH     000CH     UNIT         ?C_C51STARTUP
+            CODE    002AH     0009H     UNIT         ?PR?TIMER0_ISR?T0外部计数蔩入
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\T0外部计数输入 (T0外部计数蔩入)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?T0外部计数蔩入
+
+?PR?MAIN?T0外部计数蔩入
+  +--> ?PR?INIT_TIMER0?T0外部计数蔩入
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\T0外部计数输入 (T0外部计数蔩入)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        T0外部计数蔩入
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  00:13:41  PAGE 2
+
+
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  C:000EH         PUBLIC        Init_Timer0
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0090H.2       PUBLIC        LED
+  B:0088H.4       PUBLIC        TR0
+  C:002AH         PUBLIC        Timer0_isr
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INIT_TIMER0
+  C:000EH         LINE#         16
+  C:000EH         LINE#         17
+  C:000EH         LINE#         18
+  C:0011H         LINE#         19
+  C:0014H         LINE#         20
+  C:0017H         LINE#         21
+  C:0019H         LINE#         22
+  C:001BH         LINE#         23
+  C:001DH         LINE#         24
+  -------         ENDPROC       INIT_TIMER0
+  -------         PROC          MAIN
+  C:0003H         LINE#         28
+  C:0003H         LINE#         29
+  C:0003H         LINE#         30
+  C:0006H         LINE#         31
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0_ISR
+  C:002AH         LINE#         37
+  C:002AH         LINE#         39
+  C:002DH         LINE#         40
+  C:0030H         LINE#         42
+  C:0032H         LINE#         44
+  -------         ENDPROC       TIMER0_ISR
+  -------         ENDMOD        T0外部计数蔩入
+
+Program Size: data=9.0 xdata=0 code=48
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

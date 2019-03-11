@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\桌面\FLY-51S 程序\147-交通灯测试\交通灯实例.uv2
+Project File Date:  06/07/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 交通灯实例.c...
+linking...
+Program Size: data=13.4 xdata=0 code=359
+creating hex file from ".\obj\交通灯实例"...
+".\obj\交通灯实例" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 交通灯实例.c...
+linking...
+Program Size: data=13.4 xdata=0 code=359
+creating hex file from ".\obj\交通灯实例"...
+".\obj\交通灯实例" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,95 @@
+C51 COMPILER V7.06   _焱鈅_蒧訽理                                                          03/13/2014 11:04:08 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _焱鈅_蒧訽理
+OBJECT MODULE PLACED IN .\obj\红外发射原理.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 红外发射原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\红外发射原理.lst) OBJE
+                    -CT(.\obj\红外发射原理.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：红外发射原理
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过红外发射接收闪烁LED，同普通LED显示程序相同。
+   8            间歇发送38K调制波形。发射J34（IR2）端子接P3.3，J27（任意端子）接P3.2,
+   9            P1.3接任意LED，正常情况LED闪烁，拔掉发射或者接收信号线，led熄灭。
+  10          ------------------------------------------------*/
+  11          #include<reg52.h>     //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          #include<INTRINS.H>
+  13          
+  14          
+  15          sbit LED=P3^3;        //红外发射
+  16          sbit LED1=P1^3;
+  17          sbit IR=P3^2;         //红外一体化接收
+  18          
+  19          bit Flag;
+  20          
+  21          void Init_Timer0(void)
+  22          {
+  23   1       TMOD |= 0x01;                       
+  24   1       TH0=0xf0;                      //定时器值初始化
+  25   1       TL0=0x00;
+  26   1       EA=1;                      //打开中断
+  27   1       ET0=1;                     
+  28   1       TR0=1;  
+  29   1      }
+  30          
+  31          
+  32          /*-----------------------------------------------
+  33                                          定时器初始化
+  34          ------------------------------------------------*/
+  35          void Timer0_isr(void) interrupt 1 using 1
+  36          {
+  37   1       TH0=0x0f;              //重新赋值
+  38   1       TL0=0x00;
+  39   1       Flag=!Flag;
+  40   1      }
+  41          
+  42          /*-----------------------------------------------
+  43                                          主函数
+  44          ------------------------------------------------*/
+  45          main()
+  46          {
+  47   1      
+  48   1       //unsigned int j;
+  49   1       Init_Timer0();    //定时器初始化
+  50   1      
+  51   1       while(1)
+  52   1       {
+  53   2      
+  54   2          LED1=IR;       //读取一体化接收头数值
+C51 COMPILER V7.06   _焱鈅_蒧訽理                                                          03/13/2014 11:04:08 PAGE 2   
+
+  55   2              while(Flag)        //循环取反频率大约38K
+  56   2                 {
+  57   3                         _nop_();
+  58   3                         _nop_();
+  59   3                         _nop_();
+  60   3                         _nop_();
+  61   3                         _nop_();
+  62   3                         _nop_();
+  63   3                         _nop_();
+  64   3                         _nop_();
+  65   3                         _nop_();
+  66   3                         LED=!LED;    //发射管输出        
+  67   3                  }
+  68   2         }
+  69   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     48    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

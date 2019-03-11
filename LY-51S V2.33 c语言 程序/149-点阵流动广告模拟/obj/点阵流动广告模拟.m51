@@ -1,0 +1,216 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/21/2013  10:16:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE .\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ.obj TO .\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ PRINT (.\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ.m51) RAMSIZE
+>>  (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ.obj (_ãÕóÁ÷___ã__Ä_Äâ)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ (_ãÕóÁ÷___ã__Ä_Äâ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?_ãÕóÁ÷___ã__Ä_Äâ
+                    0010H     0010H                  *** GAP ***
+            BIT     0020H.0   0000H.2   UNIT         _BIT_GROUP_
+                    0020H.2   0000H.6                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
+            CODE    008FH     0078H     UNIT         ?CO?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    0107H     0051H     UNIT         ?PR?MAIN?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    0158H     0026H     UNIT         ?PR?_SENDBYTE?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    017EH     0018H     UNIT         ?PR?_SENDSEG?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    0196H     0015H     UNIT         ?PR?_DELAYMS?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    01ABH     0012H     UNIT         ?PR?_SEND2BYTE?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    01BDH     000BH     UNIT         ?C_INITSEG
+            CODE    01C8H     0006H     UNIT         ?PR?OUT595?_ãÕóÁ÷___ã__Ä_Äâ
+            CODE    01CEH     0003H     UNIT         ?PR?_DELAYUS2X?_ãÕóÁ÷___ã__Ä_Äâ
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ (_ãÕóÁ÷___ã__Ä_Äâ)
+
+
+SEGMENT                                    BIT_GROUP 
+  +--> CALLED SEGMENT                   START    LENGTH
+-------------------------------------------------------
+?C_C51STARTUP                           -----    -----
+  +--> ?PR?MAIN?_ãÕóÁ÷___ã__Ä_Äâ
+  +--> ?C_INITSEG
+
+?PR?MAIN?_ãÕóÁ÷___ã__Ä_Äâ               -----    -----
+  +--> ?PR?_SENDSEG?_ãÕóÁ÷___ã__Ä_Äâ
+  +--> ?CO?_ãÕóÁ÷___ã__Ä_Äâ
+  +--> ?PR?_SEND2BYTE?_ãÕóÁ÷___ã__Ä_Äâ
+  +--> ?PR?OUT595?_ãÕóÁ÷___ã__Ä_Äâ
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/21/2013  10:16:07  PAGE 2
+
+
+  +--> ?PR?_DELAYMS?_ãÕóÁ÷___ã__Ä_Äâ
+
+?PR?_SEND2BYTE?_ãÕóÁ÷___ã__Ä_Äâ         0020H.0  0000H.1
+  +--> ?PR?_SENDBYTE?_ãÕóÁ÷___ã__Ä_Äâ
+
+?PR?_SENDBYTE?_ãÕóÁ÷___ã__Ä_Äâ          0020H.1  0000H.1
+
+?PR?_DELAYMS?_ãÕóÁ÷___ã__Ä_Äâ           -----    -----
+  +--> ?PR?_DELAYUS2X?_ãÕóÁ÷___ã__Ä_Äâ
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\µãÕóÁ÷¶¯¹ã¸æÄ£Äâ (_ãÕóÁ÷___ã__Ä_Äâ)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        _ãÕóÁ÷___ã__Ä_Äâ
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0090H.1       PUBLIC        SRCLK
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:0158H         PUBLIC        _SendByte
+  D:00B0H         PUBLIC        P3
+  C:017EH         PUBLIC        _SendSeg
+  B:00A0H.0       PUBLIC        SER_B
+  D:00A8H         PUBLIC        IE
+  B:00A0H.2       PUBLIC        LATCH_B
+  C:0196H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  D:0008H         PUBLIC        segout
+  B:00A0H.1       PUBLIC        SRCLK_B
+  C:0107H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  C:01ABH         PUBLIC        _Send2Byte
+  D:0088H         PUBLIC        TCON
+  C:008FH         PUBLIC        tab
+  C:01CEH         PUBLIC        _DelayUs2x
+  C:01C8H         PUBLIC        Out595
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.2       PUBLIC        SER
+  B:0090H.0       PUBLIC        LATCH
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:01CEH         LINE#         49
+  C:01CEH         LINE#         50
+  C:01CEH         LINE#         51
+  C:01D0H         LINE#         52
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0196H         LINE#         58
+  C:0198H         LINE#         59
+  C:0198H         LINE#         61
+  C:019EH         LINE#         62
+  C:019EH         LINE#         64
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/21/2013  10:16:07  PAGE 3
+
+
+  C:01A3H         LINE#         65
+  C:01A8H         LINE#         66
+  C:01AAH         LINE#         67
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          _SENDBYTE
+  D:0007H         SYMBOL        dat
+  B:0020H.1       SYMBOL        direction
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0006H         SYMBOL        temp
+  -------         ENDDO         
+  C:0158H         LINE#         72
+  C:0158H         LINE#         73
+  C:0158H         LINE#         75
+  C:015BH         LINE#         76
+  C:015FH         LINE#         78
+  C:0161H         LINE#         80
+  C:0163H         LINE#         81
+  C:0163H         LINE#         82
+  C:0165H         LINE#         83
+  C:016BH         LINE#         84
+  C:016FH         LINE#         85
+  C:0174H         LINE#         87
+  C:0177H         LINE#         88
+  C:0179H         LINE#         89
+  C:017DH         LINE#         91
+  -------         ENDPROC       _SENDBYTE
+  -------         PROC          _SEND2BYTE
+  D:0007H         SYMBOL        dat1
+  D:0004H         SYMBOL        dat2
+  B:0020H.0       SYMBOL        direction
+  C:01ABH         LINE#         95
+  C:01ADH         LINE#         96
+  C:01ADH         LINE#         97
+  C:01B4H         LINE#         98
+  -------         ENDPROC       _SEND2BYTE
+  -------         PROC          OUT595
+  C:01C8H         LINE#         103
+  C:01C8H         LINE#         104
+  C:01C8H         LINE#         105
+  C:01CAH         LINE#         106
+  C:01CBH         LINE#         107
+  C:01CDH         LINE#         108
+  -------         ENDPROC       OUT595
+  -------         PROC          _SENDSEG
+  D:0007H         SYMBOL        dat
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:017EH         LINE#         114
+  C:017EH         LINE#         115
+  C:017EH         LINE#         118
+  C:0180H         LINE#         119
+  C:0180H         LINE#         120
+  C:0182H         LINE#         121
+  C:0186H         LINE#         122
+  C:018AH         LINE#         123
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/21/2013  10:16:07  PAGE 4
+
+
+  C:018CH         LINE#         124
+  C:0190H         LINE#         125
+  C:0192H         LINE#         126
+  C:0193H         LINE#         127
+  C:0195H         LINE#         129
+  -------         ENDPROC       _SENDSEG
+  -------         PROC          MAIN
+  -------         DO            
+  D:0002H         SYMBOL        i
+  D:0003H         SYMBOL        k
+  D:0001H         SYMBOL        l
+  -------         ENDDO         
+  C:0107H         LINE#         133
+  C:0107H         LINE#         134
+  C:0107H         LINE#         136
+  C:0107H         LINE#         137
+  C:0107H         LINE#         140
+  C:0109H         LINE#         141
+  C:010BH         LINE#         142
+  C:010DH         LINE#         143
+  C:010DH         LINE#         144
+  C:0119H         LINE#         145
+  C:0138H         LINE#         146
+  C:013BH         LINE#         147
+  C:0140H         LINE#         148
+  C:0149H         LINE#         149
+  C:014CH         LINE#         150
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        _ãÕóÁ÷___ã__Ä_Äâ
+
+Program Size: data=17.2 xdata=0 code=465
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

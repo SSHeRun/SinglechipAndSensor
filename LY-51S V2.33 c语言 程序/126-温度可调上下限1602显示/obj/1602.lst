@@ -1,0 +1,209 @@
+C51 COMPILER V7.06   1602                                                                  07/15/2010 00:20:01 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 1602
+OBJECT MODULE PLACED IN .\obj\1602.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 1602.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\1602.lst) OBJECT(.\obj\1602.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºLCD1602
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£º
+   8            Òý½Å¶¨ÒåÈçÏÂ£º1-VSS 2-VDD 3-V0 4-RS 5-R/W 6-E 7-14 DB0-DB7 15-BLA 16-BLK
+   9          ------------------------------------------------*/
+  10          #include "1602.h"
+  11          #include "delay.h"
+  12          
+  13          #define CHECK_BUSY
+  14          
+  15          sbit RS = P2^4;   //¶¨Òå¶Ë¿Ú 
+  16          sbit RW = P2^5;
+  17          sbit EN = P2^6;
+  18          
+  19          #define RS_CLR RS=0 
+  20          #define RS_SET RS=1
+  21          
+  22          #define RW_CLR RW=0 
+  23          #define RW_SET RW=1 
+  24          
+  25          #define EN_CLR EN=0
+  26          #define EN_SET EN=1
+  27          
+  28          #define DataPort P0
+  29          
+  30          /*------------------------------------------------
+  31                        ÅÐÃ¦º¯Êý
+  32          ------------------------------------------------*/
+  33           bit LCD_Check_Busy(void) 
+  34           { 
+  35   1      #ifdef CHECK_BUSY
+  36   1       DataPort= 0xFF; 
+  37   1       RS_CLR; 
+  38   1       RW_SET; 
+  39   1       EN_CLR; 
+  40   1       _nop_(); 
+  41   1       EN_SET;
+  42   1       return (bit)(DataPort & 0x80);
+  43   1      #else
+               return 0;
+              #endif
+  46   1       }
+  47          /*------------------------------------------------
+  48                        Ð´ÈëÃüÁîº¯Êý
+  49          -----------------   ----------------------------*/
+  50           void LCD_Write_Com(unsigned char com) 
+  51           {  
+  52   1       while(LCD_Check_Busy()); //Ã¦ÔòµÈ´ý
+  53   1       RS_CLR; 
+  54   1       RW_CLR; 
+C51 COMPILER V7.06   1602                                                                  07/15/2010 00:20:01 PAGE 2   
+
+  55   1       EN_SET; 
+  56   1       DataPort= com; 
+  57   1       _nop_(); 
+  58   1       EN_CLR;
+  59   1       }
+  60          /*------------------------------------------------
+  61                        Ð´ÈëÊý¾Ýº¯Êý
+  62          ------------------------------------------------*/
+  63           void LCD_Write_Data(unsigned char Data) 
+  64           { 
+  65   1       while(LCD_Check_Busy()); //Ã¦ÔòµÈ´ý
+  66   1       RS_SET; 
+  67   1       RW_CLR; 
+  68   1       EN_SET; 
+  69   1       DataPort= Data; 
+  70   1       _nop_();
+  71   1       EN_CLR;
+  72   1       }
+  73          
+  74          /*------------------------------------------------
+  75                          ÇåÆÁº¯Êý
+  76          ------------------------------------------------*/
+  77           void LCD_Clear(void) 
+  78           { 
+  79   1       LCD_Write_Com(0x01); 
+  80   1       DelayMs(5);
+  81   1       }
+  82          /*------------------------------------------------
+  83                        Ð´Èë×Ö·û´®º¯Êý
+  84          ------------------------------------------------*/
+  85           void LCD_Write_String(unsigned char x,unsigned char y,unsigned char *s) 
+  86           {     
+  87   1       if (y == 0) 
+  88   1              {     
+  89   2               LCD_Write_Com(0x80 + x);     //±íÊ¾µÚÒ»ÐÐ
+  90   2              }
+  91   1       else 
+  92   1              {      
+  93   2              LCD_Write_Com(0xC0 + x);      //±íÊ¾µÚ¶þÐÐ
+  94   2              }        
+  95   1       while (*s) 
+  96   1              {     
+  97   2       LCD_Write_Data( *s);     
+  98   2       s ++;     
+  99   2              }
+ 100   1       }
+ 101          /*------------------------------------------------
+ 102                        Ð´Èë×Ö·ûº¯Êý
+ 103          ------------------------------------------------*/
+ 104           void LCD_Write_Char(unsigned char x,unsigned char y,unsigned char Data) 
+ 105           {     
+ 106   1       if (y == 0) 
+ 107   1              {     
+ 108   2              LCD_Write_Com(0x80 + x);     
+ 109   2              }    
+ 110   1       else 
+ 111   1              {     
+ 112   2              LCD_Write_Com(0xC0 + x);     
+ 113   2              }        
+ 114   1       LCD_Write_Data( Data);  
+ 115   1       }
+ 116          /*------------------------------------------------
+C51 COMPILER V7.06   1602                                                                  07/15/2010 00:20:01 PAGE 3   
+
+ 117                        ³õÊ¼»¯º¯Êý
+ 118          ------------------------------------------------*/
+ 119           void LCD_Init(void) 
+ 120           {
+ 121   1         LCD_Write_Com(0x38);    /*ÏÔÊ¾Ä£Ê½ÉèÖÃ*/ 
+ 122   1         DelayMs(5); 
+ 123   1         LCD_Write_Com(0x38); 
+ 124   1         DelayMs(5); 
+ 125   1         LCD_Write_Com(0x38); 
+ 126   1         DelayMs(5); 
+ 127   1         LCD_Write_Com(0x38);  
+ 128   1         LCD_Write_Com(0x08);    /*ÏÔÊ¾¹Ø±Õ*/ 
+ 129   1         LCD_Write_Com(0x01);    /*ÏÔÊ¾ÇåÆÁ*/ 
+ 130   1         LCD_Write_Com(0x06);    /*ÏÔÊ¾¹â±êÒÆ¶¯ÉèÖÃ*/ 
+ 131   1         DelayMs(5); 
+ 132   1         LCD_Write_Com(0x0C);    /*ÏÔÊ¾¿ª¼°¹â±êÉèÖÃ*/
+ 133   1         }
+ 134          /*------------------------------------------------   
+ 135          Éè¶¨¶þ¸ö×Ô¶¨Òå×Ö·û,LCD1602ÖÐ×Ô¶¨Òå×Ö·ûµÄµØÖ·Îª0x00--0x07,
+ 136          ¼´¿É¶¨Òå8¸ö×Ö·û
+ 137          ÕâÀïÎÒÃÇÉè¶¨°ÑÒ»¸ö×Ô¶¨Òå×Ö·û·ÅÔÚ0x00Î»ÖÃ£¨000£©,
+ 138          ÁíÒ»¸ö·ÅÔÚ0x01Î»×Ó£¨001£©
+ 139          ------------------------------------------------*/
+ 140          void Lcd_User_Chr(void)
+ 141          { //µÚÒ»¸ö×Ô¶¨Òå×Ö·û
+ 142   1       LCD_Write_Com(0x40); //"01 000 000"  µÚ1ÐÐµØÖ· (D7D6ÎªµØÖ·Éè¶¨ÃüÁîÐÎÊ½£DD5D4D3Îª×Ö·û´æ·ÅÎ»ÖÃ(0--7)£¬D2D1D
+             -0Îª×Ö·ûÐÐµØÖ·(0--7)£©
+ 143   1       LCD_Write_Data(0x00); //"XXX 11111" µÚ1ÐÐÊý¾Ý£¨D7D6D5ÎªXXX£¬±íÊ¾ÎªÈÎÒâÊý(Ò»°ãÓÃ000£©£¬D4D3D2D1D0Îª×Ö·ûÐÐÊ
+             -ý¾Ý(1-µãÁÁ£¬0-Ï¨Ãð£©
+ 144   1       LCD_Write_Com(0x41); //"01 000 001"  µÚ2ÐÐµØÖ·
+ 145   1       LCD_Write_Data(0x04); //"XXX 10001" µÚ2ÐÐÊý¾Ý
+ 146   1       LCD_Write_Com(0x42); //"01 000 010"  µÚ3ÐÐµØÖ·
+ 147   1       LCD_Write_Data(0x0e); //"XXX 10101" µÚ3ÐÐÊý¾Ý
+ 148   1       LCD_Write_Com(0x43); //"01 000 011"  µÚ4ÐÐµØÖ·
+ 149   1       LCD_Write_Data(0x0e); //"XXX 10001" µÚ4ÐÐÊý¾Ý
+ 150   1       LCD_Write_Com(0x44); //"01 000 100"  µÚ5ÐÐµØÖ·
+ 151   1       LCD_Write_Data(0x0e); //"XXX 11111" µÚ5ÐÐÊý¾Ý
+ 152   1       LCD_Write_Com(0x45); //"01 000 101"  µÚ6ÐÐµØÖ·
+ 153   1       LCD_Write_Data(0x1f); //"XXX 01010" µÚ6ÐÐÊý¾Ý
+ 154   1       LCD_Write_Com(0x46); //"01 000 110"  µÚ7ÐÐµØÖ·
+ 155   1       LCD_Write_Data(0x04); //"XXX 11111" µÚ7ÐÐÊý¾Ý
+ 156   1       LCD_Write_Com(0x47); //"01 000 111"  µÚ8ÐÐµØÖ·
+ 157   1         LCD_Write_Data(0x00); //"XXX 00000" µÚ8ÐÐÊý¾Ý 
+ 158   1       //µÚ¶þ¸ö×Ô¶¨Òå×Ö·û
+ 159   1      
+ 160   1       LCD_Write_Com(0x48); //"01 001 000"  µÚ1ÐÐµØÖ·  
+ 161   1       LCD_Write_Data(0x03); //"XXX 00001" µÚ1ÐÐÊý¾Ý 
+ 162   1       LCD_Write_Com(0x49); //"01 001 001"  µÚ2ÐÐµØÖ·
+ 163   1       LCD_Write_Data(0x03); //"XXX 11011" µÚ2ÐÐÊý¾Ý
+ 164   1       LCD_Write_Com(0x4a); //"01 001 010"  µÚ3ÐÐµØÖ·
+ 165   1       LCD_Write_Data(0x00); //"XXX 11101" µÚ3ÐÐÊý¾Ý
+ 166   1       LCD_Write_Com(0x4b); //"01 001 011"  µÚ4ÐÐµØÖ·
+ 167   1       LCD_Write_Data(0x00); //"XXX 11001" µÚ4ÐÐÊý¾Ý
+ 168   1       LCD_Write_Com(0x4c); //"01 001 100"  µÚ5ÐÐµØÖ·
+ 169   1       LCD_Write_Data(0x00); //"XXX 11101" µÚ5ÐÐÊý¾Ý
+ 170   1       LCD_Write_Com(0x4d); //"01 001 101"  µÚ6ÐÐµØÖ·
+ 171   1       LCD_Write_Data(0x00); //"XXX 11011" µÚ6ÐÐÊý¾Ý
+ 172   1       LCD_Write_Com(0x4e); //"01 001 110"  µÚ7ÐÐµØÖ·
+ 173   1       LCD_Write_Data(0x00); //"XXX 00001" µÚ7ÐÐÊý¾Ý
+ 174   1       LCD_Write_Com(0x4f); //"01 001 111"  µÚ8ÐÐµØÖ·
+ 175   1       LCD_Write_Data(0x00); //"XXX 00000" µÚ8ÐÐÊý¾Ý 
+ 176   1       }
+C51 COMPILER V7.06   1602                                                                  07/15/2010 00:20:01 PAGE 4   
+
+ 177          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    309    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

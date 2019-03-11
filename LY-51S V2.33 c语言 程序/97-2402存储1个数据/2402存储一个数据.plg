@@ -1,0 +1,14 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+D:\桌面\FLY-51S 程序\97-2402存储1个数据\2402存储一个数据.uv2
+Project File Date:  05/24/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 2402存储一个数据.c...
+2402存储一个数据.C(176): warning C206: 'Send': missing function-prototype
+2402存储一个数据.C(176): error C267: 'Send': requires ANSI-style prototype
+Target not created

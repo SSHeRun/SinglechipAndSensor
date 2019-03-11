@@ -1,0 +1,308 @@
+C51 COMPILER V7.06   _焱馐誣_测试                                                          03/19/2014 09:59:28 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _焱馐誣_测试
+OBJECT MODULE PLACED IN .\obj\红外收发测试.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 红外收发测试.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\红外收发测试.lst) OBJE
+                    -CT(.\obj\红外收发测试.obj)
+
+stmt level    source
+
+   1          
+   2          /*-----------------------------------------------
+   3            名称：遥控器红外解码控制继电器
+   4            论坛：www.doflye.net
+   5            编写：shifang
+   6            日期：2009.5
+   7            修改：无
+   8            内容：按配套遥控器按键，P1.4接继电器控制端J42（RL1）
+   9                  红外接收J27接P3.2 按遥控器CH按键，继电器状态翻转
+  10                  不同遥控器可修改预定义的值ReversionCode 其他的参数部分自行研究。
+  11          ------------------------------------------------*/
+  12          #include<reg52.h>
+  13          ////////////////////////////////////////////////
+  14          #define TURE 1
+  15          #define FALSE 0
+  16          
+  17          #define ShutCode                0x45
+  18          #define ReversionCode   0x46
+  19          #define OpenCode        0x47
+  20          
+  21          ////////////////////////////////////////////////
+  22          
+  23          sbit IR=P3^2;//红外接口标志
+  24          sbit SSR=P1^4;//继电器输出端口
+  25          sbit Indicator_light=P1^7;//指示灯输出端口
+  26          sbit KeyCon=P3^7;
+  27          sbit LED=P1^5;//试验指示灯
+  28          
+  29          
+  30          
+  31          unsigned char  irtime;//红外用全局变量
+  32          unsigned char  i;
+  33          bit flag;
+  34          bit irpro_ok,irok;
+  35          unsigned char IRcord[4];
+  36          unsigned char   irdata[33];
+  37          
+  38          //////////////////////////////////////////////
+  39          
+  40          void Light(void);//声明函数
+  41          void Flash(void);
+  42          void UnLight(void);
+  43          void Keyscan(void);
+  44          void Delay(unsigned char mS);
+  45          void Ir_work(void);
+  46          void Ircordpro(void);
+  47          
+  48          
+  49          
+  50          /*------------------------------------------------
+  51                           吸合继电器
+  52          ------------------------------------------------*/
+  53          void Light(void)//继电器吸合，指示灯亮
+  54          {
+C51 COMPILER V7.06   _焱馐誣_测试                                                          03/19/2014 09:59:28 PAGE 2   
+
+  55   1       SSR=1;
+  56   1       Indicator_light=0;
+  57   1       }
+  58          
+  59          /*------------------------------------------------
+  60                          取反继电器状态
+  61          ------------------------------------------------*/
+  62          void Flash(void)//继电器反相，指示灯反相
+  63          {
+  64   1        SSR=!SSR;
+  65   1        Indicator_light=!Indicator_light;
+  66   1       }
+  67          
+  68          /*------------------------------------------------
+  69                          释放继电器
+  70          ------------------------------------------------*/
+  71          void UnLight(void)//继电器释放，指示灯灭
+  72          {
+  73   1       SSR=0;
+  74   1       Indicator_light=1;
+  75   1       }
+  76          /*------------------------------------------------
+  77                   按键扫描检测，这里仅作功能测试
+  78          ------------------------------------------------*/
+  79          void Keyscan(void)//键盘扫描
+  80          {
+  81   1      /* if(!KeyLeft)//
+  82   1           {
+  83   1      
+  84   1           Delay(10);//去抖
+  85   1           if(!KeyLeft)
+  86   1             {
+  87   1              Light();
+  88   1             }
+  89   1            }
+  90   1        else if(!KeyRight)//
+  91   1           {
+  92   1            Delay(10);//去抖
+  93   1            if(!KeyRight)
+  94   1              {
+  95   1               Flash();
+  96   1              } 
+  97   1           }*/
+  98   1       if(!KeyCon)//按键按下则开关电气
+  99   1              {
+ 100   2               Delay(10);//去抖
+ 101   2      
+ 102   2           if(!KeyCon)
+ 103   2             {
+ 104   3                  while(!KeyCon)
+ 105   3                  {};
+ 106   3      
+ 107   3              Delay(10);//去抖
+ 108   3      
+ 109   3              while(!KeyCon)
+ 110   3                  {};
+ 111   3      
+ 112   3                  {
+ 113   4                   //Indicator_light=!Indicator_light;
+ 114   4                   Flash();
+ 115   4                  }
+ 116   3             }
+C51 COMPILER V7.06   _焱馐誣_测试                                                          03/19/2014 09:59:28 PAGE 3   
+
+ 117   2          }
+ 118   1       }
+ 119          ////////////////////////////////////////////////////////////////
+ 120          void Delay(unsigned char mS)//delay mS
+ 121          {
+ 122   1       unsigned char us,usn;
+ 123   1      
+ 124   1       while(mS!=0)
+ 125   1        { 
+ 126   2         usn = 4;
+ 127   2         while(usn!=0)
+ 128   2          {
+ 129   3           us=0xf0;
+ 130   3           while (us!=0) {us--;};
+ 131   3           usn--;
+ 132   3          }
+ 133   2      
+ 134   2         mS--;
+ 135   2      
+ 136   2        }
+ 137   1      }
+ 138          
+ 139          
+ 140          /*------------------------------------------------
+ 141                          定时器0中断程序
+ 142          ------------------------------------------------*/  
+ 143          
+ 144          void tim0_isr (void) interrupt 1 using 1//定时器0中断服务函数
+ 145          {
+ 146   1        irtime++;
+ 147   1      }
+ 148          /*------------------------------------------------
+ 149                          外部定时器0处理程序
+ 150          ------------------------------------------------*/
+ 151          void ex0_isr (void) interrupt 0 using 0//外部中断0服务函数
+ 152          {
+ 153   1        static unsigned char  i;             //接收红外信号处理
+ 154   1        static bit startflag;                //是否开始处理标志位
+ 155   1      
+ 156   1      if(startflag)                         
+ 157   1         {
+ 158   2          if(irtime<63&&irtime>=33)//引导码 TC9012的头码，9ms+4.5ms
+ 159   2                              i=0;
+ 160   2                      irdata[i]=irtime;//存储每个电平的持续时间，用于以后判断是0还是1
+ 161   2                      irtime=0;
+ 162   2                      i++;
+ 163   2                               if(i==33)
+ 164   2                              {
+ 165   3                                       irok=1;
+ 166   3                                       i=0;
+ 167   3                                      }
+ 168   2                }
+ 169   1               else
+ 170   1                      {
+ 171   2                      irtime=0;
+ 172   2                      startflag=1;
+ 173   2                      }
+ 174   1      }
+ 175          /*------------------------------------------------
+ 176                          定时器0初始化
+ 177          ------------------------------------------------*/
+ 178          void TIM0init(void)//定时器0初始化
+C51 COMPILER V7.06   _焱馐誣_测试                                                          03/19/2014 09:59:28 PAGE 4   
+
+ 179          {
+ 180   1      
+ 181   1        TMOD=0x02;//定时器0工作方式2，TH0是重装值，TL0是初值
+ 182   1        TH0=0x00;//reload value
+ 183   1        TL0=0x00;//initial value
+ 184   1        ET0=1;//开中断
+ 185   1        TR0=1;
+ 186   1      }
+ 187          /*------------------------------------------------
+ 188                          外部定时初始化
+ 189          ------------------------------------------------*/
+ 190          void EX0init(void)
+ 191          {
+ 192   1       IT0 = 1;   // Configure interrupt 0 for falling edge on /INT0 (P3.2)
+ 193   1       EX0 = 1;   // Enable EX0 Interrupt
+ 194   1       EA = 1;  
+ 195   1      }
+ 196          /*------------------------------------------------
+ 197                         主函数
+ 198          ------------------------------------------------*/
+ 199          void main(void)
+ 200          {
+ 201   1       SSR=0;//初始化输出端
+ 202   1       Indicator_light=0;
+ 203   1       
+ 204   1       EX0init(); // 初始化
+ 205   1       TIM0init();
+ 206   1      
+ 207   1       while(1)//主循环
+ 208   1         {
+ 209   2       
+ 210   2          Keyscan();//按键扫描
+ 211   2      
+ 212   2          if(irok)
+ 213   2                {   
+ 214   3                 Ircordpro();
+ 215   3                 irok=0;
+ 216   3                }
+ 217   2      
+ 218   2          if(irpro_ok)//处理遥控信号
+ 219   2                {
+ 220   3                 Ir_work();
+ 221   3                }
+ 222   2      
+ 223   2      
+ 224   2         }
+ 225   1         
+ 226   1      }
+ 227          /*------------------------------------------------
+ 228                          红外处理，此值可修改
+ 229          ------------------------------------------------*/
+ 230          
+ 231            void Ir_work(void)
+ 232            {
+ 233   1          switch(IRcord[2])//仅判断其中1个数据，如果防止串码，需要同时对比4个字节数据
+ 234   1                    {
+ 235   2                 //case ShutCode: UnLight(); break;//此处根据不同的遥控器更改相应的值
+ 236   2                     case ReversionCode: Flash(); break;
+ 237   2                     //case OpenCode: Light(); break;
+ 238   2                     default:break;
+ 239   2                    }
+ 240   1                        irpro_ok=0;
+C51 COMPILER V7.06   _焱馐誣_测试                                                          03/19/2014 09:59:28 PAGE 5   
+
+ 241   1                    IRcord[1]=0;//清除值，防止误码
+ 242   1                    IRcord[2]=0;
+ 243   1        }
+ 244          /*------------------------------------------------
+ 245                          区分键值
+ 246          ------------------------------------------------*/
+ 247          void Ircordpro(void)//红外码值处理函数
+ 248          { 
+ 249   1        unsigned char i, j, k;
+ 250   1        unsigned char cord,value;
+ 251   1      
+ 252   1        k=1;
+ 253   1        for(i=0;i<4;i++)//处理4个字节
+ 254   1           {
+ 255   2            for(j=1;j<=8;j++) //处理1个字节8位
+ 256   2               {
+ 257   3                cord=irdata[k];
+ 258   3                if(cord>0x07)//大于某值为1
+ 259   3                          {
+ 260   4                   value=value|0x80;
+ 261   4                              }
+ 262   3                else 
+ 263   3                          {
+ 264   4                   value=value;
+ 265   4                              }
+ 266   3                if(j<8)
+ 267   3                          {
+ 268   4                               value=value>>1;
+ 269   4                              }
+ 270   3                 k++;
+ 271   3               }
+ 272   2           IRcord[i]=value;
+ 273   2           value=0;     
+ 274   2           } irpro_ok=1;//处理完毕标志位置1
+ 275   1      }
+ 276          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    237    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     40    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

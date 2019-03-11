@@ -1,0 +1,55 @@
+C51 COMPILER V7.06   8Î»ÊýÂë_Ü_²Ì__ÔÊ_Æ_Ö_Ö__þ                                             06/15/2010 17:56:28 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 8Î»ÊýÂë_Ü_²Ì__ÔÊ_Æ_Ö_Ö__þ
+OBJECT MODULE PLACED IN .\obj\8Î»ÊýÂë¹Ü¾²Ì¬ÏÔÊ¾ÆäÖÐÖ®¶þ.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 8Î»ÊýÂë¹Ü¾²Ì¬ÏÔÊ¾ÆäÖÐÖ®¶þ.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\8Î»ÊýÂë¹Ü
+                    -¾²Ì¬ÏÔÊ¾ÆäÖÐÖ®¶þ.lst) OBJECT(.\obj\8Î»ÊýÂë¹Ü¾²Ì¬ÏÔÊ¾ÆäÖÐÖ®¶þ.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£º8Î»ÊýÂë¹ÜÏÔÊ¾ÆäÖÐÖ®¶þ
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£ºÏÔÊ¾8Î»ÊýÂë¹ÜÖÐÈÎÒâ¶þÎ»
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //°üº¬Í·ÎÄ¼þ£¬Ò»°ãÇé¿ö²»ÐèÒª¸Ä¶¯£¬Í·ÎÄ¼þ°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  10          
+  11          #define DataPort P0 //¶¨ÒåÊý¾Ý¶Ë¿Ú ³ÌÐòÖÐÓöµ½DataPort ÔòÓÃP0 Ìæ»»
+  12          sbit LATCH1=P2^2;//¶¨ÒåËø´æÊ¹ÄÜ¶Ë¿Ú ¶ÎËø´æ
+  13          sbit LATCH2=P2^3;//                 Î»Ëø´æ
+  14          
+  15          /*------------------------------------------------
+  16                              Ö÷º¯Êý
+  17          ------------------------------------------------*/
+  18          main()
+  19          {
+  20   1      
+  21   1       while(1)
+  22   1            {
+  23   2                 DataPort=0x7e; //È¡Î»Âë µÚÒ»Î»ÊýÂë¹ÜÑ¡Í¨£¬¼´¶þ½øÖÆ0111 1110
+  24   2             LATCH2=1;     //Î»Ëø´æ
+  25   2             LATCH2=0;
+  26   2      
+  27   2             DataPort=0x4F; //È¡ÏÔÊ¾Êý¾Ý£¬¶ÎÂë ¡°3¡±¹²Òõ×Ö·ûÂë
+  28   2             LATCH1=1;     //¶ÎËø´æ
+  29   2             LATCH1=0;
+  30   2            }
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     16    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

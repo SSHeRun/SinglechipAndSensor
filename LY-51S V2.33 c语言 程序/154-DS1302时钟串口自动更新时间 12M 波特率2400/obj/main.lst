@@ -1,0 +1,283 @@
+C51 COMPILER V7.06   MAIN                                                                  08/30/2012 13:23:53 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：DS1302时钟数码管显示 串口更新
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：DS1302实时时钟数码管显示，时间和日期切换显示 按下按键，循环切换 
+   8                  时间格式xx-xx-xx
+   9                          日期格式xx-xx-xx
+  10                          周秒格式-x-   xx
+  11                          开发板使用12M晶振，通过dofly自带的串口调试软件，打开串口，波特率默认2400，点击更新时间即可，如果不行，按
+             -下开发板复位重新更新
+  12          ------------------------------------------------*/
+  13          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  14          #include "ds1302.h"
+  15          
+  16          #define KeyPort P3 //定义按键端口
+  17          
+  18          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  19          
+  20          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  21          sbit LATCH2=P2^3;//                 位锁存
+  22          
+  23          bit ReadTimeFlag;//定义读时间标志
+  24          bit SetFlag;     //更新时间标志位
+  25          unsigned char time_buf2[16];
+  26          
+  27          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  28          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  29          unsigned char TempData[5]; //存储显示值的全局变量
+  30          
+  31          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  32          void DelayMs(unsigned char t); //ms级延时
+  33          void Display(unsigned char FirstBit,unsigned char Num);//数码管显示函数
+  34          unsigned char KeyScan(void);//键盘扫描
+  35          void Init_Timer0(void);//定时器初始化
+  36          void UART_Init(void);
+  37          /*------------------------------------------------
+  38                              主函数
+  39          ------------------------------------------------*/
+  40          void main (void)
+  41          {
+  42   1      unsigned char i,num,displaynum;                  
+  43   1      
+  44   1      Init_Timer0();
+  45   1      Ds1302_Init();
+  46   1      UART_Init();
+  47   1      while (1)         //主循环
+  48   1        {
+  49   2      
+  50   2      
+  51   2      if(SetFlag)     //如果接收到串口信息则更新时钟
+  52   2        {
+C51 COMPILER V7.06   MAIN                                                                  08/30/2012 13:23:53 PAGE 2   
+
+  53   3              for(i=0;i<8;i++)
+  54   3                      {
+  55   4                      time_buf1[i]=time_buf2[2*i]*10+time_buf2[2*i+1];
+  56   4                      }//数据整合，如2个数 1和5整合成15
+  57   3                      Ds1302_Write_Time();
+  58   3                      SetFlag=0;       //时钟信息更新后标志位清零
+  59   3         }
+  60   2      
+  61   2       num=KeyScan();
+  62   2      if(num==5)
+  63   2        {
+  64   3         displaynum++;
+  65   3         if(displaynum==3)
+  66   3            displaynum=0;
+  67   3        }
+  68   2      if(ReadTimeFlag==1)
+  69   2      {
+  70   3        ReadTimeFlag=0;
+  71   3        Ds1302_Read_Time();
+  72   3      if(displaynum==0) //显示时间
+  73   3       {
+  74   4       TempData[0]=dofly_DuanMa[time_buf1[4]/10];//时                 //数据的转换，因我们采用数码管0~9的显示,将数据分开
+  75   4       TempData[1]=dofly_DuanMa[time_buf1[4]%10];     
+  76   4       TempData[2]=0x40;      //加入"-"
+  77   4       TempData[3]=dofly_DuanMa[time_buf1[5]/10];//分
+  78   4       TempData[4]=dofly_DuanMa[time_buf1[5]%10];
+  79   4      
+  80   4       } 
+  81   3      else if(displaynum==1)//显示日期
+  82   3       { 
+  83   4      
+  84   4       TempData[0]=dofly_DuanMa[time_buf1[2]/10];//月
+  85   4       TempData[1]=dofly_DuanMa[time_buf1[2]%10];
+  86   4       TempData[2]=0x40;      //加入"-"
+  87   4       TempData[3]=dofly_DuanMa[time_buf1[3]/10];//日
+  88   4       TempData[4]=dofly_DuanMa[time_buf1[3]%10];     
+  89   4       }
+  90   3      else if(displaynum==2)//显示周  秒
+  91   3       {
+  92   4       TempData[0]=0x40;                              //数据的转换，因我们采用数码管0~9的显示,将数据分开
+  93   4       TempData[1]=dofly_DuanMa[time_buf1[7]%10];//周
+  94   4       TempData[2]=0x40;      //加入"-"
+  95   4      
+  96   4       TempData[3]=dofly_DuanMa[time_buf1[6]/10];//秒
+  97   4       TempData[4]=dofly_DuanMa[time_buf1[6]%10];     
+  98   4       }
+  99   3       }      
+ 100   2       }
+ 101   1      }
+ 102          /*------------------------------------------------
+ 103                        串口通讯初始化
+ 104          ------------------------------------------------*/
+ 105          void UART_Init(void)
+ 106          {
+ 107   1          SCON  = 0x50;                       // SCON: 模式 1, 8-bit UART, 使能接收  
+ 108   1          TMOD |= 0x20;               // TMOD: timer 1, mode 2, 8-bit 重装
+ 109   1          TH1   = 0xF3;               // TH1:  重装值 2400 波特率 晶振 12MHz  
+ 110   1          TR1   = 1;                  // TR1:  timer 1 打开                         
+ 111   1          EA    = 1;                  //打开总中断
+ 112   1          ES    = 1;                  //打开串口中断
+ 113   1      }
+ 114          /*------------------------------------------------
+C51 COMPILER V7.06   MAIN                                                                  08/30/2012 13:23:53 PAGE 3   
+
+ 115           uS延时函数，含有输入参数 unsigned char t，无返回值
+ 116           unsigned char 是定义无符号字符变量，其值的范围是
+ 117           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+ 118           长度如下 T=tx2+5 uS 
+ 119          ------------------------------------------------*/
+ 120          void DelayUs2x(unsigned char t)
+ 121          {   
+ 122   1       while(--t);
+ 123   1      }
+ 124          /*------------------------------------------------
+ 125           mS延时函数，含有输入参数 unsigned char t，无返回值
+ 126           unsigned char 是定义无符号字符变量，其值的范围是
+ 127           0~255 这里使用晶振12M，精确延时请使用汇编
+ 128          ------------------------------------------------*/
+ 129          void DelayMs(unsigned char t)
+ 130          {
+ 131   1           
+ 132   1       while(t--)
+ 133   1       {
+ 134   2           //大致延时1mS
+ 135   2           DelayUs2x(245);
+ 136   2               DelayUs2x(245);
+ 137   2       }
+ 138   1      }
+ 139          /*------------------------------------------------
+ 140           显示函数，用于动态扫描数码管
+ 141           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+ 142           如输入0表示从第一个显示。
+ 143           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+ 144          ------------------------------------------------*/
+ 145          void Display(unsigned char FirstBit,unsigned char Num)
+ 146          {
+ 147   1            static unsigned char i=0;
+ 148   1                
+ 149   1      
+ 150   1                 DataPort=0;   //清空数据，防止有交替重影
+ 151   1             LATCH1=1;     //段锁存
+ 152   1             LATCH1=0;
+ 153   1      
+ 154   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+ 155   1             LATCH2=1;     //位锁存
+ 156   1             LATCH2=0;
+ 157   1      
+ 158   1             DataPort=TempData[i]; //取显示数据，段码
+ 159   1             LATCH1=1;     //段锁存
+ 160   1             LATCH1=0;
+ 161   1             
+ 162   1                 i++;
+ 163   1             if(i==Num)
+ 164   1                    i=0;
+ 165   1      
+ 166   1      
+ 167   1      }
+ 168          /*------------------------------------------------
+ 169                              定时器初始化子程序
+ 170          ------------------------------------------------*/
+ 171          void Init_Timer0(void)
+ 172          {
+ 173   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 174   1       //TH0=0x00;          //给定初值
+ 175   1       //TL0=0x00;
+ 176   1       EA=1;            //总中断打开
+C51 COMPILER V7.06   MAIN                                                                  08/30/2012 13:23:53 PAGE 4   
+
+ 177   1       ET0=1;           //定时器中断打开
+ 178   1       TR0=1;           //定时器开关打开
+ 179   1      }
+ 180          /*------------------------------------------------
+ 181                           定时器中断子程序
+ 182          ------------------------------------------------*/
+ 183          void Timer0_isr(void) interrupt 1 
+ 184          {
+ 185   1       static unsigned int num;
+ 186   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+ 187   1       TL0=(65536-2000)%256;
+ 188   1       
+ 189   1       Display(0,5);       // 调用数码管扫描
+ 190   1       num++;
+ 191   1       if(num==50)        //大致100ms
+ 192   1         {
+ 193   2          num=0;
+ 194   2          ReadTimeFlag=1; //读标志位置1
+ 195   2              }
+ 196   1      }
+ 197          
+ 198          /*------------------------------------------------
+ 199          按键扫描函数，返回扫描键值
+ 200          ------------------------------------------------*/
+ 201          unsigned char KeyScan(void)
+ 202          {
+ 203   1       unsigned char keyvalue;
+ 204   1       if(KeyPort!=0xff)
+ 205   1         {
+ 206   2          DelayMs(10);
+ 207   2          if(KeyPort!=0xff)
+ 208   2                 {
+ 209   3                  keyvalue=KeyPort;
+ 210   3                  while(KeyPort!=0xff);
+ 211   3                      switch(keyvalue)
+ 212   3                      {
+ 213   4                       case 0xfe:return 1;break;
+ 214   4                       case 0xfd:return 2;break;
+ 215   4                       case 0xfb:return 3;break;
+ 216   4                       case 0xf7:return 4;break;
+ 217   4                       case 0xef:return 5;break;
+ 218   4                       case 0xdf:return 6;break;
+ 219   4                       case 0xbf:return 7;break;
+ 220   4                       case 0x7f:return 8;break;
+ 221   4                       default:return 0;break;
+ 222   4                      }
+ 223   3                }
+ 224   2         }
+ 225   1         return 0;
+ 226   1      }
+ 227          /*------------------------------------------------
+ 228                            串口中断程序
+ 229          ------------------------------------------------*/
+ 230          void UART_SER (void) interrupt 4 //串行中断服务程序
+ 231          {
+ 232   1          unsigned char Temp;          //定义临时变量 
+ 233   1          unsigned char i;
+ 234   1          if(RI)                        //判断是接收中断产生
+ 235   1           {
+ 236   2                RI=0;                      //标志位清零
+ 237   2                Temp=SBUF;                 //读入缓冲区的值
+ 238   2                time_buf2[i]=Temp&0x0F;
+C51 COMPILER V7.06   MAIN                                                                  08/30/2012 13:23:53 PAGE 5   
+
+ 239   2                i++;
+ 240   2                if(i==16)                  //连续接收16个字符信息
+ 241   2                 {
+ 242   3                  i=0;
+ 243   3                      SetFlag=1;               //接收完成标志位置1
+ 244   3                 }
+ 245   2            SBUF=Temp; //把接收到的值再发回电脑端
+ 246   2               }
+ 247   1         if(TI)  //如果是发送标志位，清零
+ 248   1           TI=0;
+ 249   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    527    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     24       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

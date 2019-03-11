@@ -1,0 +1,69 @@
+C51 COMPILER V7.06   LED裚籣左移                                                           05/13/2010 22:46:23 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE LED裚籣左移
+OBJECT MODULE PLACED IN .\obj\led循环左移.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE led循环左移.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\led循环左移.lst) OBJECT
+                    -(.\obj\led循环左移.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IO口高低电平控制
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：循环左移，始终一个led点亮，并循环执行流水动作，左移符号 <<  逻辑或符号 |
+   8          
+   9          ------------------------------------------------*/
+  10          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  11          
+  12          
+  13          void Delay(unsigned int t); //函数声明
+  14          
+  15          /*------------------------------------------------
+  16                              主函数
+  17          ------------------------------------------------*/
+  18          void main (void)
+  19          {
+  20   1                        
+  21   1      unsigned char i;  //定义一个无符号字符型局部变量 i 取值范围 0~255
+  22   1      Delay(50000);
+  23   1      P1=0xfe;           //赋初始值
+  24   1      while (1)         //主循环
+  25   1        {
+  26   2       for(i=0;i<8;i++)   //加入 for循环，表明for循环大括号中的程序循环执行8次
+  27   2        {
+  28   3         Delay(50000);
+  29   3         P1<<=1;
+  30   3         P1=P1|0x01;     //左移后，最右端自动赋值0，所以需要该语句赋值1
+  31   3        } 
+  32   2        P1=0xfe;           //重新赋初始值
+  33   2        //主循环中添加其他需要一直工作的程序
+  34   2        }
+  35   1      }/*------------------------------------------------
+  36           延时函数，含有输入参数 unsigned int t，无返回值
+  37           unsigned int 是定义无符号整形变量，其值的范围是
+  38           0~65535
+  39          ------------------------------------------------*/
+  40          void Delay(unsigned int t)
+  41          {
+  42   1       while(--t);
+  43   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     53    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V7.06   LED裚籣左移                                                           05/13/2010 22:46:23 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,55 @@
+C51 COMPILER V7.06   1_鯻懒___键控制LED                                                    05/16/2010 10:34:07 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 1_鯻懒___键控制LED
+OBJECT MODULE PLACED IN .\obj\1个独立按键控制led.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 1个独立按键控制led.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\1个独立按键控制l
+                    -ed.lst) OBJECT(.\obj\1个独立按键控制led.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：单个独立按键检测
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit KEY=P3^3;  //定义按键输入端口
+  12          sbit LED=P1^2;  //定义led输出端口
+  13          
+  14          /*------------------------------------------------
+  15                              主函数
+  16          ------------------------------------------------*/
+  17          void main (void)
+  18          {
+  19   1                        
+  20   1      KEY=1; //按键输入端口电平置高
+  21   1      while (1)         //主循环
+  22   1        {
+  23   2      
+  24   2        if(!KEY)  //如果检测到低电平，说明按键按下
+  25   2          LED=0;
+  26   2        else
+  27   2          LED=1;  //这里使用if判断，如果按键按下led点亮，否则熄灭
+  28   2                      //上述4句可以用一句替代 LED=KEY;
+  29   2                           //主循环中添加其他需要一直工作的程序
+  30   2        }
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     13    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

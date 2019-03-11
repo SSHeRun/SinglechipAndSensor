@@ -1,0 +1,6 @@
+".\obj\18b20.obj",
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\main.obj" 
+TO ".\obj\1个18b20温度传感器1602液晶显示" 
+PRINT(".\obj\1个18b20温度传感器1602液晶显示.m51") RAMSIZE(256) 

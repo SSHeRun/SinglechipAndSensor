@@ -1,0 +1,69 @@
+C51 COMPILER V7.06   ¿_ÃÅ__Òç_ö²âÊÔ                                                        05/20/2010 08:47:29 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE ¿_ÃÅ__Òç_ö²âÊÔ
+OBJECT MODULE PLACED IN .\obj\¿´ÃÅ¹·Òç³ö²âÊÔ.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE ¿´ÃÅ¹·Òç³ö²âÊÔ.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\¿´ÃÅ¹·Òç³ö²âÊÔ.lst) 
+                    -OBJECT(.\obj\¿´ÃÅ¹·Òç³ö²âÊÔ.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£º¿´ÃÅ¹·Òç³öÊµÑé
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£ºÍ¨¹ý°´¼üÄ£Äâ¿´ÃÅ¹·Òç³ö
+   8          ------------------------------------------------*/
+   9          #include<reg52.h>
+  10          
+  11          sfr  WDTRST  =   0xA6;                          
+  12          
+  13          sbit key = P3^1;                 
+  14          
+  15          /*------------------------------------------------
+  16                              Î¹¹·
+  17          ------------------------------------------------*/
+  18          void Rst_Watchdog( void )
+  19          {
+  20   1              WDTRST  = 0x1E; //ÏÈ¸³Öµ1E È»ºó¸³ÖµE1
+  21   1          WDTRST  = 0xE1;
+  22   1      }
+  23          
+  24          /*------------------------------------------------
+  25                              Ö÷º¯Êý
+  26          ------------------------------------------------*/
+  27          void main( void )
+  28          {
+  29   1              int i;
+  30   1                                                  // ÉèÖÃ¿´ÃÅ¹·Ê±¼äÎª1¸öÊ±ÖÓÑ­»·ºó
+  31   1              Rst_Watchdog();
+  32   1                                                  //¹Ø¿´ÃÅ¹·Ò»¸öÊ±ÖÓÑ­»·
+  33   1              for( i = 0; i < 500; i++)
+  34   1              {
+  35   2                      Rst_Watchdog();                
+  36   2              }
+  37   1          P1=0x00;
+  38   1              while(!key)                     //°´ÏÂ°´¼ü²»ËÉ¿ª£¬±íÊ¾³ÌÐòÒ»Ö±ÔÚ°´¼ü´¦Ñ­»·£¬²¢ÓÃLEDÏÔÊ¾0x55
+  39   1              {
+  40   2               P1=0x55;                           //Ä£Äâ³ö´í Õý³£Çé¿öÓ¦¸ÃÒ»Ö±ÏÔÊ¾LED£¬µ«ÊÇ¼Ó¿´ÃÅ¹·Ö®ºó²»¼ä¶Ï¸´Î»£¬µ¹ÊÇLEDÉÁË
+             -¸
+  41   2              }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     39    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V7.06   ¿_ÃÅ__Òç_ö²âÊÔ                                                        05/20/2010 08:47:29 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

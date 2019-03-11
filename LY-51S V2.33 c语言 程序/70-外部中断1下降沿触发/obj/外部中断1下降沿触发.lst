@@ -1,0 +1,97 @@
+C51 COMPILER V7.06   外部謃__1_陆_沿__                                                   05/19/2010 23:48:29 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 外部謃__1_陆_沿__
+OBJECT MODULE PLACED IN .\obj\外部中断1下降沿触发.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 外部中断1下降沿触发.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\外部中断1下降沿
+                    -触发.lst) OBJECT(.\obj\外部中断1下降沿触发.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：外部中断1电下降沿平触发
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过中断接口P3.3连接的独立按键测试，按一次P1.0口的LED灯反向，
+   8                  作用效果和中断0相同
+   9          ------------------------------------------------*/
+  10          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  11          
+  12          sbit LED=P1^0; //定义LED端口
+  13          
+  14          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  15          void DelayMs(unsigned char t); //ms级延时
+  16          /*------------------------------------------------
+  17                              主程序
+  18          ------------------------------------------------*/
+  19          main()
+  20          {
+  21   1        LED=0;         //LED灯点亮
+  22   1        EA=1;          //全局中断开
+  23   1        EX1=1;         //外部中断0开
+  24   1        IT1=1;         //T1=1表示边沿触发
+  25   1        while(1)
+  26   1        {
+  27   2                       //在此添加其他程序
+  28   2        }
+  29   1      }
+  30          /*------------------------------------------------
+  31                           外部中断程序
+  32          ------------------------------------------------*/
+  33          void ISR_INT1(void) interrupt 2 
+  34          {
+  35   1       
+  36   1       if(!INT1)
+  37   1         {
+  38   2         DelayMs(10);//在此处可以添加去抖动程序，防止按键抖动造成错误
+  39   2         if(!INT1)
+  40   2         //while(!INT1);//等待按键释放
+  41   2           {
+  42   3           LED=!LED;   
+  43   3           }
+  44   2         }
+  45   1      }
+  46          
+  47          /*------------------------------------------------
+  48           uS延时函数，含有输入参数 unsigned char t，无返回值
+  49           unsigned char 是定义无符号字符变量，其值的范围是
+  50           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  51           长度如下 T=tx2+5 uS 
+  52          ------------------------------------------------*/
+  53          void DelayUs2x(unsigned char t)
+  54          {   
+C51 COMPILER V7.06   外部謃__1_陆_沿__                                                   05/19/2010 23:48:29 PAGE 2   
+
+  55   1       while(--t);
+  56   1      }
+  57          /*------------------------------------------------
+  58           mS延时函数，含有输入参数 unsigned char t，无返回值
+  59           unsigned char 是定义无符号字符变量，其值的范围是
+  60           0~255 这里使用晶振12M，精确延时请使用汇编
+  61          ------------------------------------------------*/
+  62          void DelayMs(unsigned char t)
+  63          {
+  64   1           
+  65   1       while(t--)
+  66   1       {
+  67   2           //大致延时1mS
+  68   2           DelayUs2x(245);
+  69   2               DelayUs2x(245);
+  70   2       }
+  71   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    103    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

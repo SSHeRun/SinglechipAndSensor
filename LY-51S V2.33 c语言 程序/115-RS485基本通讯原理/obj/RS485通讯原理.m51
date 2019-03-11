@@ -1,0 +1,172 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/16/2010  22:32:52  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\delay.obj, .\obj\RS485通讯原理.obj TO .\obj\RS485通讯原理 PRINT (.\obj\RS485通讯原理.m51)
+>>  RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\delay.obj (DELAY)
+  .\obj\RS485通讯原理.obj (RS485蚠裚訽理)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+
+
+LINK MAP OF MODULE:  .\obj\RS485通讯原理 (DELAY)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     002FH     UNIT         ?CO?RS485蚠裚訽理
+            CODE    0032H     001AH     UNIT         ?PR?MAIN?RS485蚠裚訽理
+            CODE    004CH     0019H     UNIT         ?C?LIB_CODE
+            CODE    0065H     0015H     UNIT         ?PR?_DELAYMS?DELAY
+            CODE    007AH     0013H     UNIT         ?PR?_SENDSTR?RS485蚠裚訽理
+            CODE    008DH     000EH     UNIT         ?PR?INITUART?RS485蚠裚訽理
+            CODE    009BH     000CH     UNIT         ?C_C51STARTUP
+            CODE    00A7H     0008H     UNIT         ?PR?_SENDBYTE?RS485蚠裚訽理
+            CODE    00AFH     0003H     UNIT         ?PR?_DELAYUS2X?DELAY
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\RS485通讯原理 (DELAY)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?RS485蚠裚訽理
+
+?PR?MAIN?RS485蚠裚訽理
+  +--> ?PR?INITUART?RS485蚠裚訽理
+  +--> ?CO?RS485蚠裚訽理
+  +--> ?PR?_SENDSTR?RS485蚠裚訽理
+  +--> ?PR?_DELAYMS?DELAY
+
+?PR?_SENDSTR?RS485蚠裚訽理
+  +--> ?PR?_SENDBYTE?RS485蚠裚訽理
+
+?PR?_DELAYMS?DELAY
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/16/2010  22:32:52  PAGE 2
+
+
+  +--> ?PR?_DELAYUS2X?DELAY
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\RS485通讯原理 (DELAY)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0065H         PUBLIC        _DelayMs
+  C:00AFH         PUBLIC        _DelayUs2x
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:00AFH         LINE#         8
+  C:00AFH         LINE#         9
+  C:00AFH         LINE#         10
+  C:00B1H         LINE#         11
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0065H         LINE#         17
+  C:0067H         LINE#         18
+  C:0067H         LINE#         20
+  C:006DH         LINE#         21
+  C:006DH         LINE#         23
+  C:0072H         LINE#         24
+  C:0077H         LINE#         25
+  C:0079H         LINE#         26
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        DELAY
+
+  -------         MODULE        RS485蚠裚訽理
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:00A7H         PUBLIC        _SendByte
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  B:00A0H.0       PUBLIC        Ctrl_EN
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  B:0098H.1       PUBLIC        TI
+  C:0032H         PUBLIC        main
+  C:007AH         PUBLIC        _SendStr
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008DH         PUBLIC        TH1
+  C:008DH         PUBLIC        InitUART
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INITUART
+  C:008DH         LINE#         25
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/16/2010  22:32:52  PAGE 3
+
+
+  C:008DH         LINE#         26
+  C:008DH         LINE#         28
+  C:0090H         LINE#         29
+  C:0093H         LINE#         30
+  C:0096H         LINE#         31
+  C:0098H         LINE#         32
+  C:009AH         LINE#         34
+  -------         ENDPROC       INITUART
+  -------         PROC          MAIN
+  C:0032H         LINE#         38
+  C:0032H         LINE#         39
+  C:0032H         LINE#         41
+  C:0035H         LINE#         43
+  C:0037H         LINE#         45
+  C:0037H         LINE#         46
+  C:0037H         LINE#         47
+  C:0040H         LINE#         48
+  C:0045H         LINE#         49
+  C:004AH         LINE#         50
+  -------         ENDPROC       MAIN
+  -------         PROC          _SENDBYTE
+  D:0007H         SYMBOL        dat
+  C:00A7H         LINE#         56
+  C:00A7H         LINE#         57
+  C:00A7H         LINE#         58
+  C:00A9H         LINE#         59
+  C:00ACH         LINE#         60
+  C:00AEH         LINE#         61
+  -------         ENDPROC       _SENDBYTE
+  -------         PROC          _SENDSTR
+  D:0001H         SYMBOL        s
+  C:007AH         LINE#         65
+  C:007AH         LINE#         66
+  C:007AH         LINE#         67
+  C:0080H         LINE#         68
+  C:0080H         LINE#         69
+  C:0083H         LINE#         70
+  C:008AH         LINE#         71
+  C:008CH         LINE#         72
+  -------         ENDPROC       _SENDSTR
+  -------         ENDMOD        RS485蚠裚訽理
+
+  -------         MODULE        ?C?CLDPTR
+  C:004CH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+Program Size: data=9.0 xdata=0 code=178
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

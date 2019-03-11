@@ -1,0 +1,62 @@
+C51 COMPILER V7.06   __¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_                                                06/15/2010 17:52:35 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE __¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+OBJECT MODULE PLACED IN .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE °´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\°´¼ü¿ØÖÆµ¥¸ö
+                    -ÊýÂë¹ÜÏÔÊ¾.lst) OBJECT(.\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºµ¥¸ö¹²ÑôÊýÂë¹Ü¶¯Ì¬ÏÔÊ¾±ä»¯Êý×Ö
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£ºÍ¨¹ýÑ­»·¼ì²âP1¿Ú°´¼üÊäÈëÖµ£¬È»ºóÓÃÊýÂë¹ÜÊä³ö£¬Ã»ÓÐ°´¼ü°´ÏÂÊ±Ô­Öµ²»±ä 
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //°üº¬Í·ÎÄ¼þ£¬Ò»°ãÇé¿ö²»ÐèÒª¸Ä¶¯£¬Í·ÎÄ¼þ°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  10          
+  11          unsigned char code dofly_table[10]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,}; // ÏÔÊ¾ÊýÖµ±í0-9
+  12          
+  13          /*------------------------------------------------
+  14                              Ö÷º¯Êý
+  15          ------------------------------------------------*/
+  16          void main (void)
+  17          {
+  18   1                        
+  19   1      
+  20   1      while (1)         //Ö÷Ñ­»·
+  21   1        {
+  22   2      
+  23   2        switch(P3)  //P3¿Ú×÷Îª¶ÀÁ¢°´¼üÊäÈë¶Ë£¬¼ì²â¶Ë¿ÚµçÆ½²¢×öÈçÏÂÅÐ¶Ï                            
+  24   2             {
+  25   3                  case 0xfe:P1=dofly_table[1];break;//0xfe = 1111 1110,ËµÃ÷Á¬½ÓÔÚP3.0¶Ë¿ÚµÄ°´¼ü±»°´ÏÂ,ÏÔÊ¾¶ÔÓ¦µÄÊý×ÖÈ»º
+             -óÌø³öÑ­»·
+  26   3                      case 0xfd:P1=dofly_table[2];break;//µ÷ÓÃ±íÖÐµÄµÚÈý¸öÔªËØ 0xa4 ÏÂ±ê 0 ²Å±íÊ¾Êý×éÖÐµÄµÚÒ»¸öÔªËØ
+  27   3                      case 0xfb:P1=dofly_table[3];break;
+  28   3                      case 0xf7:P1=dofly_table[4];break;
+  29   3                      case 0xef:P1=dofly_table[5];break;
+  30   3                      case 0xdf:P1=dofly_table[6];break;
+  31   3                      case 0xbf:P1=dofly_table[7];break;
+  32   3                      case 0x7f:P1=dofly_table[8];break;
+  33   3                      default:break;                    //Èç¹û¶¼Ã»°´ÏÂ£¬Ö±½ÓÌø³ö
+  34   3                 }
+  35   2                           //Ö÷Ñ­»·ÖÐÌí¼ÓÆäËûÐèÒªÒ»Ö±¹¤×÷µÄ³ÌÐò
+  36   2        }
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     82    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

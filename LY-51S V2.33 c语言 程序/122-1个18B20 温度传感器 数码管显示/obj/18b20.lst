@@ -1,0 +1,112 @@
+C51 COMPILER V7.06   18B20                                                                 06/14/2010 14:32:31 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 18B20
+OBJECT MODULE PLACED IN .\obj\18b20.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 18b20.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\18b20.lst) OBJECT(.\obj\18b20
+                    -.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：18B20温度传感器
+   3            网站：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：18B20单线温度检测的应用样例程序
+   8          ------------------------------------------------*/
+   9          #include"delay.h"
+  10          #include"18b20.h"
+  11          /*------------------------------------------------
+  12                              18b20初始化
+  13          ------------------------------------------------*/
+  14          bit Init_DS18B20(void)
+  15          {
+  16   1       bit dat=0;
+  17   1       DQ = 1;    //DQ复位
+  18   1       DelayUs2x(5);   //稍做延时
+  19   1       DQ = 0;         //单片机将DQ拉低
+  20   1       DelayUs2x(200); //精确延时 大于 480us 小于960us
+  21   1       DelayUs2x(200);
+  22   1       DQ = 1;        //拉高总线
+  23   1       DelayUs2x(50); //15~60us 后 接收60-240us的存在脉冲
+  24   1       dat=DQ;        //如果x=0则初始化成功, x=1则初始化失败
+  25   1       DelayUs2x(25); //稍作延时返回
+  26   1       return dat;
+  27   1      }
+  28          
+  29          /*------------------------------------------------
+  30                              读取一个字节
+  31          ------------------------------------------------*/
+  32          unsigned char ReadOneChar(void)
+  33          {
+  34   1      unsigned char i=0;
+  35   1      unsigned char dat = 0;
+  36   1      for (i=8;i>0;i--)
+  37   1       {
+  38   2        DQ = 0; // 给脉冲信号
+  39   2        dat>>=1;
+  40   2        DQ = 1; // 给脉冲信号
+  41   2        if(DQ)
+  42   2         dat|=0x80;
+  43   2        DelayUs2x(25);
+  44   2       }
+  45   1       return(dat);
+  46   1      }
+  47          /*------------------------------------------------
+  48                              写入一个字节
+  49          ------------------------------------------------*/
+  50          void WriteOneChar(unsigned char dat)
+  51          {
+  52   1       unsigned char i=0;
+  53   1       for (i=8; i>0; i--)
+  54   1       {
+C51 COMPILER V7.06   18B20                                                                 06/14/2010 14:32:31 PAGE 2   
+
+  55   2        DQ = 0;
+  56   2        DQ = dat&0x01;
+  57   2        DelayUs2x(25);
+  58   2        DQ = 1;
+  59   2        dat>>=1;
+  60   2       }
+  61   1      DelayUs2x(25);
+  62   1      }
+  63          
+  64          /*------------------------------------------------
+  65                              读取温度
+  66          ------------------------------------------------*/
+  67          unsigned int ReadTemperature(void)
+  68          {
+  69   1      unsigned char a=0;
+  70   1      unsigned int b=0;
+  71   1      unsigned int t=0;
+  72   1      Init_DS18B20();
+  73   1      WriteOneChar(0xCC); // 跳过读序号列号的操作
+  74   1      WriteOneChar(0x44); // 启动温度转换
+  75   1      DelayMs(10);
+  76   1      Init_DS18B20();
+  77   1      WriteOneChar(0xCC); //跳过读序号列号的操作 
+  78   1      WriteOneChar(0xBE); //读取温度寄存器等（共可读9个寄存器） 前两个就是温度
+  79   1      a=ReadOneChar();   //低位
+  80   1      b=ReadOneChar();   //高位
+  81   1      
+  82   1      b<<=8;
+  83   1      t=a+b;
+  84   1      
+  85   1      return(t);
+  86   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    183    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,79 @@
+C51 COMPILER V7.06   PWM_÷_â                                                               05/14/2010 08:43:16 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE PWM_÷_â
+OBJECT MODULE PLACED IN .\obj\PWMµ÷¹â.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE PWMµ÷¹â.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\PWMµ÷¹â.lst) OBJECT(.\obj\P
+                    -WMµ÷¹â.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºPWMµ÷¹â
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£ºÍ¨¹ýPWM£¨Âö¿íµ÷ÖÆ£©µ÷½ÚLEDµÄÁÁ¶È
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //°üº¬Í·ÎÄ¼þ£¬Ò»°ãÇé¿ö²»ÐèÒª¸Ä¶¯£¬Í·ÎÄ¼þ°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  10          
+  11          sbit LED0=P1^0;// ÓÃsbit ¹Ø¼ü×Ö ¶¨Òå LEDµ½P1.0¶Ë¿Ú£¬LEDÊÇ×Ô¼ºÈÎÒâ¶¨ÒåÇÒÈÝÒ×¼ÇÒäµÄ·ûºÅ
+  12          
+  13          
+  14          void Delay(unsigned int t); //º¯ÊýÉùÃ÷
+  15          /*------------------------------------------------
+  16                              Ö÷º¯Êý
+  17          ------------------------------------------------*/
+  18          void main (void)
+  19          {
+  20   1                        
+  21   1      unsigned int CYCLE=600,PWM_LOW=0;//¶¨ÒåÖÜÆÚ²¢¸³Öµ
+  22   1      while (1)         //Ö÷Ñ­»·
+  23   1        {
+  24   2       LED0=1;
+  25   2       Delay(60000);        //ÌØÒâ¼ÓÑÓÊ±£¬¿ÉÒÔ¿´µ½Ï¨ÃðµÄ¹ý³Ì
+  26   2       for(PWM_LOW=1;PWM_LOW<CYCLE;PWM_LOW++){
+  27   3      
+  28   3                      LED0=0;
+  29   3                      Delay(PWM_LOW);
+  30   3                      LED0=1;
+  31   3                  Delay(CYCLE-PWM_LOW);
+  32   3           
+  33   3         }
+  34   2       LED0=0;
+  35   2       for(PWM_LOW=CYCLE-1;PWM_LOW>0;PWM_LOW--){
+  36   3      
+  37   3                      LED0=0;
+  38   3                      Delay(PWM_LOW);
+  39   3                      LED0=1;
+  40   3                  Delay(CYCLE-PWM_LOW);
+  41   3           
+  42   3         }
+  43   2                           //Ö÷Ñ­»·ÖÐÌí¼ÓÆäËûÐèÒªÒ»Ö±¹¤×÷µÄ³ÌÐò
+  44   2        }
+  45   1      }/*------------------------------------------------
+  46           ÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned int t£¬ÎÞ·µ»ØÖµ
+  47           unsigned int ÊÇ¶¨ÒåÎÞ·ûºÅÕûÐÎ±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  48           0~65535
+  49          ------------------------------------------------*/
+  50          void Delay(unsigned int t)
+  51          {
+  52   1       while(--t);
+  53   1      }
+
+C51 COMPILER V7.06   PWM_÷_â                                                               05/14/2010 08:43:16 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    129    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

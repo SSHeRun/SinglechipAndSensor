@@ -1,0 +1,5 @@
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\红外解码1602液晶显示.obj" 
+TO ".\obj\红外解码1602液晶显示" 
+PRINT(".\obj\红外解码1602液晶显示.m51") RAMSIZE(256) 

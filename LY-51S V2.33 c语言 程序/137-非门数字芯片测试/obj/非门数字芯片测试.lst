@@ -1,0 +1,74 @@
+C51 COMPILER V7.06   _敲攀謃_芲测试                                                      06/10/2010 12:26:04 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _敲攀謃_芲测试
+OBJECT MODULE PLACED IN .\obj\非门数字芯片测试.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 非门数字芯片测试.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\非门数字芯片测试.l
+                    -st) OBJECT(.\obj\非门数字芯片测试.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：非门数字芯片测试
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过电闪烁P1口状态，观测非门工作状态
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          /*------------------------------------------------
+  11           uS延时函数，含有输入参数 unsigned char t，无返回值
+  12           unsigned char 是定义无符号字符变量，其值的范围是
+  13           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  14           长度如下 T=tx2+5 uS 
+  15          ------------------------------------------------*/
+  16          void DelayUs2x(unsigned char t)
+  17          {   
+  18   1       while(--t);
+  19   1      }
+  20          /*------------------------------------------------
+  21           mS延时函数，含有输入参数 unsigned char t，无返回值
+  22           unsigned char 是定义无符号字符变量，其值的范围是
+  23           0~255 这里使用晶振12M，精确延时请使用汇编
+  24          ------------------------------------------------*/
+  25          void DelayMs(unsigned char t)
+  26          {
+  27   1           
+  28   1       while(t--)
+  29   1       {
+  30   2           //大致延时1mS
+  31   2           DelayUs2x(245);
+  32   2               DelayUs2x(245);
+  33   2       }
+  34   1      }
+  35          
+  36          /*------------------------------------------------
+  37                              主函数
+  38          ------------------------------------------------*/
+  39          void main (void)
+  40          {
+  41   1      P1=0x00;          //初始化值
+  42   1      while (1)         //主循环
+  43   1        {
+  44   2         DelayMs(200);  //主循环中添加其他需要一直工作的程序
+  45   2         DelayMs(200);  //延时后进行端口取反操作，用led看到的效果是闪烁
+  46   2         P1=~P1;
+  47   2        }
+  48   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     42    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V7.06   _敲攀謃_芲测试                                                      06/10/2010 12:26:04 PAGE 2   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

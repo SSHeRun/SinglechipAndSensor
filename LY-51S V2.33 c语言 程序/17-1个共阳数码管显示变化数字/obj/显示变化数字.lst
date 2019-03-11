@@ -1,0 +1,64 @@
+C51 COMPILER V7.06   _允___籣数字                                                          05/14/2010 09:50:36 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _允___籣数字
+OBJECT MODULE PLACED IN .\obj\显示变化数字.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 显示变化数字.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\显示变化数字.lst) OBJE
+                    -CT(.\obj\显示变化数字.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：单个共阳数码管动态显示变化数字
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过循环赋值给P1，让数码管显示特定的字符或者数字
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          unsigned char code dofly_table[10]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,}; // 显示数值表0-9
+  12          
+  13          void Delay(unsigned int t); //函数声明
+  14          /*------------------------------------------------
+  15                              主函数
+  16          ------------------------------------------------*/
+  17          void main (void)
+  18          {
+  19   1                        
+  20   1      unsigned char i;  //定义一个无符号字符型局部变量 i 取值范围 0~255
+  21   1      
+  22   1      while (1)         //主循环
+  23   1        {
+  24   2       for(i=0;i<10;i++)   //加入 for循环，表明for循环大括号中的程序循环执行10次
+  25   2        {
+  26   3        P1=dofly_table[i]; //循环调用表中的数值
+  27   3        Delay(60000);      //延时，方便观看数字变化
+  28   3        }
+  29   2      
+  30   2                           //主循环中添加其他需要一直工作的程序
+  31   2        }
+  32   1      }/*------------------------------------------------
+  33           延时函数，含有输入参数 unsigned int t，无返回值
+  34           unsigned int 是定义无符号整形变量，其值的范围是
+  35           0~65535
+  36          ------------------------------------------------*/
+  37          void Delay(unsigned int t)
+  38          {
+  39   1       while(--t);
+  40   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     39    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

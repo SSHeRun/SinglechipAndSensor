@@ -1,0 +1,112 @@
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:40:28 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+line level    source
+
+   1          /*-----------------------------------------------
+   2            名称：液晶显示密码锁
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          #include<stdio.h>
+  11          #include"1602.h"
+  12          #include"delay.h"
+  13          #include"keyboard.h"
+  14          
+  15          
+  16          unsigned char code password[]={1,2,3,4,5,6,7,8};//可以更改此密码做多组测试
+  17          //定义密码，实际上密码需要存在eeprom中，可以通过程序更改。请用户自行添加
+  18          
+  19          /*------------------------------------------------
+  20                              主程序
+  21          ------------------------------------------------*/
+  22          main()
+  23          {
+  24   1       unsigned char num,i,j;                  
+  25   1       unsigned char passwordtemp[16];        //最大输入16个
+  26   1       unsigned char inputtimes;              //密码输入错误次数
+  27   1       unsigned char passwordlength,PLEN;     //输入密码长度，实际密码长度
+  28   1       bit Flag;
+  29   1       
+  30   1       PLEN=sizeof(password)/sizeof(password[0]);//用于计算出实际密码长度
+  31   1       
+  32   1       LCD_Init();         //初始化液晶屏
+  33   1       DelayMs(10);        //延时用于稳定，可以去掉
+  34   1       LCD_Clear();        //清屏
+  35   1       LCD_Write_String(0,0,"  Welcome! ");    //写入第一行信息，主循环中不再更改此信息，所以在while之前写入
+  36   1       LCD_Write_String(0,1,"Input password!");    //写入第二行信息，提示输入密码
+  37   1      while (1)         //主循环
+  38   1        {
+  39   2      
+  40   2      
+  41   2       num=KeyPro();  //扫描键盘
+  42   2       if(num!=0xff)  //如果扫描是按键有效值则进行处理
+  43   2         { 
+  44   3          if(i==0)    //输入是第一个字符的时候需要把改行清空，方便观看密码
+  45   3                LCD_Write_String(0,1,"                ");//清除该行
+  46   3              if(i<16)
+  47   3                {
+  48   4             passwordtemp[i]=num;
+  49   4             LCD_Write_Char(i,1,'*');//输入的密码用"*"代替
+  50   4                 }
+  51   3              i++;   //输入数值累加
+  52   3              if((15==num)|| (i==16))//输入按键值15或者密码输入到最大值16，表示输入结束，需要进行比对
+  53   3                {
+  54   4            passwordlength=i-1;  //计算输入密码长度
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:40:28 PAGE 2   
+
+  55   4                i=0;  //计数器复位
+  56   4                if(passwordlength==PLEN)//长度相等则比较，否则直接输出错误
+  57   4                  {
+  58   5                   Flag=1;//先把比较位置1
+  59   5                   for(j=0;j<PLEN;j++)//循环比较8个数值，如果有一个不等 则最终Flag值为0
+  60   5                      Flag=Flag&&(passwordtemp[j]==password[j]);//比较输入值和已有密码
+  61   5               }
+  62   4            if(Flag)//如果比较全部相同，标志位置1
+  63   4                 {
+  64   5                  LCD_Write_String(0,1,"                ");//清除该行
+  65   5              LCD_Write_String(0,1,"Right Open!>>>>");//密码正确显示的信息
+  66   5              inputtimes=0;//输入正确则次数清零，重新计数
+  67   5              Flag=0;      //清除正确标志
+  68   5                      }
+  69   4                else 
+  70   4                  {
+  71   5                      LCD_Write_String(0,1,"                ");//清除该行
+  72   5                      LCD_Write_String(0,1,"Wrong! Retry!");//密码错误，提示重新输入
+  73   5                      inputtimes++;//连续输入错误，则次数累加
+  74   5                      if(inputtimes==3)
+  75   5                        {
+  76   6                         LCD_Write_String(0,1,"                ");//清除该行
+  77   6                         LCD_Write_String(0,1,"Wrong 3 times!");//密码错误，提示重新输入
+  78   6                         while(1);//停止该位置，重启电源后才能输入，实际实用中则需要等到一定时间后才能再次输入。
+  79   6                        }
+  80   5                      }
+  81   4      
+  82   4                }
+  83   3          }   
+  84   2        }
+  85   1      }
+  86          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    249    ----
+   CONSTANT SIZE    =     98    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      20
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

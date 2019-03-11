@@ -1,0 +1,163 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        03/12/2012  11:13:32  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\delay.obj, .\obj\RS485通讯原理.obj TO .\obj\RS485通讯原理 PRINT (.\obj\RS485通讯原理.m51)
+>>  RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\delay.obj (DELAY)
+  .\obj\RS485通讯原理.obj (RS485蚠裚訽理)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\RS485通讯原理 (DELAY)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0015H     UNIT         ?PR?_DELAYMS?DELAY
+            CODE    0018H     000AH     UNIT         ?CO?RS485蚠裚訽理
+                    0022H     0001H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     002DH     UNIT         ?PR?UART_SER?RS485蚠裚訽理
+            CODE    0053H     0010H     UNIT         ?PR?INITUART?RS485蚠裚訽理
+            CODE    0063H     000CH     UNIT         ?C_C51STARTUP
+            CODE    006FH     0007H     UNIT         ?PR?MAIN?RS485蚠裚訽理
+            CODE    0076H     0003H     UNIT         ?PR?_DELAYUS2X?DELAY
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\RS485通讯原理 (DELAY)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?UART_SER?RS485蚠裚訽理
+  +--> ?CO?RS485蚠裚訽理
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?RS485蚠裚訽理
+
+?PR?MAIN?RS485蚠裚訽理
+  +--> ?PR?INITUART?RS485蚠裚訽理
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\RS485通讯原理 (DELAY)
+BL51 BANKED LINKER/LOCATER V5.03                                                      03/12/2012  11:13:32  PAGE 2
+
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DELAY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0003H         PUBLIC        _DelayMs
+  C:0076H         PUBLIC        _DelayUs2x
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0076H         LINE#         8
+  C:0076H         LINE#         9
+  C:0076H         LINE#         10
+  C:0078H         LINE#         11
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0003H         LINE#         17
+  C:0005H         LINE#         18
+  C:0005H         LINE#         20
+  C:000BH         LINE#         21
+  C:000BH         LINE#         23
+  C:0010H         LINE#         24
+  C:0015H         LINE#         25
+  C:0017H         LINE#         26
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        DELAY
+
+  -------         MODULE        RS485蚠裚訽理
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0026H         PUBLIC        UART_SER
+  B:00A0H.0       PUBLIC        Ctrl_EN
+  C:0018H         PUBLIC        dofly_table
+  D:00A8H         PUBLIC        IE
+  B:00A8H.4       PUBLIC        ES
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  C:006FH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008DH         PUBLIC        TH1
+  C:0053H         PUBLIC        InitUART
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INITUART
+  C:0053H         LINE#         32
+  C:0053H         LINE#         33
+  C:0053H         LINE#         35
+BL51 BANKED LINKER/LOCATER V5.03                                                      03/12/2012  11:13:32  PAGE 3
+
+
+  C:0056H         LINE#         36
+  C:0059H         LINE#         37
+  C:005CH         LINE#         38
+  C:005EH         LINE#         39
+  C:0060H         LINE#         40
+  C:0062H         LINE#         41
+  -------         ENDPROC       INITUART
+  -------         PROC          MAIN
+  C:006FH         LINE#         45
+  C:006FH         LINE#         46
+  C:006FH         LINE#         47
+  C:0072H         LINE#         49
+  C:0074H         LINE#         51
+  C:0074H         LINE#         52
+  C:0074H         LINE#         54
+  -------         ENDPROC       MAIN
+  -------         PROC          UART_SER
+  -------         DO            
+  D:0007H         SYMBOL        Temp
+  -------         ENDDO         
+  C:0026H         LINE#         61
+  C:0033H         LINE#         65
+  C:0036H         LINE#         66
+  C:0036H         LINE#         67
+  C:0038H         LINE#         68
+  C:003AH         LINE#         69
+  C:0041H         LINE#         70
+  C:0043H         LINE#         71
+  C:0043H         LINE#         72
+  C:0046H         LINE#         73
+  C:0048H         LINE#         74
+  -------         ENDPROC       UART_SER
+  -------         ENDMOD        RS485蚠裚訽理
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAYMS?DELAY
+
+Program Size: data=9.0 xdata=0 code=120
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

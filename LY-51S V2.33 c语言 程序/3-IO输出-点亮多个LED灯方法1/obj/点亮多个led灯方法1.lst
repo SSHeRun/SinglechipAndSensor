@@ -1,0 +1,63 @@
+C51 COMPILER V7.06   _ãÁÁ_à_öLED_Æ_½__1                                                    05/13/2010 16:47:20 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _ãÁÁ_à_öLED_Æ_½__1
+OBJECT MODULE PLACED IN .\obj\µãÁÁ¶à¸öledµÆ·½·¨1.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE µãÁÁ¶à¸öledµÆ·½·¨1.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\µãÁÁ¶à¸öledµÆ·½·
+                    -¨1.lst) OBJECT(.\obj\µãÁÁ¶à¸öledµÆ·½·¨1.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºIO¿Ú¸ßµÍµçÆ½¿ØÖÆ
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£ºµãÁÁP1¿ÚµÄ¶à¸öLEDµÆ
+   8                  ¸Ã³ÌÐòÊÇµ¥Æ¬»úÑ§Ï°ÖÐ×î¼òµ¥×î»ù´¡µÄ£¬
+   9                          Í¨¹ý³ÌÐòÁË½âÈçºÎ¿ØÖÆ¶Ë¿ÚµÄ¸ßµÍµçÆ½
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //°üº¬Í·ÎÄ¼þ£¬Ò»°ãÇé¿ö²»ÐèÒª¸Ä¶¯£¬Í·ÎÄ¼þ°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  12          
+  13          sbit LED0=P1^0;// ÓÃsbit ¹Ø¼ü×Ö ¶¨Òå LEDµ½P1.0¶Ë¿Ú£¬LEDÊÇ×Ô¼ºÈÎÒâ¶¨ÒåÇÒÈÝÒ×¼ÇÒäµÄ·ûºÏ
+  14          sbit LED1=P1^1;
+  15          sbit LED2=P1^2;
+  16          sbit LED3=P1^3;
+  17          sbit LED4=P1^4;
+  18          sbit LED5=P1^5;
+  19          sbit LED6=P1^6;
+  20          sbit LED7=P1^7;
+  21          /*------------------------------------------------
+  22                              Ö÷º¯Êý
+  23          ------------------------------------------------*/
+  24          void main (void)
+  25          {
+  26   1                        //´Ë·½·¨Ê¹ÓÃbitÎ»¶Ôµ¥¸ö¶Ë¿Ú¸³Öµ
+  27   1      LED0=0;            //½«P1.0¿Ú¸³Öµ 0£¬¶ÔÍâÊä³öµÍµçÆ½
+  28   1      LED1=1;
+  29   1      LED2=0;
+  30   1      LED3=1;
+  31   1      LED4=0;
+  32   1      LED5=1;
+  33   1      LED6=0;
+  34   1      LED7=1;
+  35   1      while (1)         //Ö÷Ñ­»·
+  36   1        {
+  37   2                        //Ö÷Ñ­»·ÖÐÌí¼ÓÆäËûÐèÒªÒ»Ö±¹¤×÷µÄ³ÌÐò
+  38   2        }
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     18    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

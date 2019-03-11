@@ -1,0 +1,70 @@
+C51 COMPILER V7.06   T0外部计数蔩入                                                        05/20/2010 00:13:41 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE T0外部计数蔩入
+OBJECT MODULE PLACED IN .\obj\T0外部计数输入.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE T0外部计数输入.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\T0外部计数输入.lst) 
+                    -OBJECT(.\obj\T0外部计数输入.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：计数器0
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过外部按键计数进入中断执行LED取反
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit LED=P1^2;    //定义LED端口
+  12          
+  13          /*------------------------------------------------
+  14                              定时器初始化子程序
+  15          ------------------------------------------------*/
+  16          void Init_Timer0(void)
+  17          {
+  18   1       TMOD |= 0x01 | 0x04;     //使用模式1，16位计数器，使用"|"符号可以在使用多个定时器时不受影响                 
+  19   1       TH0=0xFF;            //给定初值
+  20   1       TL0=245;         
+  21   1       EA=1;            //总中断打开
+  22   1       ET0=1;           //定时器中断打开
+  23   1       TR0=1;           //定时器开关打开
+  24   1      }
+  25          /*------------------------------------------------
+  26                              主程序
+  27          ------------------------------------------------*/
+  28          main()
+  29          {
+  30   1       Init_Timer0();
+  31   1       while(1);
+  32   1      }
+  33          
+  34          /*------------------------------------------------
+  35                           定时器中断子程序
+  36          ------------------------------------------------*/
+  37          void Timer0_isr(void) interrupt 1 using 1
+  38          {
+  39   1       TH0=0xFF;            //重新给定初值
+  40   1       TL0=245; 
+  41   1      
+  42   1       LED=~LED;        //指示灯反相，可以看到闪烁
+  43   1      
+  44   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     30    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V7.06   T0外部计数蔩入                                                        05/20/2010 00:13:41 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

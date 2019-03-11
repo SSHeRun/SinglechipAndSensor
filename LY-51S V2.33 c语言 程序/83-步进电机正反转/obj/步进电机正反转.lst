@@ -1,0 +1,118 @@
+C51 COMPILER V7.06   步进_缁_正__转                                                        08/07/2010 18:02:16 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 步进_缁_正__转
+OBJECT MODULE PLACED IN .\obj\步进电机正反转.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 步进电机正反转.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\步进电机正反转.lst) 
+                    -OBJECT(.\obj\步进电机正反转.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：步进电机
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：本程序用于测试4相步进电机常规驱动 含正反转 使用1相励磁
+   8                  
+   9          
+  10           ------------------------------------------------*/
+  11          
+  12          #include <reg52.h>
+  13          
+  14          
+  15          
+  16          sbit A1=P1^0; //定义步进电机连接端口
+  17          sbit B1=P1^1;
+  18          sbit C1=P1^2;
+  19          sbit D1=P1^3;
+  20          
+  21          
+  22          #define Coil_A1 {A1=1;B1=0;C1=0;D1=0;}//A相通电，其他相断电
+  23          #define Coil_B1 {A1=0;B1=1;C1=0;D1=0;}//B相通电，其他相断电
+  24          #define Coil_C1 {A1=0;B1=0;C1=1;D1=0;}//C相通电，其他相断电
+  25          #define Coil_D1 {A1=0;B1=0;C1=0;D1=1;}//D相通电，其他相断电
+  26          #define Coil_AB1 {A1=1;B1=1;C1=0;D1=0;}//AB相通电，其他相断电
+  27          #define Coil_BC1 {A1=0;B1=1;C1=1;D1=0;}//BC相通电，其他相断电
+  28          #define Coil_CD1 {A1=0;B1=0;C1=1;D1=1;}//CD相通电，其他相断电
+  29          #define Coil_DA1 {A1=1;B1=0;C1=0;D1=1;}//D相通电，其他相断电
+  30          #define Coil_OFF {A1=0;B1=0;C1=0;D1=0;}//全部断电
+  31          
+  32          unsigned char Speed;
+  33          /*------------------------------------------------
+  34           uS延时函数，含有输入参数 unsigned char t，无返回值
+  35           unsigned char 是定义无符号字符变量，其值的范围是
+  36           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  37           长度如下 T=tx2+5 uS 
+  38          ------------------------------------------------*/
+  39          void DelayUs2x(unsigned char t)
+  40          {   
+  41   1       while(--t);
+  42   1      }
+  43          /*------------------------------------------------
+  44           mS延时函数，含有输入参数 unsigned char t，无返回值
+  45           unsigned char 是定义无符号字符变量，其值的范围是
+  46           0~255 这里使用晶振12M，精确延时请使用汇编
+  47          ------------------------------------------------*/
+  48          void DelayMs(unsigned char t)
+  49          {
+  50   1           
+  51   1       while(t--)
+  52   1       {
+  53   2           //大致延时1mS
+  54   2           DelayUs2x(245);
+C51 COMPILER V7.06   步进_缁_正__转                                                        08/07/2010 18:02:16 PAGE 2   
+
+  55   2               DelayUs2x(245);
+  56   2       }
+  57   1      }
+  58          /*------------------------------------------------
+  59                              主函数
+  60          ------------------------------------------------*/
+  61          main()
+  62          {
+  63   1       unsigned int i=512;//旋转一周时间
+  64   1       Speed=8;
+  65   1       Coil_OFF
+  66   1       while(i--)  //正向
+  67   1        {         
+  68   2           Coil_A1                //遇到Coil_A1  用{A1=1;B1=0;C1=0;D1=0;}代替
+  69   2           DelayMs(Speed);         //改变这个参数可以调整电机转速 ,
+  70   2                                   //数字越小，转速越大,力矩越小
+  71   2           Coil_B1
+  72   2           DelayMs(Speed);
+  73   2           Coil_C1
+  74   2           DelayMs(Speed);
+  75   2           Coil_D1
+  76   2           DelayMs(Speed);
+  77   2        }
+  78   1        Coil_OFF
+  79   1        i=512;
+  80   1        while(i--)//反向
+  81   1        {
+  82   2           Coil_D1                //遇到Coil_A1  用{A1=1;B1=0;C1=0;D1=0;}代替
+  83   2           DelayMs(Speed);         //改变这个参数可以调整电机转速 ,
+  84   2                                       //数字越小，转速越大,力矩越小
+  85   2           Coil_C1
+  86   2           DelayMs(Speed);
+  87   2           Coil_B1
+  88   2           DelayMs(Speed);
+  89   2           Coil_A1
+  90   2           DelayMs(Speed);
+  91   2        }
+  92   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    153    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

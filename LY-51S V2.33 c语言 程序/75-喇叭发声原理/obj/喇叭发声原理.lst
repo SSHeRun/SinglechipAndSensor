@@ -1,0 +1,78 @@
+C51 COMPILER V7.06   繽_萠_声訽理                                                          05/20/2010 10:15:08 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 繽_萠_声訽理
+OBJECT MODULE PLACED IN .\obj\喇叭发声原理.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 喇叭发声原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\喇叭发声原理.lst) OBJE
+                    -CT(.\obj\喇叭发声原理.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：喇叭
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过发出一定频率方波，是喇叭发声
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit SPK=P1^2;    //定义喇叭端口
+  12          
+  13          void DelayUs2x(unsigned char t);//函数声明 
+  14          void DelayMs(unsigned char t);
+  15          /*------------------------------------------------
+  16                              主函数
+  17          ------------------------------------------------*/
+  18          main()
+  19          {
+  20   1       while(1)
+  21   1            {
+  22   2             
+  23   2            DelayMs(1); //发出大约500Hz的方波 频率越大声音越尖
+  24   2                SPK=!SPK;
+  25   2                
+  26   2                }
+  27   1      }
+  28          /*------------------------------------------------
+  29           uS延时函数，含有输入参数 unsigned char t，无返回值
+  30           unsigned char 是定义无符号字符变量，其值的范围是
+  31           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  32           长度如下 T=tx2+5 uS 
+  33          ------------------------------------------------*/
+  34          void DelayUs2x(unsigned char t)
+  35          {   
+  36   1       while(--t);
+  37   1      }
+  38          /*------------------------------------------------
+  39           mS延时函数，含有输入参数 unsigned char t，无返回值
+  40           unsigned char 是定义无符号字符变量，其值的范围是
+  41           0~255 这里使用晶振12M，精确延时请使用汇编
+  42          ------------------------------------------------*/
+  43          void DelayMs(unsigned char t)
+  44          {
+  45   1           
+  46   1       while(t--)
+  47   1       {
+  48   2           //大致延时1mS
+  49   2           DelayUs2x(245);
+  50   2               DelayUs2x(245);
+  51   2       }
+  52   1      }
+
+
+C51 COMPILER V7.06   繽_萠_声訽理                                                          05/20/2010 10:15:08 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     33    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

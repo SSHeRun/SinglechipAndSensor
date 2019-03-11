@@ -1,0 +1,108 @@
+C51 COMPILER V7.06   99ÀÛ¼_                                                                06/15/2010 18:02:15 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 99ÀÛ¼_
+OBJECT MODULE PLACED IN .\obj\99ÀÛ¼õ.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 99ÀÛ¼õ.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\99ÀÛ¼õ.lst) OBJECT(.\obj\99À
+                    -Û¼õ.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£º2Î»ÊıÂë¹Ü¶¯Ì¬É¨ÃèÏÔÊ¾±ä»¯Êı¾İ
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àĞ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ĞŞ¸Ä£ºÎŞ
+   7            ÄÚÈİ£º2Î»ÊıÂë¹Ü·Ö±ğÏÔÊ¾²»Í¬Êı×Ö£¬ÕâÖÖÉ¨ÃèÏÔÊ¾·½Ê½³ÉÎª¶¯Ì¬É¨Ãè£¬²¢²»Í£±ä»¯¸³Öµ
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //°üº¬Í·ÎÄ¼ş£¬Ò»°ãÇé¿ö²»ĞèÒª¸Ä¶¯£¬Í·ÎÄ¼ş°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  10          
+  11          #define DataPort P0 //¶¨ÒåÊı¾İ¶Ë¿Ú ³ÌĞòÖĞÓöµ½DataPort ÔòÓÃP0 Ìæ»»
+  12          sbit LATCH1=P2^2;//¶¨ÒåËø´æÊ¹ÄÜ¶Ë¿Ú ¶ÎËø´æ
+  13          sbit LATCH2=P2^3;//                 Î»Ëø´æ
+  14          
+  15          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// ÏÔÊ¾¶ÎÂëÖµ0~9
+  16          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//·Ö±ğ¶ÔÓ¦ÏàÓ¦µÄÊıÂë¹ÜµãÁÁ,¼´Î»
+             -Âë
+  17          unsigned char TempData[8]; //´æ´¢ÏÔÊ¾ÖµµÄÈ«¾Ö±äÁ¿
+  18          void Delay(unsigned int t); //º¯ÊıÉùÃ÷
+  19          void Display(unsigned char FirstBit,unsigned char Num);
+  20          /*------------------------------------------------
+  21                              Ö÷º¯Êı
+  22          ------------------------------------------------*/
+  23          main()
+  24          {
+  25   1       unsigned char num=99;
+  26   1       unsigned int j;
+  27   1       while(1)
+  28   1            {
+  29   2                 j++;
+  30   2                 if(j==500)  //¼ì²âµ±Ç°ÊıÖµÏÔÊ¾ÁËÒ»Ğ¡¶ÎÊ±¼äºó£¬ĞèÒªÏÔÊ¾µÄÊıÖµ-1£¬ÊµÏÖÊı¾İÏÔÊ¾µÄ±ä»¯
+  31   2                   {
+  32   3                        j=0;
+  33   3                        if(num>0)//ÓÃÓÚÏÔÊ¾0~99
+  34   3                          num--;
+  35   3                        else
+  36   3                          num=99;
+  37   3      
+  38   3                       }
+  39   2                 TempData[0]=dofly_DuanMa[num/10];//·Ö½âÏÔÊ¾ĞÅÏ¢£¬ÈçÒªÏÔÊ¾68£¬Ôò68/10=6  68%10=8  
+  40   2                 TempData[1]=dofly_DuanMa[num%10];
+  41   2                 Display(2,2);
+  42   2            }
+  43   1      }
+  44          /*------------------------------------------------
+  45           ÑÓÊ±º¯Êı£¬º¬ÓĞÊäÈë²ÎÊı unsigned int t£¬ÎŞ·µ»ØÖµ
+  46           unsigned int ÊÇ¶¨ÒåÎŞ·ûºÅÕûĞÎ±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  47           0~65535
+  48          ------------------------------------------------*/
+  49          void Delay(unsigned int t)
+  50          {
+  51   1       while(--t);
+  52   1      }
+  53          /*------------------------------------------------
+C51 COMPILER V7.06   99ÀÛ¼_                                                                06/15/2010 18:02:15 PAGE 2   
+
+  54           ÏÔÊ¾º¯Êı£¬ÓÃÓÚ¶¯Ì¬É¨ÃèÊıÂë¹Ü
+  55           ÊäÈë²ÎÊı FirstBit ±íÊ¾ĞèÒªÏÔÊ¾µÄµÚÒ»Î»£¬Èç¸³Öµ2±íÊ¾´ÓµÚÈı¸öÊıÂë¹Ü¿ªÊ¼ÏÔÊ¾
+  56           ÈçÊäÈë0±íÊ¾´ÓµÚÒ»¸öÏÔÊ¾¡£
+  57           Num±íÊ¾ĞèÒªÏÔÊ¾µÄÎ»Êı£¬ÈçĞèÒªÏÔÊ¾99Á½Î»ÊıÖµÔò¸ÃÖµÊäÈë2
+  58          ------------------------------------------------*/
+  59          void Display(unsigned char FirstBit,unsigned char Num)
+  60          {
+  61   1            unsigned char i;
+  62   1                
+  63   1                for(i=0;i<Num;i++)
+  64   1                 { 
+  65   2                 DataPort=0;   //Çå¿ÕÊı¾İ£¬·ÀÖ¹ÓĞ½»ÌæÖØÓ°
+  66   2             LATCH1=1;     //¶ÎËø´æ
+  67   2             LATCH1=0;
+  68   2      
+  69   2             DataPort=dofly_WeiMa[i+FirstBit]; //È¡Î»Âë 
+  70   2             LATCH2=1;     //Î»Ëø´æ
+  71   2             LATCH2=0;
+  72   2      
+  73   2             DataPort=TempData[i]; //È¡ÏÔÊ¾Êı¾İ£¬¶ÎÂë
+  74   2             LATCH1=1;     //¶ÎËø´æ
+  75   2             LATCH1=0;
+  76   2             
+  77   2                 Delay(200); // É¨Ãè¼äÏ¶ÑÓÊ±£¬Ê±¼äÌ«³¤»áÉÁË¸£¬Ì«¶Ì»áÔì³ÉÖØÓ°
+  78   2      
+  79   2             }
+  80   1      
+  81   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    130    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

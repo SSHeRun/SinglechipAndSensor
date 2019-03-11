@@ -1,0 +1,65 @@
+C51 COMPILER V7.06   LED闪薩                                                               05/13/2010 17:02:05 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE LED闪薩
+OBJECT MODULE PLACED IN .\obj\LED闪烁.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE LED闪烁.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\LED闪烁.lst) OBJECT(.\obj\L
+                    -ED闪烁.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IO口高低电平控制
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：点亮P1口的1个LED灯闪烁
+   8                  该程序是单片机学习中最简单最基础的，
+   9                          通过程序了解如何控制端口的高低电平
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          
+  13          sbit LED0=P1^0;// 用sbit 关键字 定义 LED到P1.0端口，LED是自己任意定义且容易记忆的符合
+  14          
+  15          
+  16          void Delay(unsigned int t); //函数声明
+  17          /*------------------------------------------------
+  18                              主函数
+  19          ------------------------------------------------*/
+  20          void main (void)
+  21          {
+  22   1                        //此方法使用bit位对单个端口赋值
+  23   1      
+  24   1      
+  25   1      while (1)         //主循环
+  26   1        {
+  27   2        LED0=0;            //将P1.0口赋值 0，对外输出低电平
+  28   2        Delay(10000);      //调用延时程序；更改延时数字可以更改延时长度；用于改变闪烁频率
+  29   2        LED0=1;            //将P1.0口赋值 1，对外输出高电平
+  30   2        Delay(10000);
+  31   2                           //主循环中添加其他需要一直工作的程序
+  32   2        }
+  33   1      }/*------------------------------------------------
+  34           延时函数，含有输入参数 unsigned int t，无返回值
+  35           unsigned int 是定义无符号整形变量，其值的范围是
+  36           0~65535
+  37          ------------------------------------------------*/
+  38          void Delay(unsigned int t)
+  39          {
+  40   1       while(--t);
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     30    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

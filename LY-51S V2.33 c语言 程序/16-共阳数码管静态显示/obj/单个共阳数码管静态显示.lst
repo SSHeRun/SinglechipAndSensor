@@ -1,0 +1,44 @@
+C51 COMPILER V7.06   _鯻惭羰隷躝蔡__允_                                                05/14/2010 09:01:57 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _鯻惭羰隷躝蔡__允_
+OBJECT MODULE PLACED IN .\obj\单个共阳数码管静态显示.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 单个共阳数码管静态显示.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\单个共阳数码
+                    -管静态显示.lst) OBJECT(.\obj\单个共阳数码管静态显示.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：单个共阳数码管静态显示
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过赋值给P1，让数码管显示特定的字符或者数字
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          
+  12          void main (void)
+  13          {
+  14   1       P1=0xc0;   //二进制 为 1100 0000  参考数码管排列，可以得出0对应的段点亮，1对应的段熄灭，结果显示数字"0"  
+             - 
+  15   1       while(1)
+  16   1       {
+  17   2      
+  18   2       }
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      5    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

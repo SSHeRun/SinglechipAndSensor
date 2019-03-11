@@ -1,0 +1,17 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\51开发板\LY-51S 开发板光盘资料\5、配套程序\复件 LY-51S c语言 程序\94-1602液晶滚动显示\1602滚动显示.uv2
+Project File Date:  05/21/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1602滚动显示.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_CHECK_BUSY?1602筥动显蔩
+Program Size: data=9.0 xdata=0 code=293
+creating hex file from ".\obj\1602滚动显示"...
+".\obj\1602滚动显示" - 0 Error(s), 1 Warning(s).

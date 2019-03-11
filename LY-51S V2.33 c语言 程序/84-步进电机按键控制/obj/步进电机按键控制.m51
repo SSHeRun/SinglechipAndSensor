@@ -1,0 +1,196 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  15:57:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\步进电机按键控制.obj TO .\obj\步进电机按键控制 PRINT (.\obj\步进电机按键控制.m51) RAMSIZE
+>>  (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\步进电机按键控制.obj (步进_缁___键控制)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\步进电机按键控制 (步进_缁___键控制)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?步进_缁___键控制
+                    0009H     0017H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?步进_缁___键控制
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     00CBH     UNIT         ?PR?MAIN?步进_缁___键控制
+            CODE    00D1H     0028H     UNIT         ?PR?_DELAYMS?步进_缁___键控制
+            CODE    00F9H     0021H     UNIT         ?PR?ISR_INT0?步进_缁___键控制
+            CODE    011AH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0126H     0003H     UNIT         ?PR?_DELAYUS2X?步进_缁___键控制
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\步进电机按键控制 (步进_缁___键控制)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?ISR_INT0?步进_缁___键控制
+  +--> ?PR?_DELAYMS?步进_缁___键控制
+
+?PR?_DELAYMS?步进_缁___键控制
+  +--> ?PR?_DELAYUS2X?步进_缁___键控制
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?步进_缁___键控制
+
+?PR?MAIN?步进_缁___键控制
+  +--> ?PR?_DELAYMS?步进_缁___键控制
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  15:57:19  PAGE 2
+
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\步进电机按键控制 (步进_缁___键控制)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        步进_缁___键控制
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  C:00E4H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  B:00B0H.2       PUBLIC        INT0
+  C:0006H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0126H         PUBLIC        _DelayUs2x
+  B:00A8H.0       PUBLIC        EX0
+  B:0088H.0       PUBLIC        IT0
+  D:00C8H         PUBLIC        T2CON
+  C:00F9H         PUBLIC        ISR_INT0
+  B:0090H.0       PUBLIC        A1
+  B:0090H.1       PUBLIC        B1
+  D:0008H         PUBLIC        Speed
+  B:0090H.2       PUBLIC        C1
+  B:0090H.3       PUBLIC        D1
+  D:00D0H         PUBLIC        PSW
+  B:0020H.0       PUBLIC        Flag
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0126H         LINE#         41
+  C:0126H         LINE#         42
+  C:0126H         LINE#         43
+  C:0128H         LINE#         44
+  -------         ENDPROC       _DELAYUS2X
+  C:00DCH         SYMBOL        L?0020
+  C:00DEH         SYMBOL        L?0021
+  C:00E0H         SYMBOL        L?0022
+  -------         PROC          L?0019
+  -------         ENDPROC       L?0019
+  C:00DCH         SYMBOL        L?0020
+  C:00DEH         SYMBOL        L?0021
+  C:00E0H         SYMBOL        L?0022
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:00E4H         LINE#         50
+  C:00E6H         LINE#         51
+  C:00E6H         LINE#         53
+  C:00ECH         LINE#         54
+  C:00ECH         LINE#         56
+  C:00F1H         LINE#         57
+  C:00F6H         LINE#         58
+  C:00F8H         LINE#         59
+  -------         ENDPROC       _DELAYMS
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  15:57:19  PAGE 3
+
+
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0006H         LINE#         63
+  C:0006H         LINE#         64
+  C:0006H         LINE#         65
+  C:000AH         LINE#         67
+  C:000CH         LINE#         68
+  C:000EH         LINE#         69
+  C:0010H         LINE#         71
+  C:0013H         LINE#         72
+  C:0013H         LINE#         73
+  C:001BH         LINE#         74
+  C:0028H         LINE#         75
+  C:002CH         LINE#         76
+  C:002CH         LINE#         77
+  C:002CH         LINE#         78
+  C:002FH         LINE#         79
+  C:0031H         LINE#         80
+  C:0034H         LINE#         81
+  C:003AH         LINE#         82
+  C:003DH         LINE#         83
+  C:0043H         LINE#         84
+  C:0046H         LINE#         85
+  C:004EH         LINE#         86
+  C:0053H         LINE#         87
+  C:005BH         LINE#         88
+  C:0060H         LINE#         89
+  C:0068H         LINE#         90
+  C:006DH         LINE#         91
+  C:006FH         LINE#         92
+  C:0077H         LINE#         93
+  C:007BH         LINE#         94
+  C:0088H         LINE#         95
+  C:0088H         LINE#         96
+  C:008CH         LINE#         97
+  C:008FH         LINE#         98
+  C:0097H         LINE#         99
+  C:009CH         LINE#         100
+  C:00A4H         LINE#         101
+  C:00A9H         LINE#         102
+  C:00B1H         LINE#         103
+  C:00B6H         LINE#         104
+  C:00BCH         LINE#         105
+  C:00BFH         LINE#         106
+  C:00C5H         LINE#         107
+  C:00C8H         LINE#         108
+  C:00CCH         LINE#         109
+  C:00CCH         LINE#         110
+  C:00CCH         LINE#         111
+  C:00CFH         LINE#         112
+  -------         ENDPROC       MAIN
+  -------         PROC          ISR_INT0
+  C:00F9H         LINE#         119
+  C:0104H         LINE#         122
+  C:0107H         LINE#         123
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  15:57:19  PAGE 4
+
+
+  C:0107H         LINE#         124
+  C:010CH         LINE#         125
+  C:010FH         LINE#         127
+  C:010FH         LINE#         128
+  C:0111H         LINE#         129
+  C:0111H         LINE#         130
+  C:0111H         LINE#         131
+  -------         ENDPROC       ISR_INT0
+  -------         ENDMOD        步进_缁___键控制
+
+Program Size: data=10.1 xdata=0 code=297
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

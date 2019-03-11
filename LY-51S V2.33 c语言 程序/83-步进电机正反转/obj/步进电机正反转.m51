@@ -1,0 +1,145 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        08/07/2010  18:02:16  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\步进电机正反转.obj TO .\obj\步进电机正反转 PRINT (.\obj\步进电机正反转.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\步进电机正反转.obj (步进_缁_正__转)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\步进电机正反转 (步进_缁_正__转)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?步进_缁_正__转
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0070H     UNIT         ?PR?MAIN?步进_缁_正__转
+            CODE    0073H     0026H     UNIT         ?PR?_DELAYMS?步进_缁_正__转
+            CODE    0099H     000CH     UNIT         ?C_C51STARTUP
+            CODE    00A5H     0003H     UNIT         ?PR?_DELAYUS2X?步进_缁_正__转
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\步进电机正反转 (步进_缁_正__转)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?步进_缁_正__转
+
+?PR?MAIN?步进_缁_正__转
+  +--> ?PR?_DELAYMS?步进_缁_正__转
+
+?PR?_DELAYMS?步进_缁_正__转
+  +--> ?PR?_DELAYUS2X?步进_缁_正__转
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\步进电机正反转 (步进_缁_正__转)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        步进_缁_正__转
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V5.03                                                      08/07/2010  18:02:16  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0084H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:00A5H         PUBLIC        _DelayUs2x
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.0       PUBLIC        A1
+  B:0090H.1       PUBLIC        B1
+  D:0008H         PUBLIC        Speed
+  B:0090H.2       PUBLIC        C1
+  B:0090H.3       PUBLIC        D1
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:00A5H         LINE#         39
+  C:00A5H         LINE#         40
+  C:00A5H         LINE#         41
+  C:00A7H         LINE#         42
+  -------         ENDPROC       _DELAYUS2X
+  C:007EH         SYMBOL        L?0015
+  C:0080H         SYMBOL        L?0016
+  -------         PROC          L?0014
+  -------         ENDPROC       L?0014
+  C:007EH         SYMBOL        L?0015
+  C:0080H         SYMBOL        L?0016
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0084H         LINE#         48
+  C:0086H         LINE#         49
+  C:0086H         LINE#         51
+  C:008CH         LINE#         52
+  C:008CH         LINE#         54
+  C:0091H         LINE#         55
+  C:0096H         LINE#         56
+  C:0098H         LINE#         57
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         61
+  C:0003H         LINE#         62
+  C:0003H         LINE#         63
+  C:0007H         LINE#         64
+  C:000AH         LINE#         65
+  C:0012H         LINE#         66
+  C:001CH         LINE#         67
+  C:001CH         LINE#         68
+  C:0022H         LINE#         69
+  C:0022H         LINE#         71
+  C:0022H         LINE#         72
+  C:0025H         LINE#         73
+  C:002BH         LINE#         74
+  C:002EH         LINE#         75
+BL51 BANKED LINKER/LOCATER V5.03                                                      08/07/2010  18:02:16  PAGE 3
+
+
+  C:0036H         LINE#         76
+  C:003BH         LINE#         77
+  C:003DH         LINE#         78
+  C:0045H         LINE#         79
+  C:0049H         LINE#         80
+  C:0053H         LINE#         81
+  C:0053H         LINE#         82
+  C:005BH         LINE#         83
+  C:0060H         LINE#         85
+  C:0066H         LINE#         86
+  C:0066H         LINE#         87
+  C:0066H         LINE#         88
+  C:0069H         LINE#         89
+  C:006DH         LINE#         90
+  C:0070H         LINE#         91
+  C:0072H         LINE#         92
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        步进_缁_正__转
+
+Program Size: data=10.0 xdata=0 code=168
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

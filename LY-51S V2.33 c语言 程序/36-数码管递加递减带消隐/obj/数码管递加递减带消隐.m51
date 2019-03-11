@@ -1,0 +1,169 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/15/2010  18:03:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ.obj TO .\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ PRINT (.\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ.
+>> m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ.obj (ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  .\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ (ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+            DATA    0010H     0006H     UNIT         _DATA_GROUP_
+            IDATA   0016H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0168H     UNIT         ?PR?MAIN?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+            CODE    016BH     0055H     UNIT         ?C?LIB_CODE
+            CODE    01C0H     0032H     UNIT         ?PR?_DISPLAY?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+            CODE    01F2H     0012H     UNIT         ?CO?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+            CODE    0204H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0210H     000AH     UNIT         ?PR?_DELAY?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ (ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ)
+
+
+SEGMENT                                     DATA_GROUP 
+  +--> CALLED SEGMENT                     START    LENGTH
+---------------------------------------------------------
+?C_C51STARTUP                             -----    -----
+  +--> ?PR?MAIN?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+
+?PR?MAIN?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ             0010H    0006H
+  +--> ?CO?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+  +--> ?PR?_DISPLAY?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+
+?PR?_DISPLAY?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ         -----    -----
+  +--> ?CO?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+  +--> ?PR?_DELAY?ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\ÊýÂë¹ÜµÝ¼ÓµÝ¼õ´øÏûÒþ (ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ)
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  18:03:41  PAGE 2
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:0008H         PUBLIC        TempData
+  D:00B8H         PUBLIC        IP
+  B:00A0H.2       PUBLIC        LATCH1
+  B:00A0H.3       PUBLIC        LATCH2
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:01C0H         PUBLIC        _Display
+  C:01F2H         PUBLIC        dofly_DuanMa
+  C:0210H         PUBLIC        _Delay
+  C:01FCH         PUBLIC        dofly_WeiMa
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0010H         SYMBOL        numA
+  D:0012H         SYMBOL        numB
+  D:0014H         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         23
+  C:0003H         LINE#         24
+  C:0003H         LINE#         25
+  C:000EH         LINE#         27
+  C:000EH         LINE#         28
+  C:000EH         LINE#         29
+  C:0016H         LINE#         30
+  C:001CH         LINE#         31
+  C:001CH         LINE#         32
+  C:0020H         LINE#         33
+  C:0028H         LINE#         34
+  C:0033H         LINE#         35
+  C:003DH         LINE#         37
+  C:0043H         LINE#         38
+  C:004DH         LINE#         39
+  C:0052H         LINE#         40
+  C:0052H         LINE#         42
+  C:005DH         LINE#         43
+  C:0062H         LINE#         45
+  C:007BH         LINE#         46
+  C:0086H         LINE#         47
+  C:008BH         LINE#         49
+  C:00B1H         LINE#         50
+  C:00D7H         LINE#         52
+  C:00DAH         LINE#         53
+  C:00DCH         LINE#         55
+  C:00E7H         LINE#         56
+  C:00ECH         LINE#         58
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  18:03:41  PAGE 3
+
+
+  C:0105H         LINE#         59
+  C:0110H         LINE#         60
+  C:0115H         LINE#         62
+  C:013BH         LINE#         63
+  C:0161H         LINE#         65
+  C:0168H         LINE#         66
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:0210H         LINE#         73
+  C:0210H         LINE#         74
+  C:0210H         LINE#         75
+  C:0219H         LINE#         76
+  -------         ENDPROC       _DELAY
+  -------         PROC          _DISPLAY
+  D:0004H         SYMBOL        FirstBit
+  D:0005H         SYMBOL        Num
+  -------         DO            
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:01C0H         LINE#         83
+  C:01C2H         LINE#         84
+  C:01C2H         LINE#         87
+  C:01C9H         LINE#         88
+  C:01C9H         LINE#         89
+  C:01CCH         LINE#         90
+  C:01CEH         LINE#         91
+  C:01D0H         LINE#         93
+  C:01D8H         LINE#         94
+  C:01DAH         LINE#         95
+  C:01DCH         LINE#         97
+  C:01E3H         LINE#         98
+  C:01E5H         LINE#         99
+  C:01E7H         LINE#         101
+  C:01EEH         LINE#         103
+  C:01F1H         LINE#         105
+  -------         ENDPROC       _DISPLAY
+  -------         ENDMOD        ÊýÂë_Ü_Ý¼Ó_Ý¼__ø_ûÒþ
+
+  -------         MODULE        ?C?UIDIV
+  C:016BH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=23.0 xdata=0 code=538
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

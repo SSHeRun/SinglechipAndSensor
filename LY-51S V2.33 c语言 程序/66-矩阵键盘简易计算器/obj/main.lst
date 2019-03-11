@@ -1,0 +1,128 @@
+C51 COMPILER V7.06   MAIN                                                                  07/12/2010 14:48:55 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：液晶显示计算器
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：整数之间运算，没有小数所有除法得出的结果不正确，有负号运算，
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          #include<stdio.h>
+  11          #include"display.h"
+  12          #include"delay.h"
+  13          #include"keyboard.h"
+  14          
+  15          
+  16          /*------------------------------------------------
+  17                              主程序
+  18          ------------------------------------------------*/
+  19          main()
+  20          {
+  21   1       unsigned char num,i,sign;                   
+  22   1       unsigned char temp[8];        //最大输入8个
+  23   1       bit firstflag;
+  24   1       int a=0,b=0;
+  25   1       unsigned char s;
+  26   1      
+  27   1       Init_Timer0();   //初始化定时器0
+  28   1      while (1)         //主循环
+  29   1        {
+  30   2      
+  31   2      
+  32   2       num=KeyPro();  //扫描键盘
+  33   2       if(num!=0xff)  //如果扫描是按键有效值则进行处理
+  34   2         { 
+  35   3          if(i==0)    //输入是第一个字符的时候需要把改行清空，方便观看
+  36   3                {
+  37   4                for(s=0;s<8;s++) //赋值完成后把缓冲区清零，防止下次输入影响结果
+  38   4                        TempData[s]=0;
+  39   4                }
+  40   3              if(('+'==num)|| (i==8) || ('-'==num) || ('x'==num)|| ('/'==num) || ('='==num))//输入数字最大值8，输入符号
+             -表示输入结束
+  41   3                {
+  42   4                i=0;  //计数器复位
+  43   4      
+  44   4               if(firstflag==0)  //如果是输入的第一个数据，赋值给a，并把标志位置1，到下一个数据输入时可以跳转赋值给b
+  45   4                   {
+  46   5                   sscanf(temp,"%d",&a);//从一个字符串输入到变量
+  47   5               firstflag=1;
+  48   5                       }
+  49   4                else  
+  50   4                   sscanf(temp,"%d",&b);
+  51   4                for(s=0;s<8;s++) //赋值完成后把缓冲区清零，防止下次输入影响结果
+  52   4                          temp[s]=0;
+  53   4            
+C51 COMPILER V7.06   MAIN                                                                  07/12/2010 14:48:55 PAGE 2   
+
+  54   4                ///////////////////////
+  55   4                if(num!='=')      //判断当前符号位并做相应处理
+  56   4                   sign=num;      //如果不是等号记下标志位
+  57   4                else
+  58   4                   {  
+  59   5                       firstflag=0;   //检测到输入=号，判断上次读入的符合
+  60   5               switch(sign)
+  61   5                     {
+  62   6                          case '+':a=a+b;
+  63   6                              break;
+  64   6                              case '-':a=a-b;
+  65   6                              break;
+  66   6                              case 'x':a=a*b;
+  67   6                              break;
+  68   6                              case '/':a=a/b;
+  69   6                              break;
+  70   6                              default:break;
+  71   6                         }
+  72   5                       sprintf(temp,"%d",a);  //打印十进制到临时缓冲区
+  73   5                       for(s=0;s<8;s++)       //由于打印的是ASCII码值
+  74   5                          { 
+  75   6                              if(temp[s]==0)      //所以需要转换，如果为0表示null 数码管上则不能显示，所以赋值0
+  76   6                      TempData[s]=0;
+  77   6                              else if(temp[s]==0x2d)//表示负号，数码管显示负号 0x40
+  78   6                                   TempData[s]=0x40;
+  79   6                      else 
+  80   6                               TempData[s]=dofly_DuanMa[temp[s]-'0'];//其他0-9负号则进行ASCII 到 数字处理，如当前是'3'，用'3'-
+             -'0'=3
+  81   6                                                                             //'3'的16进制是0x33,'0'的16进制是0x30                         
+  82   6                              }
+  83   5                       sign=0;a=b=0;            //用完后所有数据清零
+  84   5                       for(s=0;s<8;s++)
+  85   5                          temp[s]=0;
+  86   5                       }
+  87   4                }
+  88   3      
+  89   3         else if(i<16)
+  90   3                {
+  91   4      
+  92   4               temp[i]=num+'0'; 
+  93   4               TempData[i]=dofly_DuanMa[num];//输出数据
+  94   4                   i++;   //输入数值累加
+  95   4                 }
+  96   3        
+  97   3          }   
+  98   2        }
+  99   1      }
+ 100          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    407    ----
+   CONSTANT SIZE    =      3    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      16
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,239 @@
+C51 COMPILER V7.06   __蔩器可_魇_钟                                                        06/07/2010 12:56:08 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE __蔩器可_魇_钟
+OBJECT MODULE PLACED IN .\obj\定时器可调时钟.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 定时器可调时钟.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\定时器可调时钟.lst) 
+                    -OBJECT(.\obj\定时器可调时钟.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：定时器时钟数码管显示
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：定时器时钟数码管显示，时间和日期切换显示 按下按键，调节时间
+   8                  时间格式xx-xx-xx 时分秒
+   9          
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          
+  13          #define KeyPort P3 //定义按键端口
+  14          
+  15          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  16          
+  17          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  18          sbit LATCH2=P2^3;//                 位锁存
+  19          
+  20          unsigned char hour,minute,second;//定义时分秒
+  21          
+  22          bit UpdateTimeFlag;//定义读时间标志
+  23          
+  24          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  25          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  26          unsigned char TempData[8]; //存储显示值的全局变量
+  27          
+  28          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  29          void DelayMs(unsigned char t); //ms级延时
+  30          void Display(unsigned char FirstBit,unsigned char Num);//数码管显示函数
+  31          unsigned char KeyScan(void);//键盘扫描
+  32          void Init_Timer0(void);//定时器初始化
+  33          /*------------------------------------------------
+  34                              主函数
+  35          ------------------------------------------------*/
+  36          void main (void)
+  37          {
+  38   1      unsigned char num;                  
+  39   1      
+  40   1      Init_Timer0();
+  41   1      
+  42   1      while (1)         //主循环
+  43   1        {
+  44   2      
+  45   2      
+  46   2      num=KeyScan();
+  47   2      switch(num)
+  48   2        {
+  49   3                  case 1:hour++;if(hour==24)hour=0;     //正常时间 小时 加1
+  50   3                   break;
+  51   3                      case 2:hour--;if(hour==255)hour=23;   //正常时间 小时减1
+  52   3                       break;
+  53   3                      case 3:minute++;if(minute==60)minute=0;     //分加1
+C51 COMPILER V7.06   __蔩器可_魇_钟                                                        06/07/2010 12:56:08 PAGE 2   
+
+  54   3                       break;
+  55   3                      case 4:minute--;if(minute==255)minute=59;  //分减1
+  56   3                       break;
+  57   3                      default:break;
+  58   3        }
+  59   2      if(UpdateTimeFlag==1)
+  60   2       {
+  61   3        UpdateTimeFlag=0;
+  62   3      
+  63   3       TempData[0]=dofly_DuanMa[hour/10];//时                 //数据的转换，因我们采用数码管0~9的显示,将数据分开
+  64   3       TempData[1]=dofly_DuanMa[hour%10];
+  65   3       TempData[2]=0x40;                                                      //加入"-"
+  66   3       TempData[3]=dofly_DuanMa[minute/10];//分
+  67   3       TempData[4]=dofly_DuanMa[minute%10];
+  68   3       TempData[5]=0x40;
+  69   3       TempData[6]=dofly_DuanMa[second/10];//秒
+  70   3       TempData[7]=dofly_DuanMa[second%10];   
+  71   3      
+  72   3        }     
+  73   2       }
+  74   1      }
+  75          /*------------------------------------------------
+  76           uS延时函数，含有输入参数 unsigned char t，无返回值
+  77           unsigned char 是定义无符号字符变量，其值的范围是
+  78           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  79           长度如下 T=tx2+5 uS 
+  80          ------------------------------------------------*/
+  81          void DelayUs2x(unsigned char t)
+  82          {   
+  83   1       while(--t);
+  84   1      }
+  85          /*------------------------------------------------
+  86           mS延时函数，含有输入参数 unsigned char t，无返回值
+  87           unsigned char 是定义无符号字符变量，其值的范围是
+  88           0~255 这里使用晶振12M，精确延时请使用汇编
+  89          ------------------------------------------------*/
+  90          void DelayMs(unsigned char t)
+  91          {
+  92   1           
+  93   1       while(t--)
+  94   1       {
+  95   2           //大致延时1mS
+  96   2           DelayUs2x(245);
+  97   2               DelayUs2x(245);
+  98   2       }
+  99   1      }
+ 100          /*------------------------------------------------
+ 101           显示函数，用于动态扫描数码管
+ 102           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+ 103           如输入0表示从第一个显示。
+ 104           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+ 105          ------------------------------------------------*/
+ 106          void Display(unsigned char FirstBit,unsigned char Num)
+ 107          {
+ 108   1            static unsigned char i=0;
+ 109   1                
+ 110   1      
+ 111   1                 DataPort=0;   //清空数据，防止有交替重影
+ 112   1             LATCH1=1;     //段锁存
+ 113   1             LATCH1=0;
+ 114   1      
+ 115   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+C51 COMPILER V7.06   __蔩器可_魇_钟                                                        06/07/2010 12:56:08 PAGE 3   
+
+ 116   1             LATCH2=1;     //位锁存
+ 117   1             LATCH2=0;
+ 118   1      
+ 119   1             DataPort=TempData[i]; //取显示数据，段码
+ 120   1             LATCH1=1;     //段锁存
+ 121   1             LATCH1=0;
+ 122   1             
+ 123   1                 i++;
+ 124   1             if(i==Num)
+ 125   1                    i=0;
+ 126   1      
+ 127   1      
+ 128   1      }
+ 129          /*------------------------------------------------
+ 130                              定时器初始化子程序
+ 131          ------------------------------------------------*/
+ 132          void Init_Timer0(void)
+ 133          {
+ 134   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 135   1       //TH0=0x00;          //给定初值
+ 136   1       //TL0=0x00;
+ 137   1       EA=1;            //总中断打开
+ 138   1       ET0=1;           //定时器中断打开
+ 139   1       TR0=1;           //定时器开关打开
+ 140   1      }
+ 141          /*------------------------------------------------
+ 142                           定时器中断子程序
+ 143          ------------------------------------------------*/
+ 144          void Timer0_isr(void) interrupt 1 
+ 145          {
+ 146   1       static unsigned int num,i;
+ 147   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+ 148   1       TL0=(65536-2000)%256;
+ 149   1       
+ 150   1       Display(0,8);       // 调用数码管扫描
+ 151   1       i++;
+ 152   1       if(i==10)          //20ms更新一次
+ 153   1          {
+ 154   2              i=0;
+ 155   2              UpdateTimeFlag=1; //更新时间志位置1
+ 156   2              }
+ 157   1       num++;
+ 158   1       if(num==500)        //大致1s
+ 159   1         {
+ 160   2          num=0;
+ 161   2              second++;
+ 162   2              if(second==60)
+ 163   2               {
+ 164   3                second=0;
+ 165   3                
+ 166   3                minute++;
+ 167   3                if(minute==60)
+ 168   3                  {
+ 169   4                       minute=0;
+ 170   4                       hour++;
+ 171   4                       if(hour==24)
+ 172   4                         hour=0;
+ 173   4                      }
+ 174   3               }
+ 175   2         
+ 176   2              }
+ 177   1      }
+C51 COMPILER V7.06   __蔩器可_魇_钟                                                        06/07/2010 12:56:08 PAGE 4   
+
+ 178          
+ 179          /*------------------------------------------------
+ 180          按键扫描函数，返回扫描键值
+ 181          ------------------------------------------------*/
+ 182          unsigned char KeyScan(void)
+ 183          {
+ 184   1       unsigned char keyvalue;
+ 185   1       if(KeyPort!=0xff)
+ 186   1         {
+ 187   2          DelayMs(10);
+ 188   2          if(KeyPort!=0xff)
+ 189   2                 {
+ 190   3                  keyvalue=KeyPort;
+ 191   3                  while(KeyPort!=0xff);
+ 192   3                      switch(keyvalue)
+ 193   3                      {
+ 194   4                       case 0xfe:return 1;break;
+ 195   4                       case 0xfd:return 2;break;
+ 196   4                       case 0xfb:return 3;break;
+ 197   4                       case 0xf7:return 4;break;
+ 198   4                       case 0xef:return 5;break;
+ 199   4                       case 0xdf:return 6;break;
+ 200   4                       case 0xbf:return 7;break;
+ 201   4                       case 0x7f:return 8;break;
+ 202   4                       default:return 0;break;
+ 203   4                      }
+ 204   3                }
+ 205   2         }
+ 206   1         return 0;
+ 207   1      }
+ 208          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    422    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

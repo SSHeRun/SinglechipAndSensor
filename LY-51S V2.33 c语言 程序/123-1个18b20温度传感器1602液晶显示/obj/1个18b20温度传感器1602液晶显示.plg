@@ -1,0 +1,59 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+G:\单片机课程设计\单片机软件包\LY-51S 开发板配套资料V2.33\5、配套程序\LY-51S V2.33 c语言 程序\123-1个18b20温度传感器1602液晶显示\1个18b20温度传感器1602液晶显示.uv2
+Project File Date:  09/11/2012
+
+<h2>Output:</h2>
+compiling main.c...
+main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 18b20.c...
+compiling 1602.c...
+compiling delay.c...
+linking...
+BL51 BANKED LINKER/LOCATER V5.03 - SN: Eval Version
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2002
+".\obj\18b20.obj",
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\main.obj" 
+TO ".\obj\1个18b20温度传感器1602液晶显示" 
+PRINT(".\obj\1个18b20温度传感器1602液晶显示.m51") RAMSIZE(256) 
+*** FATAL ERROR L210: I/O ERROR ON INPUT FILE:
+    EXCEPTION 0021H: PATH OR FILE NOT FOUND
+    FILE: G:\单片机课程设计\单片机软件包\KEIL2\C51\LIB\C51FPS.LIB
+Target not created
+compiling main.c...
+main.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 18b20.c...
+compiling 1602.c...
+compiling delay.c...
+creating library .\obj\1个18b20温度传感器1602液晶显示.LIB...
+TRANSFER
+".\obj\18b20.obj",
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\main.obj" 
+TO ".\obj\1个18b20温度传感器1602液晶显示.LIB"
+LIB51 LIBRARY MANAGER V4.24
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2002
+".\obj\1个18b20温度传感器1602液晶显示.LIB" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 18b20.c...
+compiling 1602.c...
+compiling delay.c...
+compiling main.c...
+creating library .\obj\1个18b20温度传感器1602液晶显示.LIB...
+TRANSFER
+".\obj\18b20.obj",
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\main.obj" 
+TO ".\obj\1个18b20温度传感器1602液晶显示.LIB"
+LIB51 LIBRARY MANAGER V4.24
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2002
+".\obj\1个18b20温度传感器1602液晶显示.LIB" - 0 Error(s), 0 Warning(s).

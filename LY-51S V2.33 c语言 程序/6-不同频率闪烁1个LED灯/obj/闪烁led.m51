@@ -1,0 +1,103 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/13/2010  17:12:11  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\≤ªÕ¨∆µ¬ …¡À∏1∏ˆledµ∆.obj TO .\obj\…¡À∏led PRINT (.\obj\…¡À∏led.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\≤ªÕ¨∆µ¬ …¡À∏1∏ˆledµ∆.obj (≤ªÕ_∆_¬ …¡À_1_ˆLED_∆)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\…¡À∏led (≤ªÕ_∆_¬ …¡À_1_ˆLED_∆)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     003EH     UNIT         ?PR?MAIN?≤ªÕ_∆_¬ …¡À_1_ˆLED_∆
+            CODE    0041H     000CH     UNIT         ?C_C51STARTUP
+            CODE    004DH     000AH     UNIT         ?PR?_DELAY?≤ªÕ_∆_¬ …¡À_1_ˆLED_∆
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\…¡À∏led (≤ªÕ_∆_¬ …¡À_1_ˆLED_∆)
+
+
+SEGMENT                                   DATA_GROUP 
+  +--> CALLED SEGMENT                   START    LENGTH
+-------------------------------------------------------
+?C_C51STARTUP                           -----    -----
+  +--> ?PR?MAIN?≤ªÕ_∆_¬ …¡À_1_ˆLED_∆
+
+?PR?MAIN?≤ªÕ_∆_¬ …¡À_1_ˆLED_∆           0008H    0001H
+  +--> ?PR?_DELAY?≤ªÕ_∆_¬ …¡À_1_ˆLED_∆
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\…¡À∏led (≤ªÕ_∆_¬ …¡À_1_ˆLED_∆)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ≤ªÕ_∆_¬ …¡À_1_ˆLED_∆
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:0090H.0       PUBLIC        LED0
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/13/2010  17:12:11  PAGE 2
+
+
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:004DH         PUBLIC        _Delay
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         25
+  C:0003H         LINE#         26
+  C:0003H         LINE#         27
+  C:0006H         LINE#         28
+  C:0006H         LINE#         29
+  C:0008H         LINE#         30
+  C:000FH         LINE#         31
+  C:0011H         LINE#         32
+  C:0018H         LINE#         33
+  C:0021H         LINE#         35
+  C:002BH         LINE#         36
+  C:002BH         LINE#         37
+  C:002DH         LINE#         38
+  C:0034H         LINE#         39
+  C:0036H         LINE#         40
+  C:003DH         LINE#         41
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:004DH         LINE#         49
+  C:004DH         LINE#         50
+  C:004DH         LINE#         51
+  C:0056H         LINE#         52
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        ≤ªÕ_∆_¬ …¡À_1_ˆLED_∆
+
+Program Size: data=10.0 xdata=0 code=87
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

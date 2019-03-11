@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\复件 LY-51S c语言 程序\61-8位端口检测8独立按键\8位端口检测8独立按键.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 8位端口检测8独立按键.c...
+linking...
+Program Size: data=22.0 xdata=0 code=433
+creating hex file from ".\obj\8位端口检测8独立按键"...
+".\obj\8位端口检测8独立按键" - 0 Error(s), 0 Warning(s).

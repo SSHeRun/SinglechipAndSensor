@@ -1,0 +1,100 @@
+C51 COMPILER V7.06   MAIN                                                                  06/08/2010 12:40:45 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IIC协议 PCF8591 AD/DA转换 测试光敏电阻
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            修改：无
+   6            内容：使用4路AD中的1路检测外部模拟量输入
+   7          ------------------------------------------------*/  
+   8          #include <reg52.h>                
+   9          #include "i2c.h"
+  10          #include "delay.h"
+  11          #include "display.h"
+  12          
+  13          #define AddWr 0x90   //写数据地址 
+  14          #define AddRd 0x91   //读数据地址
+  15          
+  16          extern bit ack;
+  17          unsigned char ReadADC(unsigned char Chl);
+  18          bit WriteDAC(unsigned char dat);
+  19          /*------------------------------------------------
+  20                        主程序
+  21          ------------------------------------------------*/
+  22          main()
+  23          {
+  24   1       unsigned char num=0;
+  25   1       Init_Timer0();
+  26   1      
+  27   1      
+  28   1      while (1)         //主循环
+  29   1        {
+  30   2        
+  31   2       num=255-ReadADC(0);//值取差值，用于显示光强越小，数值越小
+  32   2       TempData[0]=dofly_DuanMa[num/100];    
+  33   2       TempData[1]=dofly_DuanMa[(num%100)/10];
+  34   2       TempData[2]=dofly_DuanMa[(num%100)%10];
+  35   2       //主循环中添加其他需要一直工作的程序
+  36   2       DelayMs(100);
+  37   2        }
+  38   1      }
+  39          /*------------------------------------------------
+  40                       读AD转值程序
+  41          输入参数 Chl 表示需要转换的通道，范围从0-3
+  42          返回值范围0-255
+  43          ------------------------------------------------*/
+  44          unsigned char ReadADC(unsigned char Chl)
+  45           {
+  46   1         unsigned char Val;
+  47   1         Start_I2c();               //启动总线
+  48   1         SendByte(AddWr);             //发送器件地址
+  49   1           if(ack==0)return(0);
+  50   1         SendByte(0x40|Chl);            //发送器件子地址
+  51   1           if(ack==0)return(0);
+  52   1         Start_I2c();
+  53   1         SendByte(AddWr+1);
+  54   1            if(ack==0)return(0);
+C51 COMPILER V7.06   MAIN                                                                  06/08/2010 12:40:45 PAGE 2   
+
+  55   1         Val=RcvByte();
+  56   1         NoAck_I2c();                 //发送非应位
+  57   1         Stop_I2c();                  //结束总线
+  58   1        return(Val);
+  59   1       }
+  60          /*------------------------------------------------
+  61                         写入DA转换数值
+  62          输入参数：dat 表示需要转换的DA数值，范围是0-255
+  63          ------------------------------------------------*/
+  64          /*bit WriteDAC(unsigned char dat)
+  65          {
+  66             Start_I2c();               //启动总线
+  67             SendByte(AddWr);             //发送器件地址
+  68               if(ack==0)return(0);
+  69             SendByte(0x40);            //发送器件子地址
+  70               if(ack==0)return(0);
+  71             SendByte(dat);             //发送数据
+  72               if(ack==0)return(0);
+  73             Stop_I2c();  
+  74          }*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    118    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

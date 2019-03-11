@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\复件 LY-51S c语言 程序\59-独立按键依次输入数据\独立按键依次输入数据.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 独立按键依次输入数据.c...
+linking...
+Program Size: data=22.0 xdata=0 code=491
+creating hex file from ".\obj\独立按键依次输入数据"...
+".\obj\独立按键依次输入数据" - 0 Error(s), 0 Warning(s).

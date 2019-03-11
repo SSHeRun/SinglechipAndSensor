@@ -1,0 +1,185 @@
+C51 COMPILER V7.06   DS1302                                                                06/16/2010 00:43:25 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN .\obj\DS1302.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE DS1302.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\DS1302.lst) OBJECT(.\obj\DS1
+                    -302.obj)
+
+stmt level    source
+
+   1          
+   2          #include "ds1302.h"
+   3          
+   4          unsigned char time_buf1[8] = {20,10,6,5,12,55,00,6};//空年月日时分秒周
+   5          unsigned char time_buf[8] ;                         //空年月日时分秒周
+   6          /*------------------------------------------------
+   7                     向DS1302写入一字节数据
+   8          ------------------------------------------------*/
+   9          void Ds1302_Write_Byte(unsigned char addr, unsigned char d)
+  10          {
+  11   1      
+  12   1              unsigned char i;
+  13   1              RST_SET;        
+  14   1              
+  15   1              //写入目标地址：addr
+  16   1              addr = addr & 0xFE;     //最低位置零
+  17   1              for (i = 0; i < 8; i ++) 
+  18   1                  { 
+  19   2                      if (addr & 0x01) 
+  20   2                          {
+  21   3                              IO_SET;
+  22   3                              }
+  23   2                      else 
+  24   2                          {
+  25   3                              IO_CLR;
+  26   3                              }
+  27   2                      SCK_SET;
+  28   2                      SCK_CLR;
+  29   2                      addr = addr >> 1;
+  30   2                      }
+  31   1              
+  32   1              //写入数据：d
+  33   1              for (i = 0; i < 8; i ++) 
+  34   1                 {
+  35   2                      if (d & 0x01) 
+  36   2                          {
+  37   3                              IO_SET;
+  38   3                              }
+  39   2                      else 
+  40   2                          {
+  41   3                              IO_CLR;
+  42   3                              }
+  43   2                      SCK_SET;
+  44   2                      SCK_CLR;
+  45   2                      d = d >> 1;
+  46   2                      }
+  47   1              RST_CLR;                                        //停止DS1302总线
+  48   1      }
+  49          /*------------------------------------------------
+  50                     从DS1302读出一字节数据
+  51          ------------------------------------------------*/
+  52          
+  53          unsigned char Ds1302_Read_Byte(unsigned char addr) 
+  54          {
+C51 COMPILER V7.06   DS1302                                                                06/16/2010 00:43:25 PAGE 2   
+
+  55   1      
+  56   1              unsigned char i;
+  57   1              unsigned char temp;
+  58   1              RST_SET;        
+  59   1      
+  60   1              //写入目标地址：addr
+  61   1              addr = addr | 0x01;//最低位置高
+  62   1              for (i = 0; i < 8; i ++) 
+  63   1                  {
+  64   2                   
+  65   2                      if (addr & 0x01) 
+  66   2                         {
+  67   3                              IO_SET;
+  68   3                              }
+  69   2                      else 
+  70   2                          {
+  71   3                              IO_CLR;
+  72   3                              }
+  73   2                      SCK_SET;
+  74   2                      SCK_CLR;
+  75   2                      addr = addr >> 1;
+  76   2                      }
+  77   1              
+  78   1              //输出数据：temp
+  79   1              for (i = 0; i < 8; i ++) 
+  80   1                  {
+  81   2                      temp = temp >> 1;
+  82   2                      if (IO_R) 
+  83   2                         {
+  84   3                              temp |= 0x80;
+  85   3                              }
+  86   2                      else 
+  87   2                         {
+  88   3                              temp &= 0x7F;
+  89   3                              }
+  90   2                      SCK_SET;
+  91   2                      SCK_CLR;
+  92   2                      }
+  93   1              
+  94   1              RST_CLR;        //停止DS1302总线
+  95   1              return temp;
+  96   1      }
+  97          
+  98          /*------------------------------------------------
+  99                     向DS1302写入时钟数据
+ 100          ------------------------------------------------*/
+ 101          void Ds1302_Write_Time(void) 
+ 102          {
+ 103   1           
+ 104   1          unsigned char i,tmp;
+ 105   1              for(i=0;i<8;i++)
+ 106   1                  {                  //BCD处理
+ 107   2                      tmp=time_buf1[i]/10;
+ 108   2                      time_buf[i]=time_buf1[i]%10;
+ 109   2                      time_buf[i]=time_buf[i]+tmp*16;
+ 110   2                  }
+ 111   1              Ds1302_Write_Byte(ds1302_control_add,0x00);                     //关闭写保护 
+ 112   1              //Ds1302_Write_Byte(ds1302_sec_add,0x80);                               //暂停 
+ 113   1              //Ds1302_Write_Byte(ds1302_charger_add,0xa9);                   //涓流充电 
+ 114   1              Ds1302_Write_Byte(ds1302_year_add,time_buf[1]);         //年 
+ 115   1              Ds1302_Write_Byte(ds1302_month_add,time_buf[2]);        //月 
+ 116   1              Ds1302_Write_Byte(ds1302_date_add,time_buf[3]);         //日 
+C51 COMPILER V7.06   DS1302                                                                06/16/2010 00:43:25 PAGE 3   
+
+ 117   1              Ds1302_Write_Byte(ds1302_day_add,time_buf[7]);          //周 
+ 118   1              Ds1302_Write_Byte(ds1302_hr_add,time_buf[4]);           //时 
+ 119   1              Ds1302_Write_Byte(ds1302_min_add,time_buf[5]);          //分
+ 120   1              Ds1302_Write_Byte(ds1302_sec_add,time_buf[6]);          //秒
+ 121   1              Ds1302_Write_Byte(ds1302_day_add,time_buf[7]);          //周 
+ 122   1              Ds1302_Write_Byte(ds1302_control_add,0x80);                     //打开写保护 
+ 123   1      }
+ 124          
+ 125          /*------------------------------------------------
+ 126                     从DS1302读出时钟数据
+ 127          ------------------------------------------------*/
+ 128          void Ds1302_Read_Time(void)  
+ 129          { 
+ 130   1                  unsigned char i,tmp;
+ 131   1              time_buf[1]=Ds1302_Read_Byte(ds1302_year_add);          //年 
+ 132   1              time_buf[2]=Ds1302_Read_Byte(ds1302_month_add);         //月 
+ 133   1              time_buf[3]=Ds1302_Read_Byte(ds1302_date_add);          //日 
+ 134   1              time_buf[4]=Ds1302_Read_Byte(ds1302_hr_add);            //时 
+ 135   1              time_buf[5]=Ds1302_Read_Byte(ds1302_min_add);           //分 
+ 136   1              time_buf[6]=(Ds1302_Read_Byte(ds1302_sec_add))&0x7F;//秒 
+ 137   1              time_buf[7]=Ds1302_Read_Byte(ds1302_day_add);           //周 
+ 138   1      
+ 139   1      
+ 140   1              for(i=0;i<8;i++)
+ 141   1                 {           //BCD处理
+ 142   2                      tmp=time_buf[i]/16;
+ 143   2                      time_buf1[i]=time_buf[i]%16;
+ 144   2                      time_buf1[i]=time_buf1[i]+tmp*10;
+ 145   2                 }
+ 146   1      }
+ 147          
+ 148          /*------------------------------------------------
+ 149                          DS1302初始化
+ 150          ------------------------------------------------*/
+ 151          void Ds1302_Init(void)
+ 152          {
+ 153   1              
+ 154   1              RST_CLR;                        //RST脚置低
+ 155   1              SCK_CLR;                        //SCK脚置低
+ 156   1          Ds1302_Write_Byte(ds1302_sec_add,0x00);                              
+ 157   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    321    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

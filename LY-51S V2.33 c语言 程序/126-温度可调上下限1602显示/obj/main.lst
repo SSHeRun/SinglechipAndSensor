@@ -1,0 +1,189 @@
+C51 COMPILER V7.06   MAIN                                                                  07/15/2010 00:20:01 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：DS18b20 温度检测液晶显示
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          #include<stdio.h>
+  11          #include "18b20.h"
+  12          #include "1602.h"
+  13          #include "delay.h"
+  14          
+  15          #define KeyPort P3 //定义按键端口
+  16          
+  17          bit ReadTempFlag;//定义读时间标志
+  18          
+  19          void Init_Timer0(void);//定时器初始化
+  20          unsigned char KeyScan(void);//键盘扫描
+  21          /*------------------------------------------------
+  22                        串口通讯初始化
+  23          ------------------------------------------------*/
+  24          void UART_Init(void)
+  25          {
+  26   1          SCON  = 0x50;                       // SCON: 模式 1, 8-bit UART, 使能接收  
+  27   1          TMOD |= 0x20;               // TMOD: timer 1, mode 2, 8-bit 重装
+  28   1          TH1   = 0xFD;               // TH1:  重装值 9600 波特率 晶振 11.0592MHz  
+  29   1          TR1   = 1;                  // TR1:  timer 1 打开                         
+  30   1          //EA    = 1;                  //打开总中断
+  31   1          //ES    = 1;                  //打开串口中断
+  32   1              TI=1;
+  33   1      }
+  34          /*------------------------------------------------
+  35                              主函数
+  36          ------------------------------------------------*/
+  37          void main (void)
+  38          {                  
+  39   1      int temp,tempH=50,tempL=1;
+  40   1      float temperature;
+  41   1      unsigned char TempFlag=0;
+  42   1      char displaytemp[16],num;//定义显示区域临时存储数组
+  43   1      
+  44   1      LCD_Init();           //初始化液晶
+  45   1      DelayMs(20);          //延时有助于稳定
+  46   1      LCD_Clear();          //清屏
+  47   1      Init_Timer0();
+  48   1      UART_Init();
+  49   1      Lcd_User_Chr();       //写入自定义字符
+  50   1      
+  51   1      
+  52   1      while (1)         //主循环
+  53   1        {
+  54   2       num=KeyScan();
+C51 COMPILER V7.06   MAIN                                                                  07/15/2010 00:20:01 PAGE 2   
+
+  55   2       switch(num)
+  56   2             {
+  57   3                  case 1:if(tempH<127)tempH++;break;
+  58   3                      case 2:if(tempH>-55)tempH--;break;
+  59   3                      case 3:if(tempL<127)tempL++;break;
+  60   3                      case 4:if(tempL>-55)tempL--;break;
+  61   3                      default:break;
+  62   3                 }
+  63   2       
+  64   2      switch(TempFlag)
+  65   2             {
+  66   3                  case 0:    
+  67   3                            sprintf(displaytemp,"H.%3d  L.%3d ",tempH,tempL);//输出温度上限下限
+  68   3                    LCD_Write_String(0,1,displaytemp);//显示第二行
+  69   3                                break;
+  70   3                      case 1:LCD_Write_String(0,1,"over  tempH    ");break;
+  71   3                      case 2:LCD_Write_String(0,1,"under  tempL   ");break;
+  72   3                      default:break;
+  73   3                 }
+  74   2      if(ReadTempFlag==1)
+  75   2       {
+  76   3        ReadTempFlag=0;
+  77   3        temp=ReadTemperature();
+  78   3        
+  79   3       // if(temp&0x8000)
+  80   3          // temp=0-temp;//变为负数
+  81   3      
+  82   3        temperature=temp*0.0625;
+  83   3      
+  84   3        temp>>=4;
+  85   3       if(temp>tempH)
+  86   3          TempFlag=1;  //高于高温标志
+  87   3       else if(temp<tempL)
+  88   3          TempFlag=2;  //低于低温标志
+  89   3       else
+  90   3         TempFlag=0;   //正常显示标志
+  91   3      
+  92   3          
+  93   3      
+  94   3        sprintf(displaytemp,"Temp  %6.2f ",temperature);//打印温度值
+  95   3        LCD_Write_String(0,0,displaytemp);//显示第一行
+  96   3        LCD_Write_Char(13,0,0x01);//写入温度右上角点
+  97   3        LCD_Write_Char(14,0,'C'); //写入字符C
+  98   3        }     
+  99   2       }
+ 100   1      }
+ 101          
+ 102          /*------------------------------------------------
+ 103                              定时器初始化子程序
+ 104          ------------------------------------------------*/
+ 105          void Init_Timer0(void)
+ 106          {
+ 107   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 108   1       //TH0=0x00;          //给定初值
+ 109   1       //TL0=0x00;
+ 110   1       EA=1;            //总中断打开
+ 111   1       ET0=1;           //定时器中断打开
+ 112   1       TR0=1;           //定时器开关打开
+ 113   1      }
+ 114          /*------------------------------------------------
+ 115                           定时器中断子程序
+ 116          ------------------------------------------------*/
+C51 COMPILER V7.06   MAIN                                                                  07/15/2010 00:20:01 PAGE 3   
+
+ 117          void Timer0_isr(void) interrupt 1 
+ 118          {
+ 119   1       static unsigned int num;
+ 120   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+ 121   1       TL0=(65536-2000)%256;
+ 122   1       
+ 123   1       num++;
+ 124   1       if(num==400)        //
+ 125   1         {
+ 126   2          num=0;
+ 127   2          ReadTempFlag=1; //读标志位置1
+ 128   2              }
+ 129   1      }
+ 130          
+ 131          /*------------------------------------------------
+ 132          按键扫描函数，返回扫描键值
+ 133          ------------------------------------------------*/
+ 134          unsigned char KeyScan(void)
+ 135          {
+ 136   1       unsigned char keyvalue;
+ 137   1       if(KeyPort!=0xff)
+ 138   1         {
+ 139   2          DelayMs(10);
+ 140   2          if(KeyPort!=0xff)
+ 141   2                 {
+ 142   3                  keyvalue=KeyPort;
+ 143   3                  while(KeyPort!=0xff);
+ 144   3                      switch(keyvalue)
+ 145   3                      {
+ 146   4                       case 0xfe:return 1;break;
+ 147   4                       case 0xfd:return 2;break;
+ 148   4                       case 0xfb:return 3;break;
+ 149   4                       case 0xf7:return 4;break;
+ 150   4                       case 0xef:return 5;break;
+ 151   4                       case 0xdf:return 6;break;
+ 152   4                       case 0xbf:return 7;break;
+ 153   4                       case 0x7f:return 8;break;
+ 154   4                       default:return 0;break;
+ 155   4                      }
+ 156   3                }
+ 157   2         }
+ 158   1         return 0;
+ 159   1      }
+ 160          
+ 161          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    528    ----
+   CONSTANT SIZE    =     59    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2      27
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

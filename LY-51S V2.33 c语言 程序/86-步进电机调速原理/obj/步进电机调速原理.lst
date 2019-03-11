@@ -1,0 +1,231 @@
+C51 COMPILER V7.06   步进_缁__魉僭_理                                                      06/12/2010 14:35:33 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 步进_缁__魉僭_理
+OBJECT MODULE PLACED IN .\obj\步进电机调速原理.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 步进电机调速原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\步进电机调速原理.l
+                    -st) OBJECT(.\obj\步进电机调速原理.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：步进电机
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：本程序用于测试4相步进电机常规驱动 4个按键分别控制加速、减速、开启、停止
+   8                  使用1-2相励磁
+   9                          数码管显示 01-18速度等级，数字越大，速度越大
+  10           ------------------------------------------------*/
+  11          
+  12          #include <reg52.h>
+  13          
+  14          #define KeyPort P3
+  15          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  16          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  17          sbit LATCH2=P2^3;//                 位锁存
+  18          
+  19          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  20          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  21          unsigned char TempData[8]; //存储显示值的全局变量
+  22          
+  23          sbit A1=P1^0; //定义步进电机连接端口
+  24          sbit B1=P1^1;
+  25          sbit C1=P1^2;
+  26          sbit D1=P1^3;
+  27          
+  28          
+  29          #define Coil_AB1 {A1=1;B1=1;C1=0;D1=0;}//AB相通电，其他相断电
+  30          #define Coil_BC1 {A1=0;B1=1;C1=1;D1=0;}//BC相通电，其他相断电
+  31          #define Coil_CD1 {A1=0;B1=0;C1=1;D1=1;}//CD相通电，其他相断电
+  32          #define Coil_DA1 {A1=1;B1=0;C1=0;D1=1;}//D相通电，其他相断电
+  33          #define Coil_A1 {A1=1;B1=0;C1=0;D1=0;}//A相通电，其他相断电
+  34          #define Coil_B1 {A1=0;B1=1;C1=0;D1=0;}//B相通电，其他相断电
+  35          #define Coil_C1 {A1=0;B1=0;C1=1;D1=0;}//C相通电，其他相断电
+  36          #define Coil_D1 {A1=0;B1=0;C1=0;D1=1;}//D相通电，其他相断电
+  37          #define Coil_OFF {A1=0;B1=0;C1=0;D1=0;}//全部断电
+  38          
+  39          unsigned char Speed=1;
+  40          bit StopFlag;
+  41          void Display(unsigned char FirstBit,unsigned char Num);
+  42          void Init_Timer0(void);
+  43          unsigned char KeyScan(void);
+  44          /*------------------------------------------------
+  45           uS延时函数，含有输入参数 unsigned char t，无返回值
+  46           unsigned char 是定义无符号字符变量，其值的范围是
+  47           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  48           长度如下 T=tx2+5 uS 
+  49          ------------------------------------------------*/
+  50          void DelayUs2x(unsigned char t)
+  51          {   
+  52   1       while(--t);
+  53   1      }
+C51 COMPILER V7.06   步进_缁__魉僭_理                                                      06/12/2010 14:35:33 PAGE 2   
+
+  54          /*------------------------------------------------
+  55           mS延时函数，含有输入参数 unsigned char t，无返回值
+  56           unsigned char 是定义无符号字符变量，其值的范围是
+  57           0~255 这里使用晶振12M，精确延时请使用汇编
+  58          ------------------------------------------------*/
+  59          void DelayMs(unsigned char t)
+  60          {
+  61   1           
+  62   1       while(t--)
+  63   1       {
+  64   2           //大致延时1mS
+  65   2           DelayUs2x(245);
+  66   2               DelayUs2x(245);
+  67   2       }
+  68   1      }
+  69          /*------------------------------------------------
+  70                              主函数
+  71          ------------------------------------------------*/
+  72          main()
+  73          {
+  74   1       unsigned int i=512;//旋转一周时间
+  75   1       unsigned char num;
+  76   1       Init_Timer0();
+  77   1       Coil_OFF
+  78   1       while(1)  //正向
+  79   1        { 
+  80   2         num=KeyScan();    //循环调用按键扫描
+  81   2         if(num==1)//第一个按键,速度等级增加
+  82   2            {
+  83   3                 if(Speed<5)
+  84   3                 Speed++;
+  85   3                }     
+  86   2         else if(num==2)//第二个按键，速度等级减小
+  87   2            {
+  88   3                 if(Speed>1)
+  89   3                 Speed--;
+  90   3                }     
+  91   2       
+  92   2        TempData[1]=dofly_DuanMa[Speed%10];
+  93   2        }
+  94   1      }
+  95          
+  96          /*------------------------------------------------
+  97           显示函数，用于动态扫描数码管
+  98           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+  99           如输入0表示从第一个显示。
+ 100           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+ 101          ------------------------------------------------*/
+ 102          void Display(unsigned char FirstBit,unsigned char Num)
+ 103          {
+ 104   1            static unsigned char i=0;
+ 105   1                
+ 106   1      
+ 107   1                 DataPort=0;   //清空数据，防止有交替重影
+ 108   1             LATCH1=1;     //段锁存
+ 109   1             LATCH1=0;
+ 110   1      
+ 111   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+ 112   1             LATCH2=1;     //位锁存
+ 113   1             LATCH2=0;
+ 114   1      
+ 115   1             DataPort=TempData[i]; //取显示数据，段码
+C51 COMPILER V7.06   步进_缁__魉僭_理                                                      06/12/2010 14:35:33 PAGE 3   
+
+ 116   1             LATCH1=1;     //段锁存
+ 117   1             LATCH1=0;
+ 118   1             
+ 119   1                 i++;
+ 120   1             if(i==Num)
+ 121   1                    i=0;
+ 122   1      
+ 123   1      
+ 124   1      }
+ 125          /*------------------------------------------------
+ 126                              定时器初始化子程序
+ 127          ------------------------------------------------*/
+ 128          void Init_Timer0(void)
+ 129          {
+ 130   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 131   1       //TH0=0x00;          //给定初值
+ 132   1       //TL0=0x00;
+ 133   1       EA=1;            //总中断打开
+ 134   1       ET0=1;           //定时器中断打开
+ 135   1       TR0=1;           //定时器开关打开
+ 136   1       PT0=1;           //优先级打开
+ 137   1      }
+ 138          /*------------------------------------------------
+ 139                           定时器中断子程序
+ 140          ------------------------------------------------*/
+ 141          void Timer0_isr(void) interrupt 1 
+ 142          {
+ 143   1       static unsigned char times,i;
+ 144   1       TH0=(65536-1000)/256;            //重新赋值 1ms
+ 145   1       TL0=(65536-1000)%256;
+ 146   1       
+ 147   1       Display(0,8);
+ 148   1      
+ 149   1        if(times==Speed)
+ 150   1         {
+ 151   2         times=0;
+ 152   2         switch(i)
+ 153   2             {
+ 154   3                  case 0:Coil_A1;i++;break;
+ 155   3                      case 1:Coil_AB1;i++;break;
+ 156   3                      case 2:Coil_B1;i++;break;
+ 157   3                      case 3:Coil_BC1;i++;break;
+ 158   3                      case 4:Coil_C1;i++;break;
+ 159   3                      case 5:Coil_CD1;i++;break;
+ 160   3                      case 6:Coil_D1;i++;break;
+ 161   3                      case 7:Coil_DA1;i++;break;
+ 162   3                      case 8:i=0;break;
+ 163   3                  default:break;
+ 164   3                 }
+ 165   2          }
+ 166   1        else
+ 167   1           times++;
+ 168   1       
+ 169   1      }
+ 170          
+ 171          /*------------------------------------------------
+ 172          按键扫描函数，返回扫描键值
+ 173          ------------------------------------------------*/
+ 174          unsigned char KeyScan(void)
+ 175          {
+ 176   1       unsigned char keyvalue;
+ 177   1       if(KeyPort!=0xff)
+C51 COMPILER V7.06   步进_缁__魉僭_理                                                      06/12/2010 14:35:33 PAGE 4   
+
+ 178   1         {
+ 179   2          DelayMs(10);
+ 180   2          if(KeyPort!=0xff)
+ 181   2                 {
+ 182   3                  keyvalue=KeyPort;
+ 183   3                  while(KeyPort!=0xff);
+ 184   3                      switch(keyvalue)
+ 185   3                      {
+ 186   4                       case 0xfe:return 1;break;
+ 187   4                       case 0xfd:return 2;break;
+ 188   4                       case 0xfb:return 3;break;
+ 189   4                       case 0xf7:return 4;break;
+ 190   4                       case 0xef:return 5;break;
+ 191   4                       case 0xdf:return 6;break;
+ 192   4                       case 0xbf:return 7;break;
+ 193   4                       case 0x7f:return 8;break;
+ 194   4                       default:return 0;break;
+ 195   4                      }
+ 196   3                }
+ 197   2         }
+ 198   1         return 0;
+ 199   1      }
+ 200          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    394    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

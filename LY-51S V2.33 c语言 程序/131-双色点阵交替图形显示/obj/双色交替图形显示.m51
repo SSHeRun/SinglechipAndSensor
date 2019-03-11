@@ -1,0 +1,223 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/21/2013  10:15:01  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE .\obj\双色交替图形显示.obj TO .\obj\双色交替图形显示 PRINT (.\obj\双色交替图形显示.m51) RAMSIZE
+>>  (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\双色交替图形显示.obj (薩蒧交蘝图_蝊允_)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\obj\双色交替图形显示 (薩蒧交蘝图_蝊允_)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?薩蒧交蘝图_蝊允_
+            IDATA   0010H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
+            CODE    008FH     0086H     UNIT         ?PR?MAIN?薩蒧交蘝图_蝊允_
+            CODE    0115H     0040H     UNIT         ?CO?薩蒧交蘝图_蝊允_
+            CODE    0155H     001EH     UNIT         ?PR?_SENDSEG?薩蒧交蘝图_蝊允_
+            CODE    0173H     0015H     UNIT         ?PR?_DELAYMS?薩蒧交蘝图_蝊允_
+            CODE    0188H     0013H     UNIT         ?PR?_SENDBYTE?薩蒧交蘝图_蝊允_
+            CODE    019BH     000BH     UNIT         ?PR?OUT595?薩蒧交蘝图_蝊允_
+            CODE    01A6H     000BH     UNIT         ?C_INITSEG
+            CODE    01B1H     0008H     UNIT         ?PR?_SEND2BYTE?薩蒧交蘝图_蝊允_
+            CODE    01B9H     0003H     UNIT         ?PR?_DELAYUS2X?薩蒧交蘝图_蝊允_
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\双色交替图形显示 (薩蒧交蘝图_蝊允_)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?薩蒧交蘝图_蝊允_
+  +--> ?C_INITSEG
+
+?PR?MAIN?薩蒧交蘝图_蝊允_
+  +--> ?PR?_SENDSEG?薩蒧交蘝图_蝊允_
+  +--> ?CO?薩蒧交蘝图_蝊允_
+  +--> ?PR?_SEND2BYTE?薩蒧交蘝图_蝊允_
+  +--> ?PR?OUT595?薩蒧交蘝图_蝊允_
+  +--> ?PR?_DELAYMS?薩蒧交蘝图_蝊允_
+
+?PR?_SEND2BYTE?薩蒧交蘝图_蝊允_
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/21/2013  10:15:01  PAGE 2
+
+
+  +--> ?PR?_SENDBYTE?薩蒧交蘝图_蝊允_
+
+?PR?OUT595?薩蒧交蘝图_蝊允_
+  +--> ?PR?_SEND2BYTE?薩蒧交蘝图_蝊允_
+
+?PR?_DELAYMS?薩蒧交蘝图_蝊允_
+  +--> ?PR?_DELAYUS2X?薩蒧交蘝图_蝊允_
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\双色交替图形显示 (薩蒧交蘝图_蝊允_)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        薩蒧交蘝图_蝊允_
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0090H.1       PUBLIC        SRCLK
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:0188H         PUBLIC        _SendByte
+  D:00B0H         PUBLIC        P3
+  C:015BH         PUBLIC        _SendSeg
+  B:00A0H.0       PUBLIC        SER_B
+  D:00A8H         PUBLIC        IE
+  B:00A0H.2       PUBLIC        LATCH_B
+  C:0173H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  D:0008H         PUBLIC        segout
+  B:00A0H.1       PUBLIC        SRCLK_B
+  C:008FH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  C:01B1H         PUBLIC        _Send2Byte
+  D:0088H         PUBLIC        TCON
+  C:0115H         PUBLIC        tab
+  C:01B9H         PUBLIC        _DelayUs2x
+  C:01A0H         PUBLIC        Out595
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.2       PUBLIC        SER
+  B:0090H.0       PUBLIC        LATCH
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:01B9H         LINE#         46
+  C:01B9H         LINE#         47
+  C:01B9H         LINE#         48
+  C:01BBH         LINE#         49
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0173H         LINE#         55
+  C:0175H         LINE#         56
+  C:0175H         LINE#         58
+  C:017BH         LINE#         59
+  C:017BH         LINE#         61
+  C:0180H         LINE#         62
+  C:0185H         LINE#         63
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/21/2013  10:15:01  PAGE 3
+
+
+  C:0187H         LINE#         64
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          _SENDBYTE
+  D:0007H         SYMBOL        dat
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0188H         LINE#         68
+  C:0188H         LINE#         69
+  C:0188H         LINE#         72
+  C:018AH         LINE#         73
+  C:018AH         LINE#         74
+  C:018CH         LINE#         75
+  C:0190H         LINE#         76
+  C:0194H         LINE#         77
+  C:0196H         LINE#         78
+  C:019AH         LINE#         80
+  -------         ENDPROC       _SENDBYTE
+  -------         PROC          _SEND2BYTE
+  D:0007H         SYMBOL        dat1
+  D:0005H         SYMBOL        dat2
+  C:01B1H         LINE#         85
+  C:01B1H         LINE#         86
+  C:01B1H         LINE#         87
+  C:01B4H         LINE#         88
+  -------         ENDPROC       _SEND2BYTE
+  C:019BH         SYMBOL        L?0039
+  -------         PROC          L?0038
+  -------         ENDPROC       L?0038
+  C:019BH         SYMBOL        L?0039
+  -------         PROC          OUT595
+  C:01A0H         LINE#         94
+  C:01A0H         LINE#         95
+  C:01A0H         LINE#         96
+  C:01A2H         LINE#         97
+  C:01A3H         LINE#         98
+  C:01A5H         LINE#         99
+  -------         ENDPROC       OUT595
+  -------         PROC          L?0040
+  -------         ENDPROC       L?0040
+  -------         PROC          _SENDSEG
+  D:0007H         SYMBOL        dat
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:015BH         LINE#         105
+  C:015BH         LINE#         106
+  C:015BH         LINE#         109
+  C:015DH         LINE#         110
+  C:015DH         LINE#         111
+  C:015FH         LINE#         112
+  C:0163H         LINE#         113
+  C:0167H         LINE#         114
+  C:0169H         LINE#         115
+  C:016DH         LINE#         116
+  C:016FH         LINE#         117
+  C:0170H         LINE#         118
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/21/2013  10:15:01  PAGE 4
+
+
+  C:0172H         LINE#         121
+  -------         ENDPROC       _SENDSEG
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  D:0003H         SYMBOL        k
+  -------         ENDDO         
+  C:008FH         LINE#         125
+  C:008FH         LINE#         126
+  C:008FH         LINE#         129
+  C:008FH         LINE#         130
+  C:008FH         LINE#         131
+  C:0091H         LINE#         132
+  C:0093H         LINE#         133
+  C:0095H         LINE#         134
+  C:0095H         LINE#         136
+  C:0098H         LINE#         137
+  C:00BAH         LINE#         138
+  C:00BDH         LINE#         139
+  C:00C2H         LINE#         140
+  C:00C2H         LINE#         141
+  C:00C5H         LINE#         142
+  C:00D1H         LINE#         144
+  C:00D9H         LINE#         145
+  C:00DBH         LINE#         146
+  C:00DDH         LINE#         147
+  C:00DDH         LINE#         149
+  C:00E0H         LINE#         150
+  C:00FDH         LINE#         151
+  C:0100H         LINE#         152
+  C:0105H         LINE#         153
+  C:0107H         LINE#         154
+  C:010AH         LINE#         155
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        薩蒧交蘝图_蝊允_
+
+Program Size: data=17.0 xdata=0 code=444
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

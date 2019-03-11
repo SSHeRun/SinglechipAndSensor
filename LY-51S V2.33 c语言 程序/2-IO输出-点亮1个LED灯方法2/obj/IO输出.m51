@@ -1,0 +1,75 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/13/2010  16:30:30  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\µ„¡¡1∏ˆled∑Ω∑®2.obj TO .\obj\IO ‰≥ˆ PRINT (.\obj\IO ‰≥ˆ.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\µ„¡¡1∏ˆled∑Ω∑®2.obj (_„¡¡1_ˆLED_Ω__2)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\IO ‰≥ˆ (_„¡¡1_ˆLED_Ω__2)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000CH     UNIT         ?C_C51STARTUP
+            CODE    000FH     0008H     UNIT         ?PR?MAIN?_„¡¡1_ˆLED_Ω__2
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\IO ‰≥ˆ (_„¡¡1_ˆLED_Ω__2)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?_„¡¡1_ˆLED_Ω__2
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\IO ‰≥ˆ (_„¡¡1_ˆLED_Ω__2)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        _„¡¡1_ˆLED_Ω__2
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:000FH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:000FH         LINE#         17
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/13/2010  16:30:30  PAGE 2
+
+
+  C:000FH         LINE#         18
+  C:000FH         LINE#         20
+  C:0012H         LINE#         22
+  C:0015H         LINE#         25
+  C:0015H         LINE#         26
+  C:0015H         LINE#         28
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        _„¡¡1_ˆLED_Ω__2
+
+Program Size: data=9.0 xdata=0 code=23
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

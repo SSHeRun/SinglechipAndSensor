@@ -1,0 +1,96 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        07/01/2010  17:12:48  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\查表led显示.obj TO .\obj\查表显示led灯 PRINT (.\obj\查表显示led灯.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\查表led显示.obj (查_鞮ED_允_)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\查表显示led灯 (查_鞮ED_允_)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     001DH     UNIT         ?PR?MAIN?查_鞮ED_允_
+            CODE    0020H     0010H     UNIT         ?CO?查_鞮ED_允_
+            CODE    0030H     000CH     UNIT         ?C_C51STARTUP
+            CODE    003CH     000AH     UNIT         ?PR?_DELAY?查_鞮ED_允_
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\查表显示led灯 (查_鞮ED_允_)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?查_鞮ED_允_
+
+?PR?MAIN?查_鞮ED_允_           0008H    0001H
+  +--> ?CO?查_鞮ED_允_
+  +--> ?PR?_DELAY?查_鞮ED_允_
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\查表显示led灯 (查_鞮ED_允_)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        查_鞮ED_允_
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:0020H         PUBLIC        table
+  D:00A8H         PUBLIC        IE
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/01/2010  17:12:48  PAGE 2
+
+
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:003CH         PUBLIC        _Delay
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         27
+  C:0003H         LINE#         28
+  C:0003H         LINE#         32
+  C:0003H         LINE#         33
+  C:0003H         LINE#         34
+  C:0006H         LINE#         36
+  C:0006H         LINE#         37
+  C:000EH         LINE#         38
+  C:0015H         LINE#         39
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:003CH         LINE#         48
+  C:003CH         LINE#         49
+  C:003CH         LINE#         50
+  C:0045H         LINE#         51
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        查_鞮ED_允_
+
+Program Size: data=10.0 xdata=0 code=70
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

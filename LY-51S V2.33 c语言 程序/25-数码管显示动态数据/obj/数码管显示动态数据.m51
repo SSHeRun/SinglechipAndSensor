@@ -1,0 +1,118 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        07/04/2010  09:45:40  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý.obj TO .\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý PRINT (.\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý.m51) R
+>> AMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý.obj (ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý (ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         _DATA_GROUP_
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0051H     UNIT         ?PR?MAIN?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+            CODE    0054H     0018H     UNIT         ?CO?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+            CODE    006CH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0078H     000AH     UNIT         ?PR?_DELAY?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý (ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý)
+
+
+SEGMENT                                 DATA_GROUP 
+  +--> CALLED SEGMENT                 START    LENGTH
+-----------------------------------------------------
+?C_C51STARTUP                         -----    -----
+  +--> ?PR?MAIN?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+
+?PR?MAIN?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý           0008H    0004H
+  +--> ?CO?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+  +--> ?PR?_DELAY?ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\ÊýÂë¹ÜÏÔÊ¾¶¯Ì¬Êý¾Ý (ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/04/2010  09:45:40  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  B:00A0H.2       PUBLIC        LATCH1
+  B:00A0H.3       PUBLIC        LATCH2
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0054H         PUBLIC        dofly_DuanMa
+  C:0078H         PUBLIC        _Delay
+  C:0064H         PUBLIC        dofly_WeiMa
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        num
+  D:000AH         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         23
+  C:0003H         LINE#         24
+  C:0003H         LINE#         25
+  C:0006H         LINE#         27
+  C:0006H         LINE#         28
+  C:0006H         LINE#         29
+  C:000EH         LINE#         30
+  C:0010H         LINE#         31
+  C:0012H         LINE#         33
+  C:001CH         LINE#         34
+  C:001EH         LINE#         35
+  C:0020H         LINE#         37
+  C:0027H         LINE#         38
+  C:0031H         LINE#         39
+  C:0036H         LINE#         40
+  C:0039H         LINE#         41
+  C:0043H         LINE#         42
+  C:0043H         LINE#         43
+  C:0048H         LINE#         44
+  C:004AH         LINE#         45
+  C:004FH         LINE#         46
+  C:0052H         LINE#         47
+  C:0052H         LINE#         48
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:0078H         LINE#         55
+  C:0078H         LINE#         56
+  C:0078H         LINE#         57
+  C:0081H         LINE#         58
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        ÊýÂë_Ü_ÔÊ___Ì_Êý_Ý
+
+Program Size: data=13.0 xdata=0 code=130
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,99 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  08:47:30  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘.obj TO .\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘ PRINT (.\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘.obj (ø_√≈__“Á_ˆ≤‚ ‘)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘ (ø_√≈__“Á_ˆ≤‚ ‘)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0020H     UNIT         ?PR?MAIN?ø_√≈__“Á_ˆ≤‚ ‘
+            CODE    0023H     000CH     UNIT         ?C_C51STARTUP
+            CODE    002FH     0007H     UNIT         ?PR?RST_WATCHDOG?ø_√≈__“Á_ˆ≤‚ ‘
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘ (ø_√≈__“Á_ˆ≤‚ ‘)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?ø_√≈__“Á_ˆ≤‚ ‘
+
+?PR?MAIN?ø_√≈__“Á_ˆ≤‚ ‘
+  +--> ?PR?RST_WATCHDOG?ø_√≈__“Á_ˆ≤‚ ‘
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\ø¥√≈π∑“Á≥ˆ≤‚ ‘ (ø_√≈__“Á_ˆ≤‚ ‘)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ø_√≈__“Á_ˆ≤‚ ‘
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  08:47:30  PAGE 2
+
+
+  D:0088H         PUBLIC        TCON
+  B:00B0H.1       PUBLIC        key
+  C:002FH         PUBLIC        Rst_Watchdog
+  D:00C8H         PUBLIC        T2CON
+  D:00A6H         PUBLIC        WDTRST
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          RST_WATCHDOG
+  C:002FH         LINE#         18
+  C:002FH         LINE#         19
+  C:002FH         LINE#         20
+  C:0032H         LINE#         21
+  C:0035H         LINE#         22
+  -------         ENDPROC       RST_WATCHDOG
+  -------         PROC          MAIN
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         27
+  C:0003H         LINE#         28
+  C:0003H         LINE#         31
+  C:0006H         LINE#         33
+  C:0009H         LINE#         34
+  C:0009H         LINE#         35
+  C:000CH         LINE#         36
+  C:0017H         LINE#         37
+  C:001AH         LINE#         38
+  C:001DH         LINE#         39
+  C:001DH         LINE#         40
+  C:0020H         LINE#         41
+  C:0022H         LINE#         42
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        ø_√≈__“Á_ˆ≤‚ ‘
+
+Program Size: data=9.0 xdata=0 code=54
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,94 @@
+C51 COMPILER V7.06   __口蚠裚                                                              06/03/2010 10:40:26 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE __口蚠裚
+OBJECT MODULE PLACED IN .\obj\串口通讯.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 串口通讯.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\串口通讯.lst) OBJECT(.\obj
+                    -\串口通讯.obj)
+
+stmt level    source
+
+   1           
+   2          /*-----------------------------------------------
+   3            名称：串口通信
+   4            网站：www.doflye.net
+   5            编写：shifang
+   6            日期：2009.5
+   7            修改：无
+   8            内容：连接好串口或者usb转串口至电脑，下载该程序，打开电源
+   9                  打开串口调试程序，将波特率设置为9600，无奇偶校验
+  10                  晶振11.0592MHz，发送和接收使用的格式相同，如都使用
+  11                  字符型格式，在发送框输入 hello，I Love MCU ，在接
+  12                  收框中同样可以看到相同字符，说明设置和通信正确
+  13          ------------------------------------------------*/
+  14          
+  15          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义                        
+  16          #include"delay.h"
+  17          void SendStr(unsigned char *s);
+  18          /*------------------------------------------------
+  19                              串口初始化
+  20          ------------------------------------------------*/
+  21          void InitUART  (void)
+  22          {
+  23   1      
+  24   1          SCON  = 0x50;                       // SCON: 模式 1, 8-bit UART, 使能接收  
+  25   1          TMOD |= 0x20;               // TMOD: timer 1, mode 2, 8-bit 重装
+  26   1          TH1   = 0xFD;               // TH1:  重装值 9600 波特率 晶振 11.0592MHz  
+  27   1          TR1   = 1;                  // TR1:  timer 1 打开                         
+  28   1          EA    = 1;                  //打开总中断
+  29   1          //ES    = 1;                  //打开串口中断
+  30   1      }                            
+  31          /*------------------------------------------------
+  32                              主函数
+  33          ------------------------------------------------*/
+  34          void main (void)
+  35          {
+  36   1      
+  37   1      InitUART();
+  38   1      
+  39   1      
+  40   1      
+  41   1      while (1)                       
+  42   1          {
+  43   2          SendStr("UART test，技术论坛：www.doflye.net thank you!\n");
+  44   2              DelayMs(240);//延时循环发送
+  45   2          DelayMs(240);
+  46   2          }
+  47   1      }
+  48          
+  49          /*------------------------------------------------
+  50                              发送一个字节
+  51          ------------------------------------------------*/
+  52          void SendByte(unsigned char dat)
+  53          {
+  54   1       SBUF = dat;
+C51 COMPILER V7.06   __口蚠裚                                                              06/03/2010 10:40:26 PAGE 2   
+
+  55   1       while(!TI);
+  56   1            TI = 0;
+  57   1      }
+  58          /*------------------------------------------------
+  59                              发送一个字符串
+  60          ------------------------------------------------*/
+  61          void SendStr(unsigned char *s)
+  62          {
+  63   1       while(*s!='\0')
+  64   1        {
+  65   2        SendByte(*s);
+  66   2        s++;
+  67   2        }
+  68   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     65    ----
+   CONSTANT SIZE    =     48    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

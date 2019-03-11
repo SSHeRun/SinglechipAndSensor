@@ -1,0 +1,98 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/13/2010  22:46:23  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\ledÑ­»·×óÒÆ.obj TO .\obj\ledÑ­»·×óÒÆ PRINT (.\obj\ledÑ­»·×óÒÆ.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\ledÑ­»·×óÒÆ.obj (LEDÑ_»_×óÒÆ)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\ledÑ­»·×óÒÆ (LEDÑ_»_×óÒÆ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     002BH     UNIT         ?PR?MAIN?LEDÑ_»_×óÒÆ
+            CODE    002EH     000CH     UNIT         ?C_C51STARTUP
+            CODE    003AH     000AH     UNIT         ?PR?_DELAY?LEDÑ_»_×óÒÆ
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\ledÑ­»·×óÒÆ (LEDÑ_»_×óÒÆ)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?LEDÑ_»_×óÒÆ
+
+?PR?MAIN?LEDÑ_»_×óÒÆ           0008H    0001H
+  +--> ?PR?_DELAY?LEDÑ_»_×óÒÆ
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\ledÑ­»·×óÒÆ (LEDÑ_»_×óÒÆ)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LEDÑ_»_×óÒÆ
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/13/2010  22:46:23  PAGE 2
+
+
+  D:0088H         PUBLIC        TCON
+  C:003AH         PUBLIC        _Delay
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         18
+  C:0003H         LINE#         19
+  C:0003H         LINE#         22
+  C:000AH         LINE#         23
+  C:000DH         LINE#         24
+  C:000DH         LINE#         25
+  C:000DH         LINE#         26
+  C:0010H         LINE#         27
+  C:0010H         LINE#         28
+  C:0017H         LINE#         29
+  C:001DH         LINE#         30
+  C:0020H         LINE#         31
+  C:0029H         LINE#         32
+  C:002CH         LINE#         34
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:003AH         LINE#         40
+  C:003AH         LINE#         41
+  C:003AH         LINE#         42
+  C:0043H         LINE#         43
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        LEDÑ_»_×óÒÆ
+
+Program Size: data=10.0 xdata=0 code=68
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

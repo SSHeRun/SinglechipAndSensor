@@ -1,0 +1,86 @@
+C51 COMPILER V7.06   薩_谱笠朴乙粕了_                                                      05/13/2010 23:16:40 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 薩_谱笠朴乙粕了_
+OBJECT MODULE PLACED IN .\obj\双灯左移右移闪烁.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 双灯左移右移闪烁.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\双灯左移右移闪烁.l
+                    -st) OBJECT(.\obj\双灯左移右移闪烁.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IO口高低电平控制
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：2个led灯先左移，然后右移，然后同时闪烁
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          void Delay(unsigned int t); //函数声明
+  12          /*------------------------------------------------
+  13                              主函数
+  14          ------------------------------------------------*/
+  15          void main (void)
+  16          {
+  17   1                        
+  18   1      unsigned char i;  //定义一个无符号字符型局部变量 i 取值范围 0~255
+  19   1      unsigned char temp;//定义临时变量用于转换
+  20   1      while (1)         //主循环
+  21   1        {
+  22   2       temp=0xfc;
+  23   2       P1=temp;
+  24   2       for(i=0;i<7;i++)   //加入 for循环，表明for循环大括号中的程序循环执行7次
+  25   2        {
+  26   3        Delay(50000);      //调用延时程序；更改延时数字可以更改延时长度；用于改变闪烁频率
+  27   3        temp<<=1;
+  28   3        temp=temp|0x01;
+  29   3        P1=temp;
+  30   3        }
+  31   2       
+  32   2       temp=0x3f;
+  33   2       P1=temp;
+  34   2       for(i=0;i<7;i++)   //加入 for循环，表明for循环大括号中的程序循环执行7次
+  35   2        {
+  36   3        Delay(50000);      //调用延时程序；更改延时数字可以更改延时长度；用于改变闪烁频率
+  37   3        temp>>=1;
+  38   3        temp|=0x80;        //等效于 temp=temp|0x80
+  39   3        P1=temp;
+  40   3        }
+  41   2      
+  42   2       for(i=0;i<3;i++)   //加入 for循环，表明for循环大括号中的程序循环执行3次
+  43   2        {
+  44   3        P1=0xff;
+  45   3        Delay(50000);
+  46   3        P1=0x00;
+  47   3        Delay(50000);
+  48   3        }
+  49   2                           //主循环中添加其他需要一直工作的程序
+  50   2       }
+  51   1      }
+  52          /*------------------------------------------------
+  53           延时函数，含有输入参数 unsigned int t，无返回值
+  54           unsigned int 是定义无符号整形变量，其值的范围是
+C51 COMPILER V7.06   薩_谱笠朴乙粕了_                                                      05/13/2010 23:16:40 PAGE 2   
+
+  55           0~65535
+  56          ------------------------------------------------*/
+  57          void Delay(unsigned int t)
+  58          {
+  59   1       while(--t);
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    106    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

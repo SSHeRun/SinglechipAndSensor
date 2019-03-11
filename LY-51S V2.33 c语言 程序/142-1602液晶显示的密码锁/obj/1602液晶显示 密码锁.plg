@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\51开发板\LY-51S 开发板光盘资料\5、配套程序\复件 LY-51S c语言 程序\142-1602液晶显示的密码锁\1602液晶显示 密码锁.uv2
+Project File Date:  06/09/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1602.c...
+compiling delay.c...
+compiling main.c...
+compiling keyboard.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_CHECK_BUSY?1602
+Program Size: data=27.1 xdata=0 code=706
+creating hex file from ".\obj\1602液晶显示 密码锁"...
+".\obj\1602液晶显示 密码锁" - 0 Error(s), 1 Warning(s).

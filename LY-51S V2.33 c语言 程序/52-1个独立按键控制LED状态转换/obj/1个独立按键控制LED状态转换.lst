@@ -1,0 +1,93 @@
+C51 COMPILER V7.06   1_ö_ÀÁ___¼ü¿ØÖÆLED×_Ì_×ª»»                                            05/17/2010 00:13:03 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 1_ö_ÀÁ___¼ü¿ØÖÆLED×_Ì_×ª»»
+OBJECT MODULE PLACED IN .\obj\1¸ö¶ÀÁ¢°´¼ü¿ØÖÆLED×´Ì¬×ª»».obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 1¸ö¶ÀÁ¢°´¼ü¿ØÖÆLED×´Ì¬×ª»».c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\1¸ö¶ÀÁ¢°
+                    -´¼ü¿ØÖÆLED×´Ì¬×ª»».lst) OBJECT(.\obj\1¸ö¶ÀÁ¢°´¼ü¿ØÖÆLED×´Ì¬×ª»».obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºµ¥¸ö¶ÀÁ¢°´¼ü¿ØÖÆledÊä³ö×´Ì¬
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£º°´Ò»´Î°´¼ü£¬ledµãÁÁ£¬ÔÙ°´Ò»´ÎÏ¨Ãð£¬ÒÔ´ËÑ­»·
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //°üº¬Í·ÎÄ¼þ£¬Ò»°ãÇé¿ö²»ÐèÒª¸Ä¶¯£¬Í·ÎÄ¼þ°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  10          
+  11          sbit KEY=P3^3;  //¶¨Òå°´¼üÊäÈë¶Ë¿Ú
+  12          sbit LED=P1^2;  //¶¨ÒåledÊä³ö¶Ë¿Ú
+  13          
+  14          
+  15          void DelayUs2x(unsigned char t);//º¯ÊýÉùÃ÷
+  16          void DelayMs(unsigned char t);
+  17          /*------------------------------------------------
+  18                              Ö÷º¯Êý
+  19          ------------------------------------------------*/
+  20          void main (void)
+  21          {
+  22   1                        
+  23   1      KEY=1; //°´¼üÊäÈë¶Ë¿ÚµçÆ½ÖÃ¸ß
+  24   1      while (1)         //Ö÷Ñ­»·
+  25   1        {
+  26   2      
+  27   2        if(!KEY)  //Èç¹û¼ì²âµ½µÍµçÆ½£¬ËµÃ÷°´¼ü°´ÏÂ
+  28   2          {
+  29   3               DelayMs(10); //ÑÓÊ±È¥¶¶£¬Ò»°ã10-20ms
+  30   3           if(!KEY)     //ÔÙ´ÎÈ·ÈÏ°´¼üÊÇ·ñ°´ÏÂ£¬Ã»ÓÐ°´ÏÂÔòÍË³ö
+  31   3                 {
+  32   4              while(!KEY);//Èç¹ûÈ·ÈÏ°´ÏÂ°´¼üµÈ´ý°´¼üÊÍ·Å£¬Ã»ÓÐÊÍ·ÅÔòÒ»Ö±µÈ´ý
+  33   4                     {
+  34   5                     LED=!LED;//ÊÍ·ÅÔòÖ´ÐÐÐèÒªµÄ³ÌÐò
+  35   5                              }
+  36   4                 }
+  37   3              }
+  38   2      
+  39   2           //Ö÷Ñ­»·ÖÐÌí¼ÓÆäËûÐèÒªÒ»Ö±¹¤×÷µÄ³ÌÐò
+  40   2              
+  41   2        }
+  42   1      }
+  43          /*------------------------------------------------
+  44           uSÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned char t£¬ÎÞ·µ»ØÖµ
+  45           unsigned char ÊÇ¶¨ÒåÎÞ·ûºÅ×Ö·û±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  46           0~255 ÕâÀïÊ¹ÓÃ¾§Õñ12M£¬¾«È·ÑÓÊ±ÇëÊ¹ÓÃ»ã±à,´óÖÂÑÓÊ±
+  47           ³¤¶ÈÈçÏÂ T=tx2+5 uS 
+  48          ------------------------------------------------*/
+  49          void DelayUs2x(unsigned char t)
+  50          {   
+  51   1       while(--t);
+  52   1      }
+  53          /*------------------------------------------------
+  54           mSÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned char t£¬ÎÞ·µ»ØÖµ
+C51 COMPILER V7.06   1_ö_ÀÁ___¼ü¿ØÖÆLED×_Ì_×ª»»                                            05/17/2010 00:13:03 PAGE 2   
+
+  55           unsigned char ÊÇ¶¨ÒåÎÞ·ûºÅ×Ö·û±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  56           0~255 ÕâÀïÊ¹ÓÃ¾§Õñ12M£¬¾«È·ÑÓÊ±ÇëÊ¹ÓÃ»ã±à
+  57          ------------------------------------------------*/
+  58          void DelayMs(unsigned char t)
+  59          {
+  60   1           
+  61   1       while(t--)
+  62   1       {
+  63   2           //´óÖÂÑÓÊ±1mS
+  64   2           DelayUs2x(245);
+  65   2               DelayUs2x(245);
+  66   2       }
+  67   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     44    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

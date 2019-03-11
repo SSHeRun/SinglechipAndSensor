@@ -1,0 +1,181 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/15/2010  18:25:56  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\多位数按键加减.obj TO .\obj\多位数按键加减 PRINT (.\obj\多位数按键加减.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\多位数按键加减.obj (_辔皇齙_键加糭)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\多位数按键加减 (_辔皇齙_键加糭)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?_辔皇齙_键加糭
+            DATA    0010H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0011H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0055H     UNIT         ?PR?MAIN?_辔皇齙_键加糭
+            CODE    0058H     0030H     UNIT         ?PR?_DISPLAY?_辔皇齙_键加糭
+            CODE    0088H     0015H     UNIT         ?PR?_DELAYMS?_辔皇齙_键加糭
+            CODE    009DH     0012H     UNIT         ?CO?_辔皇齙_键加糭
+            CODE    00AFH     000CH     UNIT         ?C_C51STARTUP
+            CODE    00BBH     0003H     UNIT         ?PR?_DELAYUS2X?_辔皇齙_键加糭
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\多位数按键加减 (_辔皇齙_键加糭)
+
+
+SEGMENT                                 DATA_GROUP 
+  +--> CALLED SEGMENT                 START    LENGTH
+-----------------------------------------------------
+?C_C51STARTUP                         -----    -----
+  +--> ?PR?MAIN?_辔皇齙_键加糭
+
+?PR?MAIN?_辔皇齙_键加糭               0010H    0001H
+  +--> ?PR?_DELAYMS?_辔皇齙_键加糭
+  +--> ?CO?_辔皇齙_键加糭
+  +--> ?PR?_DISPLAY?_辔皇齙_键加糭
+
+?PR?_DELAYMS?_辔皇齙_键加糭           -----    -----
+  +--> ?PR?_DELAYUS2X?_辔皇齙_键加糭
+
+?PR?_DISPLAY?_辔皇齙_键加糭           -----    -----
+  +--> ?CO?_辔皇齙_键加糭
+  +--> ?PR?_DELAYMS?_辔皇齙_键加糭
+
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  18:25:56  PAGE 2
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\多位数按键加减 (_辔皇齙_键加糭)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        _辔皇齙_键加糭
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0088H         PUBLIC        _DelayMs
+  B:00B0H.3       PUBLIC        KEY_ADD
+  D:0008H         PUBLIC        TempData
+  B:00B0H.4       PUBLIC        KEY_DEC
+  D:00B8H         PUBLIC        IP
+  B:00A0H.2       PUBLIC        LATCH1
+  B:00A0H.3       PUBLIC        LATCH2
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0058H         PUBLIC        _Display
+  C:009DH         PUBLIC        dofly_DuanMa
+  C:00BBH         PUBLIC        _DelayUs2x
+  C:00A7H         PUBLIC        dofly_WeiMa
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0010H         SYMBOL        num
+  -------         ENDDO         
+  C:0003H         LINE#         28
+  C:0003H         LINE#         29
+  C:0003H         LINE#         30
+  C:0006H         LINE#         31
+  C:0008H         LINE#         32
+  C:000AH         LINE#         33
+  C:000AH         LINE#         34
+  C:000AH         LINE#         36
+  C:000DH         LINE#         37
+  C:000DH         LINE#         38
+  C:0012H         LINE#         39
+  C:0015H         LINE#         40
+  C:0015H         LINE#         41
+  C:0018H         LINE#         42
+  C:0018H         LINE#         43
+  C:001FH         LINE#         44
+  C:0021H         LINE#         46
+  C:0021H         LINE#         47
+  C:0021H         LINE#         48
+  C:0021H         LINE#         50
+  C:0024H         LINE#         51
+  C:0024H         LINE#         52
+  C:0029H         LINE#         53
+  C:002CH         LINE#         54
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  18:25:56  PAGE 3
+
+
+  C:002CH         LINE#         55
+  C:002FH         LINE#         56
+  C:002FH         LINE#         57
+  C:0036H         LINE#         58
+  C:0038H         LINE#         59
+  C:0038H         LINE#         60
+  C:0038H         LINE#         61
+  C:0038H         LINE#         62
+  C:0044H         LINE#         63
+  C:004FH         LINE#         64
+  C:0056H         LINE#         67
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:00BBH         LINE#         75
+  C:00BBH         LINE#         76
+  C:00BBH         LINE#         77
+  C:00BDH         LINE#         78
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0088H         LINE#         84
+  C:008AH         LINE#         85
+  C:008AH         LINE#         87
+  C:0090H         LINE#         88
+  C:0090H         LINE#         90
+  C:0095H         LINE#         91
+  C:009AH         LINE#         92
+  C:009CH         LINE#         93
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          _DISPLAY
+  D:0004H         SYMBOL        FirstBit
+  D:0005H         SYMBOL        Num
+  -------         DO            
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:0058H         LINE#         100
+  C:005AH         LINE#         101
+  C:005AH         LINE#         104
+  C:0061H         LINE#         105
+  C:0061H         LINE#         106
+  C:0064H         LINE#         107
+  C:0066H         LINE#         108
+  C:0068H         LINE#         110
+  C:0070H         LINE#         111
+  C:0072H         LINE#         112
+  C:0074H         LINE#         114
+  C:007BH         LINE#         115
+  C:007DH         LINE#         116
+  C:007FH         LINE#         118
+  C:0084H         LINE#         120
+  C:0087H         LINE#         122
+  -------         ENDPROC       _DISPLAY
+  -------         ENDMOD        _辔皇齙_键加糭
+
+Program Size: data=18.0 xdata=0 code=190
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

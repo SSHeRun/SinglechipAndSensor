@@ -1,0 +1,88 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/15/2010  17:52:35  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾.obj TO .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾ PRINT (.\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹
+>> ÜÏÔÊ¾.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾.obj (__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾ (__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0052H     UNIT         ?PR?MAIN?__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+            CODE    0055H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0061H     000AH     UNIT         ?CO?__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾ (__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+
+?PR?MAIN?__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+  +--> ?CO?__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\°´¼ü¿ØÖÆµ¥¸öÊýÂë¹ÜÏÔÊ¾ (__¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        __¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  C:0061H         PUBLIC        dofly_table
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  17:52:35  PAGE 2
+
+
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         23
+  C:0025H         LINE#         24
+  C:0025H         LINE#         25
+  C:002AH         LINE#         26
+  C:002FH         LINE#         27
+  C:0034H         LINE#         28
+  C:0039H         LINE#         29
+  C:003EH         LINE#         30
+  C:0043H         LINE#         31
+  C:004CH         LINE#         32
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        __¼ü¿ØÖÆ_¥_öÊýÂë_Ü_ÔÊ_
+
+Program Size: data=9.0 xdata=0 code=107
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

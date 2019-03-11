@@ -1,0 +1,96 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/13/2010  20:35:11  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\×óÒÆ.obj TO .\obj\×óÒÆ PRINT (.\obj\×óÒÆ.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\×óÒÆ.obj (×óÒÆ)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\×óÒÆ (×óÒÆ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0025H     UNIT         ?PR?MAIN?×óÒÆ
+            CODE    0028H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0034H     000AH     UNIT         ?PR?_DELAY?×óÒÆ
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\×óÒÆ (×óÒÆ)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?×óÒÆ
+
+?PR?MAIN?×óÒÆ                  0008H    0001H
+  +--> ?PR?_DELAY?×óÒÆ
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\×óÒÆ (×óÒÆ)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ×óÒÆ
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/13/2010  20:35:11  PAGE 2
+
+
+  D:0088H         PUBLIC        TCON
+  C:0034H         PUBLIC        _Delay
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         19
+  C:0003H         LINE#         20
+  C:0003H         LINE#         23
+  C:000AH         LINE#         24
+  C:000DH         LINE#         25
+  C:0010H         LINE#         26
+  C:0010H         LINE#         27
+  C:0017H         LINE#         28
+  C:001DH         LINE#         29
+  C:0026H         LINE#         30
+  C:0026H         LINE#         31
+  C:0026H         LINE#         33
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:0034H         LINE#         39
+  C:0034H         LINE#         40
+  C:0034H         LINE#         41
+  C:003DH         LINE#         42
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        ×óÒÆ
+
+Program Size: data=10.0 xdata=0 code=62
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,128 @@
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:37:43 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+line level    source
+
+   1          /*-----------------------------------------------
+   2            名称：DS18b20 温度检测液晶显示
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          #include<stdio.h>
+  11          #include "18b20.h"
+  12          #include "18b20a.h"
+  13          #include "1602.h"
+  14          #include "delay.h"
+  15          
+  16          bit ReadTempFlag;//定义读时间标志
+  17          
+  18          void Init_Timer0(void);//定时器初始化
+  19          /*------------------------------------------------
+  20                        串口通讯初始化
+  21          ------------------------------------------------*/
+  22          void UART_Init(void)
+  23          {
+  24   1          SCON  = 0x50;                       // SCON: 模式 1, 8-bit UART, 使能接收  
+  25   1          TMOD |= 0x20;               // TMOD: timer 1, mode 2, 8-bit 重装
+  26   1          TH1   = 0xFD;               // TH1:  重装值 9600 波特率 晶振 11.0592MHz  
+  27   1          TR1   = 1;                  // TR1:  timer 1 打开                         
+  28   1          //EA    = 1;                  //打开总中断
+  29   1          //ES    = 1;                  //打开串口中断
+  30   1              TI=1;
+  31   1      }
+  32          /*------------------------------------------------
+  33                              主函数
+  34          ------------------------------------------------*/
+  35          void main (void)
+  36          {                  
+  37   1      int temp;
+  38   1      float temperature;
+  39   1      char displaytemp[16];//定义显示区域临时存储数组
+  40   1      
+  41   1      LCD_Init();           //初始化液晶
+  42   1      DelayMs(20);          //延时有助于稳定
+  43   1      LCD_Clear();          //清屏
+  44   1      Init_Timer0();
+  45   1      UART_Init();
+  46   1      Lcd_User_Chr();       //写入自定义字符
+  47   1      
+  48   1      LCD_Write_Char(13,0,0x01);//写入温度右上角点
+  49   1      LCD_Write_Char(14,0,'C'); //写入字符C
+  50   1      
+  51   1      LCD_Write_Char(13,1,0x01);//写入温度右上角点
+  52   1      LCD_Write_Char(14,1,'C'); //写入字符C
+  53   1      
+  54   1      while (1)         //主循环
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:37:43 PAGE 2   
+
+  55   1        {
+  56   2      
+  57   2      if(ReadTempFlag==1)
+  58   2       {
+  59   3        ReadTempFlag=0;
+  60   3        temp=ReadTemperature();
+  61   3        temperature=(float)temp*0.0625;
+  62   3        sprintf(displaytemp,"Temp1 %7.3f",temperature);//打印温度值
+  63   3        LCD_Write_String(0,0,displaytemp);//显示第二行
+  64   3      
+  65   3        temp=ReadTemperature_a();
+  66   3        temperature=(float)temp*0.0625;
+  67   3        sprintf(displaytemp,"Temp2 %7.3f",temperature);//打印温度值
+  68   3        LCD_Write_String(0,1,displaytemp);//显示第二行
+  69   3        }     
+  70   2       }
+  71   1      }
+  72          
+  73          /*------------------------------------------------
+  74                              定时器初始化子程序
+  75          ------------------------------------------------*/
+  76          void Init_Timer0(void)
+  77          {
+  78   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+  79   1       //TH0=0x00;          //给定初值
+  80   1       //TL0=0x00;
+  81   1       EA=1;            //总中断打开
+  82   1       ET0=1;           //定时器中断打开
+  83   1       TR0=1;           //定时器开关打开
+  84   1      }
+  85          /*------------------------------------------------
+  86                           定时器中断子程序
+  87          ------------------------------------------------*/
+  88          void Timer0_isr(void) interrupt 1 
+  89          {
+  90   1       static unsigned int num;
+  91   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+  92   1       TL0=(65536-2000)%256;
+  93   1       
+  94   1       num++;
+  95   1       if(num==600)        //
+  96   1         {
+  97   2          num=0;
+  98   2          ReadTempFlag=1; //读标志位置1
+  99   2              }
+ 100   1      }
+ 101          
+ 102          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    270    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2      22
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

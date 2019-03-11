@@ -1,0 +1,124 @@
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:36:20 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+line level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IIC协议 PCF8591 AD/DA转换
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            修改：无
+   6            内容：使用4路AD中的4路检测外部模拟量输入 使用液晶显示
+   7          ------------------------------------------------*/  
+   8          #include <reg52.h>                
+   9          #include "i2c.h"
+  10          #include "delay.h"
+  11          #include "1602.h"
+  12          #include <stdio.h>
+  13          
+  14          #define AddWr 0x90   //写数据地址 
+  15          #define AddRd 0x91   //读数据地址
+  16          
+  17          extern bit ack;
+  18          unsigned char ReadADC(unsigned char Chl);
+  19          bit WriteDAC(unsigned char dat);
+  20          /*------------------------------------------------
+  21                        主程序
+  22          ------------------------------------------------*/
+  23          main()
+  24          {
+  25   1       unsigned char num=0,i;
+  26   1       unsigned char temp[7];//定义显示区域临时存储数组
+  27   1       float Voltage;        //定义浮点变量
+  28   1       LCD_Init();           //初始化液晶
+  29   1       DelayMs(20);          //延时有助于稳定
+  30   1       LCD_Clear();          //清屏
+  31   1      
+  32   1      while (1)              //主循环
+  33   1        {
+  34   2       
+  35   2       for(i=0;i<5;i++)//连续读5次，取最后一次，以便读取稳定值
+  36   2          num=ReadADC(0);      //读取第1路电压值，范围是0-255
+  37   2       Voltage=(float)num*5/256;   //根据参考电源VREF算出时间电压，float是强制转换符号，用于将结果转换成浮点型
+  38   2       sprintf(temp,"V0 %3.2f ",Voltage);//格式输出电压值，%3.2f 表示浮点输出，共3位数，小数点后2位
+  39   2       LCD_Write_String(0,0,temp);
+  40   2      
+  41   2       for(i=0;i<5;i++) 
+  42   2           num=ReadADC(1);
+  43   2       Voltage=(float)num*5/256;   
+  44   2       sprintf(temp,"V1 %3.2f ",Voltage);
+  45   2       LCD_Write_String(8,0,temp);
+  46   2      
+  47   2       for(i=0;i<5;i++) 
+  48   2           num=ReadADC(2);
+  49   2       Voltage=(float)num*5/256;   
+  50   2       sprintf(temp,"V2 %3.2f ",Voltage);
+  51   2       LCD_Write_String(0,1,temp);
+  52   2      
+  53   2       for(i=0;i<5;i++) 
+  54   2           num=ReadADC(3);
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:36:20 PAGE 2   
+
+  55   2       Voltage=(float)num*5/256;   
+  56   2       sprintf(temp,"V3 %3.2f ",Voltage);
+  57   2       LCD_Write_String(8,1,temp);
+  58   2       //主循环中添加其他需要一直工作的程序
+  59   2       DelayMs(200);
+  60   2      
+  61   2        }
+  62   1      }
+  63          /*------------------------------------------------
+  64                       读AD转值程序
+  65          输入参数 Chl 表示需要转换的通道，范围从0-3
+  66          返回值范围0-255
+  67          ------------------------------------------------*/
+  68          unsigned char ReadADC(unsigned char Chl)
+  69           {
+  70   1         unsigned char Val;
+  71   1         Start_I2c();               //启动总线
+  72   1         SendByte(AddWr);             //发送器件地址
+  73   1           if(ack==0)return(0);
+  74   1         SendByte(0x40|Chl);            //发送器件子地址
+  75   1           if(ack==0)return(0);
+  76   1         Start_I2c();
+  77   1         SendByte(AddWr+1);
+  78   1            if(ack==0)return(0);
+  79   1         Val=RcvByte();
+  80   1         NoAck_I2c();                 //发送非应位
+  81   1         Stop_I2c();                  //结束总线
+  82   1        return(Val);
+  83   1       }
+  84          /*------------------------------------------------
+  85                         写入DA转换数值
+  86          输入参数：dat 表示需要转换的DA数值，范围是0-255
+  87          ------------------------------------------------*/
+  88          /*bit WriteDAC(unsigned char dat)
+  89          {
+  90             Start_I2c();               //启动总线
+  91             SendByte(AddWr);             //发送器件地址
+  92               if(ack==0)return(0);
+  93             SendByte(0x40);            //发送器件子地址
+  94               if(ack==0)return(0);
+  95             SendByte(dat);             //发送数据
+  96               if(ack==0)return(0);
+  97             Stop_I2c();  
+  98          }*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    447    ----
+   CONSTANT SIZE    =     40    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      15
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

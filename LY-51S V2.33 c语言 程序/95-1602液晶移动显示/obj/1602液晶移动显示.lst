@@ -1,0 +1,226 @@
+C51 COMPILER V8.02   1602_篲贫允_                                                      09/18/2010 23:33:27 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE 1602_篲贫允_
+OBJECT MODULE PLACED IN .\obj\1602液晶移动显示.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 1602液晶移动显示.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\1602液晶移动显示.l
+                    -st) OBJECT(.\obj\1602液晶移动显示.obj)
+
+line level    source
+
+   1          /*-----------------------------------------------
+   2            名称：LCD1602
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过标准程序动态显示字符 显示光标和光标闪烁打开效果
+   8            引脚定义如下：1-VSS 2-VDD 3-V0 4-RS 5-R/W 6-E 7-14 DB0-DB7 15-BLA 16-BLK
+   9          ------------------------------------------------*/
+  10          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  11          #include<intrins.h>
+  12          
+  13          sbit RS = P2^4;   //定义端口 
+  14          sbit RW = P2^5;
+  15          sbit EN = P2^6;
+  16          
+  17          #define RS_CLR RS=0 
+  18          #define RS_SET RS=1
+  19          
+  20          #define RW_CLR RW=0 
+  21          #define RW_SET RW=1 
+  22          
+  23          #define EN_CLR EN=0
+  24          #define EN_SET EN=1
+  25          
+  26          #define DataPort P0
+  27          /*------------------------------------------------
+  28           uS延时函数，含有输入参数 unsigned char t，无返回值
+  29           unsigned char 是定义无符号字符变量，其值的范围是
+  30           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  31           长度如下 T=tx2+5 uS 
+  32          ------------------------------------------------*/
+  33          void DelayUs2x(unsigned char t)
+  34          {   
+  35   1       while(--t);
+  36   1      }
+  37          /*------------------------------------------------
+  38           mS延时函数，含有输入参数 unsigned char t，无返回值
+  39           unsigned char 是定义无符号字符变量，其值的范围是
+  40           0~255 这里使用晶振12M，精确延时请使用汇编
+  41          ------------------------------------------------*/
+  42          void DelayMs(unsigned char t)
+  43          {
+  44   1           
+  45   1       while(t--)
+  46   1       {
+  47   2           //大致延时1mS
+  48   2           DelayUs2x(245);
+  49   2               DelayUs2x(245);
+  50   2       }
+  51   1      }
+  52          /*------------------------------------------------
+  53                        判忙函数
+  54          ------------------------------------------------*/
+C51 COMPILER V8.02   1602_篲贫允_                                                      09/18/2010 23:33:27 PAGE 2   
+
+  55           bit LCD_Check_Busy(void) 
+  56           { 
+  57   1       DataPort= 0xFF; 
+  58   1       RS_CLR; 
+  59   1       RW_SET; 
+  60   1       EN_CLR; 
+  61   1       _nop_(); 
+  62   1       EN_SET;
+  63   1       return (bit)(DataPort & 0x80);
+  64   1       }
+  65          /*------------------------------------------------
+  66                        写入命令函数
+  67          ------------------------------------------------*/
+  68           void LCD_Write_Com(unsigned char com) 
+  69           {  
+  70   1      // while(LCD_Check_Busy()); //忙则等待
+  71   1       DelayMs(5);
+  72   1       RS_CLR; 
+  73   1       RW_CLR; 
+  74   1       EN_SET; 
+  75   1       DataPort= com; 
+  76   1       _nop_(); 
+  77   1       EN_CLR;
+  78   1       }
+  79          /*------------------------------------------------
+  80                        写入数据函数
+  81          ------------------------------------------------*/
+  82           void LCD_Write_Data(unsigned char Data) 
+  83           { 
+  84   1       //while(LCD_Check_Busy()); //忙则等待
+  85   1       DelayMs(5);
+  86   1       RS_SET; 
+  87   1       RW_CLR; 
+  88   1       EN_SET; 
+  89   1       DataPort= Data; 
+  90   1       _nop_();
+  91   1       EN_CLR;
+  92   1       }
+  93          
+  94          
+  95          /*------------------------------------------------
+  96                          清屏函数
+  97          ------------------------------------------------*/
+  98           void LCD_Clear(void) 
+  99           { 
+ 100   1       LCD_Write_Com(0x01); 
+ 101   1       DelayMs(5);
+ 102   1       }
+ 103          /*------------------------------------------------
+ 104                        写入字符串函数
+ 105          ------------------------------------------------*/
+ 106           void LCD_Write_String(unsigned char x,unsigned char y,unsigned char *s) 
+ 107           {     
+ 108   1       if (y == 0) 
+ 109   1              {     
+ 110   2               LCD_Write_Com(0x80 + x);     
+ 111   2              }
+ 112   1       else 
+ 113   1              {     
+ 114   2              LCD_Write_Com(0xC0 + x);     
+ 115   2              }        
+ 116   1       while (*s) 
+C51 COMPILER V8.02   1602_篲贫允_                                                      09/18/2010 23:33:27 PAGE 3   
+
+ 117   1              {     
+ 118   2       LCD_Write_Data( *s);     
+ 119   2       s ++;     
+ 120   2              }
+ 121   1       }
+ 122          /*------------------------------------------------
+ 123                        写入字符函数
+ 124          ------------------------------------------------*/
+ 125           void LCD_Write_Char(unsigned char x,unsigned char y,unsigned char Data) 
+ 126           {     
+ 127   1       if (y == 0) 
+ 128   1              {     
+ 129   2              LCD_Write_Com(0x80 + x);     
+ 130   2              }    
+ 131   1       else 
+ 132   1              {     
+ 133   2              LCD_Write_Com(0xC0 + x);     
+ 134   2              }        
+ 135   1       LCD_Write_Data( Data);  
+ 136   1       }
+ 137          /*------------------------------------------------
+ 138                        初始化函数
+ 139          ------------------------------------------------*/
+ 140           void LCD_Init(void) 
+ 141           {
+ 142   1         LCD_Write_Com(0x38);    /*显示模式设置*/ 
+ 143   1         DelayMs(5); 
+ 144   1         LCD_Write_Com(0x38); 
+ 145   1         DelayMs(5); 
+ 146   1         LCD_Write_Com(0x38); 
+ 147   1         DelayMs(5); 
+ 148   1         LCD_Write_Com(0x38);  
+ 149   1         LCD_Write_Com(0x08);    /*显示关闭*/ 
+ 150   1         LCD_Write_Com(0x01);    /*显示清屏*/ 
+ 151   1         LCD_Write_Com(0x06);    /*显示光标移动设置*/ 
+ 152   1         DelayMs(5); 
+ 153   1         LCD_Write_Com(0x0C);    /*显示开及光标设置*/
+ 154   1         }
+ 155             
+ 156          /*------------------------------------------------
+ 157                              主函数
+ 158          ------------------------------------------------*/ 
+ 159          void main(void) 
+ 160          { 
+ 161   1      unsigned char i; 
+ 162   1      unsigned char *pa,*pb; 
+ 163   1      
+ 164   1      LCD_Init(); 
+ 165   1      LCD_Write_Com(0x0f);//光标开，光标闪烁开
+ 166   1      while (1) 
+ 167   1       {  
+ 168   2       pa = "Welcome to";
+ 169   2       pb = "www.doflye.net";  
+ 170   2       LCD_Clear();  
+ 171   2       LCD_Write_String(2,0,pa);  //显示2行信息
+ 172   2       LCD_Write_String(1,1,pb);
+ 173   2       for(i=0;i<8;i++)            //延时2s左右
+ 174   2           DelayMs(250); 
+ 175   2       LCD_Clear();                //清屏显示其他信息
+ 176   2       i = 2; 
+ 177   2       while (*pa)                 //循环输入方式显示2行信息
+ 178   2              {   
+C51 COMPILER V8.02   1602_篲贫允_                                                      09/18/2010 23:33:27 PAGE 4   
+
+ 179   3              LCD_Write_Char(i,0,*pa);   
+ 180   3              i ++;   
+ 181   3              pa ++;   
+ 182   3              DelayMs(250);   
+ 183   3              }  
+ 184   2       i=1;  
+ 185   2       while (*pb) 
+ 186   2              {   
+ 187   3              LCD_Write_Char(i,1,*pb);   
+ 188   3              i ++;   
+ 189   3              pb ++;   
+ 190   3              DelayMs(250);   
+ 191   3              }  
+ 192   2      
+ 193   2        DelayMs(250);  
+ 194   2       }
+ 195   1      }
+ 196          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    356    ----
+   CONSTANT SIZE    =     26    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

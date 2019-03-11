@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\公司重要资料\51开发板\LY-51S 开发板光盘资料\5、配套程序\复件 LY-51S c语言 程序\154-2-DS1302时钟串口自动更新时间 12M 波特率2400\ds1302时钟串口自动更新时间.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling DS1302.c...
+compiling main.c...
+linking...
+Program Size: data=51.2 xdata=0 code=1036
+creating hex file from ".\obj\ds1302时钟串口自动更新时间"...
+".\obj\ds1302时钟串口自动更新时间" - 0 Error(s), 0 Warning(s).

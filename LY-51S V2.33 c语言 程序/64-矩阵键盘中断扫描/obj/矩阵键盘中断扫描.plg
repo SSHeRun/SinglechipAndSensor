@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>µVision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\¸´¼ş LY-51S cÓïÑÔ ³ÌĞò\64-¾ØÕó¼üÅÌÖĞ¶ÏÉ¨Ãè\¾ØÕó¼üÅÌÖĞ¶ÏÉ¨Ãè.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling ¾ØÕó¼üÅÌÖĞ¶ÏÉ¨Ãè.c...
+linking...
+Program Size: data=30.1 xdata=0 code=726
+creating hex file from ".\obj\¾ØÕó¼üÅÌÖĞ¶ÏÉ¨Ãè"...
+".\obj\¾ØÕó¼üÅÌÖĞ¶ÏÉ¨Ãè" - 0 Error(s), 0 Warning(s).

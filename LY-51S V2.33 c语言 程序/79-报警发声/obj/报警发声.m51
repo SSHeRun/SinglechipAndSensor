@@ -1,0 +1,118 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  10:30:14  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\±¨¾¯·¢Éù.obj TO .\obj\±¨¾¯·¢Éù PRINT (.\obj\±¨¾¯·¢Éù.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\±¨¾¯·¢Éù.obj (______Éù)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\±¨¾¯·¢Éù (______Éù)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            DATA    000AH     0001H     UNIT         ?DT?______Éù
+            IDATA   000BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     003EH     UNIT         ?PR?MAIN?______Éù
+            CODE    0041H     0015H     UNIT         ?PR?_DELAYMS?______Éù
+            CODE    0056H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0062H     0003H     UNIT         ?PR?_DELAYUS2X?______Éù
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\±¨¾¯·¢Éù (______Éù)
+
+
+SEGMENT                           DATA_GROUP 
+  +--> CALLED SEGMENT           START    LENGTH
+-----------------------------------------------
+?C_C51STARTUP                   -----    -----
+  +--> ?PR?MAIN?______Éù
+
+?PR?MAIN?______Éù               0008H    0002H
+  +--> ?PR?_DELAYUS2X?______Éù
+  +--> ?PR?_DELAYMS?______Éù
+
+?PR?_DELAYMS?______Éù           -----    -----
+  +--> ?PR?_DELAYUS2X?______Éù
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\±¨¾¯·¢Éù (______Éù)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ______Éù
+  C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  10:30:14  PAGE 2
+
+
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0041H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0062H         PUBLIC        _DelayUs2x
+  D:000AH         PUBLIC        frq
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.2       PUBLIC        SPK
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         24
+  C:0003H         LINE#         25
+  C:0003H         LINE#         26
+  C:0008H         LINE#         27
+  C:0008H         LINE#         28
+  C:000DH         LINE#         30
+  C:000FH         LINE#         31
+  C:0020H         LINE#         32
+  C:0022H         LINE#         33
+  C:0032H         LINE#         34
+  C:0032H         LINE#         35
+  C:0037H         LINE#         36
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0062H         LINE#         46
+  C:0062H         LINE#         47
+  C:0062H         LINE#         48
+  C:0064H         LINE#         49
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0041H         LINE#         55
+  C:0043H         LINE#         56
+  C:0043H         LINE#         58
+  C:0049H         LINE#         59
+  C:0049H         LINE#         61
+  C:004EH         LINE#         62
+  C:0053H         LINE#         63
+  C:0055H         LINE#         64
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        ______Éù
+
+Program Size: data=12.0 xdata=0 code=101
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,91 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/17/2010  11:50:14  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\ÇÀ´ðÆ÷.obj TO .\obj\ÇÀ´ðÆ÷ PRINT (.\obj\ÇÀ´ðÆ÷.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\ÇÀ´ðÆ÷.obj (ÇÀ_ðÆ÷)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\ÇÀ´ðÆ÷ (ÇÀ_ðÆ÷)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     002FH     UNIT         ?PR?MAIN?ÇÀ_ðÆ÷
+            CODE    0032H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\ÇÀ´ðÆ÷ (ÇÀ_ðÆ÷)
+
+
+SEGMENT                           BIT_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?ÇÀ_ðÆ÷
+
+?PR?MAIN?ÇÀ_ðÆ÷                0020H.0  0000H.1
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\ÇÀ´ðÆ÷ (ÇÀ_ðÆ÷)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ÇÀ_ðÆ÷
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:00B0H.3       PUBLIC        key4
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/17/2010  11:50:14  PAGE 2
+
+
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  B:00B0H.0       PUBLIC        key1
+  B:00B0H.1       PUBLIC        key2
+  B:00B0H.2       PUBLIC        key3
+  -------         PROC          MAIN
+  -------         DO            
+  B:0020H.0       SYMBOL        Flag
+  -------         ENDDO         
+  C:0003H         LINE#         24
+  C:0003H         LINE#         25
+  C:0003H         LINE#         27
+  C:0006H         LINE#         28
+  C:0006H         LINE#         29
+  C:0010H         LINE#         30
+  C:001AH         LINE#         31
+  C:0024H         LINE#         32
+  C:002CH         LINE#         33
+  C:002EH         LINE#         34
+  C:0031H         LINE#         35
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        ÇÀ_ðÆ÷
+
+Program Size: data=9.1 xdata=0 code=62
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

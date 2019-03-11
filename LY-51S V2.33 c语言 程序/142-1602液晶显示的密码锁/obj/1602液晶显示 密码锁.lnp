@@ -1,0 +1,6 @@
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\main.obj",
+".\obj\keyboard.obj" 
+TO ".\obj\1602Òº¾§ÏÔÊ¾ ÃÜÂëËø" 
+PRINT(".\obj\1602Òº¾§ÏÔÊ¾ ÃÜÂëËø.m51") RAMSIZE(256) 

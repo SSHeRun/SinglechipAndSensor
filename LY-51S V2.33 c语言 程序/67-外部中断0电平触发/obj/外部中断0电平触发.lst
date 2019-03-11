@@ -1,0 +1,56 @@
+C51 COMPILER V7.06   外部謃__0_缙絖_                                                     05/19/2010 23:18:43 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 外部謃__0_缙絖_
+OBJECT MODULE PLACED IN .\obj\外部中断0电平触发.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 外部中断0电平触发.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\外部中断0电平触发
+                    -.lst) OBJECT(.\obj\外部中断0电平触发.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：外部中断0电平触发
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过中断接口P3.2连接的独立按键测试，按一次P1口的LED灯反向，
+   8                  这里使用电平触发，所以一直按键不松开和一次按键效果不相同，按下会看到灯全部亮
+   9                          说明中断一直在作用，用示波器看则是高频方波
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          /*------------------------------------------------
+  13                              主程序
+  14          ------------------------------------------------*/
+  15          main()
+  16          {
+  17   1        P1=0x55;       //P1口初始值
+  18   1        EA=1;          //全局中断开
+  19   1        EX0=1;         //外部中断0开
+  20   1        IT0=0;         //电平触发
+  21   1        while(1)
+  22   1        {
+  23   2                       //在此添加其他程序
+  24   2        }
+  25   1      }
+  26          /*------------------------------------------------
+  27                           外部中断程序
+  28          ------------------------------------------------*/
+  29          void ISR_Key(void) interrupt 0 using 1
+  30          {
+  31   1       P1=~P1;     //进入中断程序执行程序，此时可以通过 EA=0指令暂时关掉中断    
+  32   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     15    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

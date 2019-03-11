@@ -1,0 +1,11 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        09/20/2018  07:22:57  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+G:\单片机课程设计\单片机软件包\KEIL2\C51\BIN\BL51.EXE .\obj\18b20.obj, .\obj\1602.obj, .\obj\delay.obj, .\obj\main.obj T
+>> O .\obj\1个18b20温度传感器1602液晶显示 PRINT (.\obj\1个18b20温度传感器1602液晶显示.m51) RAMSIZE (256)
+
+
+*** FATAL ERROR L210: I/O ERROR ON INPUT FILE:
+    EXCEPTION 0021H: PATH OR FILE NOT FOUND
+    FILE: G:\单片机课程设计\单片机软件包\KEIL2\C51\LIB\C51FPS.LIB

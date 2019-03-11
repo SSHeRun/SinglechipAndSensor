@@ -1,0 +1,86 @@
+C51 COMPILER V7.06   TEST                                                                  05/05/2011 11:33:32 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN .\Obj\test.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE test.c BROWSE DEBUG OBJECTEXTEND PRINT(.\List\test.lst) OBJECT(.\Obj\test.o
+                    -bj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：串口控制74HC164
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无 测试平台 LY-51S 
+   7            内容：通过单片机自带串口TXD、RXD控制74HC164，从而控制LED显示
+   8                  P3.0接J11 A、B，P3.1接J11 CLK，输出J12用8根杜邦线接LED端子J9
+   9          ------------------------------------------------*/
+  10          #include<reg52.h>
+  11          
+  12          /*------------------------------------------------
+  13           uS延时函数，含有输入参数 unsigned char t，无返回值
+  14           unsigned char 是定义无符号字符变量，其值的范围是
+  15           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  16           长度如下 T=tx2+5 uS 
+  17          ------------------------------------------------*/
+  18          void DelayUs2x(unsigned char t)
+  19          {   
+  20   1       while(--t);
+  21   1      }
+  22          /*------------------------------------------------
+  23           mS延时函数，含有输入参数 unsigned char t，无返回值
+  24           unsigned char 是定义无符号字符变量，其值的范围是
+  25           0~255 这里使用晶振12M，精确延时请使用汇编
+  26          ------------------------------------------------*/
+  27          void DelayMs(unsigned char t)
+  28          {
+  29   1           
+  30   1       while(t--)
+  31   1       {
+  32   2           //大致延时1mS
+  33   2           DelayUs2x(245);
+  34   2               DelayUs2x(245);
+  35   2       }
+  36   1      }
+  37          /*------------------------------------------------
+  38                             串口发送数据
+  39          ------------------------------------------------*/
+  40          void wr_byte(unsigned char num)   
+  41          {   
+  42   1          SBUF = num; //发送数据   
+  43   1          while (!TI);   
+  44   1          TI = 0; //发送完毕，清中断标志   
+  45   1      }   
+  46          /*------------------------------------------------
+  47                             主函数
+  48          ------------------------------------------------*/
+  49          main()
+  50          {
+  51   1       unsigned char num;
+  52   1       SCON = 0x00; //设置串行口工作方式0，发送 rx数据端，低位在前，高位在后；
+  53   1       
+  54   1       while(1)
+C51 COMPILER V7.06   TEST                                                                  05/05/2011 11:33:32 PAGE 2   
+
+  55   1       {
+  56   2        wr_byte(num);
+  57   2        num++;
+  58   2        DelayMs(100);
+  59   2       }
+  60   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     49    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

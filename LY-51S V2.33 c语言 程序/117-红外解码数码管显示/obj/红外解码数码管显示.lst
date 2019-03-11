@@ -1,0 +1,201 @@
+C51 COMPILER V7.06   _焱饨饴胧隷躝允_                                                    08/31/2010 20:29:04 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _焱饨饴胧隷躝允_
+OBJECT MODULE PLACED IN .\obj\红外解码数码管显示.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 红外解码数码管显示.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\红外解码数码管显
+                    -示.lst) OBJECT(.\obj\红外解码数码管显示.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：遥控器红外解码数码管显示
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：按配套遥控器上1-9会在数码管上对应显示
+   8          ------------------------------------------------*/
+   9          #include<reg52.h>    //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit IR=P3^2;  //红外接口标志
+  12          
+  13          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  14          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  15          sbit LATCH2=P2^3;//                 位锁存
+  16          /*------------------------------------------------
+  17                          全局变量声明
+  18          ------------------------------------------------*/
+  19          
+  20          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  21          unsigned char  irtime;//红外用全局变量
+  22          
+  23          bit irpro_ok,irok;
+  24          unsigned char IRcord[4];
+  25          unsigned char irdata[33];
+  26          
+  27          /*------------------------------------------------
+  28                            函数声明
+  29          ------------------------------------------------*/
+  30          
+  31          void Ir_work(void);
+  32          void Ircordpro(void);
+  33          
+  34          /*------------------------------------------------
+  35                            定时器0中断处理
+  36          ------------------------------------------------*/
+  37          
+  38          void tim0_isr (void) interrupt 1 using 1
+  39          {
+  40   1        irtime++;  //用于计数2个下降沿之间的时间
+  41   1      }
+  42          
+  43          /*------------------------------------------------
+  44                            外部中断0中断处理
+  45          ------------------------------------------------*/
+  46          void EX0_ISR (void) interrupt 0 //外部中断0服务函数
+  47          {
+  48   1        static unsigned char  i;             //接收红外信号处理
+  49   1        static bit startflag;                //是否开始处理标志位
+  50   1      
+  51   1      if(startflag)                         
+  52   1         {
+  53   2          if(irtime<63&&irtime>=33)//引导码 TC9012的头码，9ms+4.5ms
+  54   2                              i=0;
+C51 COMPILER V7.06   _焱饨饴胧隷躝允_                                                    08/31/2010 20:29:04 PAGE 2   
+
+  55   2                      irdata[i]=irtime;//存储每个电平的持续时间，用于以后判断是0还是1
+  56   2                      irtime=0;
+  57   2                      i++;
+  58   2                               if(i==33)
+  59   2                              {
+  60   3                                       irok=1;
+  61   3                                       i=0;
+  62   3                                      }
+  63   2                }
+  64   1               else
+  65   1                      {
+  66   2                      irtime=0;
+  67   2                      startflag=1;
+  68   2                      }
+  69   1      
+  70   1      }
+  71          
+  72          /*------------------------------------------------
+  73                          定时器0初始化
+  74          ------------------------------------------------*/
+  75          void TIM0init(void)//定时器0初始化
+  76          {
+  77   1      
+  78   1        TMOD=0x02;//定时器0工作方式2，TH0是重装值，TL0是初值
+  79   1        TH0=0x00; //重载值
+  80   1        TL0=0x00; //初始化值
+  81   1        ET0=1;    //开中断
+  82   1        TR0=1;    
+  83   1      }
+  84          /*------------------------------------------------
+  85                            外部中断0初始化
+  86          ------------------------------------------------*/
+  87          void EX0init(void)
+  88          {
+  89   1       IT0 = 1;   //指定外部中断0下降沿触发，INT0 (P3.2)
+  90   1       EX0 = 1;   //使能外部中断
+  91   1       EA = 1;    //开总中断
+  92   1      }
+  93          /*------------------------------------------------
+  94                            键值处理
+  95          ------------------------------------------------*/
+  96          
+  97          void Ir_work(void)//红外键值散转程序
+  98          {
+  99   1             switch(IRcord[2])//判断第三个数码值
+ 100   1                       {
+ 101   2                               case 0x0c:DataPort=dofly_DuanMa[1];break;//1 显示相应的按键值
+ 102   2                               case 0x18:DataPort=dofly_DuanMa[2];break;//2
+ 103   2                               case 0x5e:DataPort=dofly_DuanMa[3];break;//3
+ 104   2                               case 0x08:DataPort=dofly_DuanMa[4];break;//4
+ 105   2                               case 0x1c:DataPort=dofly_DuanMa[5];break;//5
+ 106   2                               case 0x5a:DataPort=dofly_DuanMa[6];break;//6
+ 107   2                               case 0x42:DataPort=dofly_DuanMa[7];break;//7
+ 108   2                               case 0x52:DataPort=dofly_DuanMa[8];break;//8
+ 109   2                               case 0x4a:DataPort=dofly_DuanMa[9];break;//9
+ 110   2                   default:break;
+ 111   2                               }
+ 112   1      
+ 113   1                        irpro_ok=0;//处理完成标志
+ 114   1      
+ 115   1        }
+ 116          /*------------------------------------------------
+C51 COMPILER V7.06   _焱饨饴胧隷躝允_                                                    08/31/2010 20:29:04 PAGE 3   
+
+ 117                          红外码值处理
+ 118          ------------------------------------------------*/
+ 119          void Ircordpro(void)//红外码值处理函数
+ 120          { 
+ 121   1        unsigned char i, j, k;
+ 122   1        unsigned char cord,value;
+ 123   1      
+ 124   1        k=1;
+ 125   1        for(i=0;i<4;i++)      //处理4个字节
+ 126   1           {
+ 127   2            for(j=1;j<=8;j++) //处理1个字节8位
+ 128   2               {
+ 129   3                cord=irdata[k];
+ 130   3                if(cord>7)//大于某值为1，这个和晶振有绝对关系，这里使用12M计算，此值可以有一定误差
+ 131   3                   value|=0x80;
+ 132   3                if(j<8)
+ 133   3                          {
+ 134   4                               value>>=1;
+ 135   4                              }
+ 136   3                 k++;
+ 137   3               }
+ 138   2           IRcord[i]=value;
+ 139   2           value=0;     
+ 140   2           } 
+ 141   1               irpro_ok=1;//处理完毕标志位置1
+ 142   1      }
+ 143          
+ 144          /*------------------------------------------------
+ 145                              主函数
+ 146          ------------------------------------------------*/
+ 147          void main(void)
+ 148          {
+ 149   1       EX0init(); //初始化外部中断
+ 150   1       TIM0init();//初始化定时器
+ 151   1      
+ 152   1        DataPort=0xfe; //取位码 第一位数码管选通，即二进制1111 1110
+ 153   1        LATCH2=1;      //位锁存
+ 154   1        LATCH2=0;
+ 155   1      
+ 156   1       while(1)//主循环
+ 157   1         {
+ 158   2          if(irok)                        //如果接收好了进行红外处理
+ 159   2                {   
+ 160   3                 Ircordpro();
+ 161   3                 irok=0;
+ 162   3                }
+ 163   2      
+ 164   2          if(irpro_ok)                   //如果处理好后进行工作处理，如按对应的按键后显示对应的数字等
+ 165   2                {
+ 166   3                 Ir_work();
+ 167   3                }
+ 168   2         }
+ 169   1      }
+ 170            
+ 171            
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    252    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V7.06   _焱饨饴胧隷躝允_                                                    08/31/2010 20:29:04 PAGE 4   
+
+   DATA SIZE        =     39    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

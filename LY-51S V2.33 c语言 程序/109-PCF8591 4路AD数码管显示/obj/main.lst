@@ -1,0 +1,127 @@
+C51 COMPILER V7.06   MAIN                                                                  06/17/2010 16:04:36 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IIC协议 PCF8591 AD/DA转换
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            修改：无
+   6            内容：使用4路AD中的4路检测外部模拟量输入
+   7          ------------------------------------------------*/  
+   8          #include <reg52.h>                
+   9          #include "i2c.h"
+  10          #include "delay.h"
+  11          #include "display.h"
+  12          
+  13          #define AddWr 0x90   //写数据地址 
+  14          #define AddRd 0x91   //读数据地址
+  15          
+  16          extern bit ack;
+  17          bit ReadADFlag;
+  18          
+  19          
+  20          
+  21          unsigned char ReadADC(unsigned char Chl);
+  22          bit WriteDAC(unsigned char dat);
+  23          /*------------------------------------------------
+  24                        主程序
+  25          ------------------------------------------------*/
+  26          main()
+  27          {
+  28   1       unsigned char num=0,i;
+  29   1       Init_Timer0();
+  30   1       DelayMs(20);
+  31   1      
+  32   1      while (1)         //主循环
+  33   1        {
+  34   2       if(ReadADFlag)
+  35   2        {
+  36   3        ReadADFlag=0; 
+  37   3       for(i=0;i<5;i++)//连续读5次，输入通道后多读几次，去最后一次值，以便读出稳定值
+  38   3           num=ReadADC(0);
+  39   3        num=num*5*10/256;   // x10表示把实际值扩大10，如4.5 变成 45 方便做下一步处理 x5 表示基准电压5V 
+  40   3        TempData[0]=dofly_DuanMa[num/10]|0x80;    
+  41   3        TempData[1]=dofly_DuanMa[num%10];
+  42   3      
+  43   3       for(i=0;i<5;i++)
+  44   3         num=ReadADC(1);
+  45   3       num=num*5*10/256;   // x10表示把实际值扩大10，如4.5 变成 45 方便做下一步处理
+  46   3       TempData[2]=dofly_DuanMa[num/10]|0x80;    
+  47   3       TempData[3]=dofly_DuanMa[num%10];
+  48   3      
+  49   3       for(i=0;i<5;i++)
+  50   3          num=ReadADC(2);
+  51   3       num=num*5*10/256;   // x10表示把实际值扩大10，如4.5 变成 45 方便做下一步处理
+  52   3       TempData[4]=dofly_DuanMa[num/10]|0x80;    
+  53   3       TempData[5]=dofly_DuanMa[num%10];
+  54   3      
+C51 COMPILER V7.06   MAIN                                                                  06/17/2010 16:04:36 PAGE 2   
+
+  55   3       for(i=0;i<5;i++)
+  56   3           num=ReadADC(3);
+  57   3       num=num*5*10/256;   // x10表示把实际值扩大10，如4.5 变成 45 方便做下一步处理
+  58   3       TempData[6]=dofly_DuanMa[num/10]|0x80;    
+  59   3       TempData[7]=dofly_DuanMa[num%10];
+  60   3       //主循环中添加其他需要一直工作的程序
+  61   3         }
+  62   2        }
+  63   1      }
+  64          /*------------------------------------------------
+  65                       读AD转值程序
+  66          输入参数 Chl 表示需要转换的通道，范围从0-3
+  67          返回值范围0-255
+  68          ------------------------------------------------*/
+  69          unsigned char ReadADC(unsigned char Chl)
+  70           {
+  71   1        unsigned char Val;
+  72   1         Start_I2c();               //启动总线
+  73   1         SendByte(AddWr);             //发送器件地址
+  74   1           if(ack==0)return(0);
+  75   1         SendByte(Chl);            //发送器件子地址
+  76   1           if(ack==0)return(0);
+  77   1         Start_I2c();
+  78   1         SendByte(AddRd);
+  79   1            if(ack==0)return(0);
+  80   1         Val=RcvByte();
+  81   1         NoAck_I2c();                 //发送非应位
+  82   1         Stop_I2c();                  //结束总线
+  83   1        return(Val);
+  84   1       }
+  85          /*------------------------------------------------
+  86                         写入DA转换数值
+  87          输入参数：dat 表示需要转换的DA数值，范围是0-255
+  88          ------------------------------------------------*/
+  89          /*bit WriteDAC(unsigned char dat)
+  90          {
+  91             Start_I2c();               //启动总线
+  92             SendByte(AddWr);             //发送器件地址
+  93               if(ack==0)return(0);
+  94             SendByte(0x40);            //发送器件子地址
+  95               if(ack==0)return(0);
+  96             SendByte(dat);             //发送数据
+  97               if(ack==0)return(0);
+  98             Stop_I2c();  
+  99          }*/
+ 100          
+ 101          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    282    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

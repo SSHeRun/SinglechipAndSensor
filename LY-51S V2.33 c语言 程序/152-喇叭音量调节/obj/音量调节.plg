@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\公司重要资料\51开发板\LY-51S 开发板光盘资料\5、配套程序\复件 LY-51S c语言 程序\152-音量调节\音量调节.uv2
+Project File Date:  12/14/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 音量.c...
+linking...
+Program Size: data=10.0 xdata=0 code=176
+creating hex file from ".\obj\音量调节"...
+".\obj\音量调节" - 0 Error(s), 0 Warning(s).

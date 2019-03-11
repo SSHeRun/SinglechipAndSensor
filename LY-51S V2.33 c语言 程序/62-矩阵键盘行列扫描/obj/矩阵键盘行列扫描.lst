@@ -1,0 +1,254 @@
+C51 COMPILER V7.06   _卣蠹蘝_羅蒧描                                                      09/10/2012 09:25:06 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _卣蠹蘝_羅蒧描
+OBJECT MODULE PLACED IN .\obj\矩阵键盘行列扫描.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 矩阵键盘行列扫描.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\矩阵键盘行列扫描.l
+                    -st) OBJECT(.\obj\矩阵键盘行列扫描.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：矩阵键盘依次输入控制 使用行列逐级扫描
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：如计算器输入数据形式相同 从右至左 使用行列扫描方法
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          
+  12          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  13          #define KeyPort  P1
+  14          
+  15          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  16          sbit LATCH2=P2^3;//                 位锁存
+  17          
+  18          unsigned char code dofly_DuanMa[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,
+  19                                                           0x77,0x7c,0x39,0x5e,0x79,0x71};// 显示段码值0~F
+  20          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  21          unsigned char TempData[10]; //存储显示值的全局变量
+  22          
+  23          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  24          void DelayMs(unsigned char t); //ms级延时
+  25          void Display(unsigned char FirstBit,unsigned char Num);//数码管显示函数
+  26          unsigned char KeyScan(void);//键盘扫描
+  27          unsigned char KeyPro(void);
+  28          void Init_Timer0(void);//定时器初始化
+  29          /*------------------------------------------------
+  30                              主函数
+  31          ------------------------------------------------*/
+  32          void main (void)
+  33          {
+  34   1      unsigned char num,i,j;                  
+  35   1      unsigned char temp[8];
+  36   1      Init_Timer0();
+  37   1      
+  38   1      while (1)         //主循环
+  39   1        {
+  40   2      
+  41   2      
+  42   2       num=KeyPro();
+  43   2       if(num!=0xff)
+  44   2         {
+  45   3          if(i<8)
+  46   3            {
+  47   4             temp[i]=dofly_DuanMa[num];
+  48   4                 for(j=0;j<=i;j++)
+  49   4                TempData[7-i+j]=temp[j];
+  50   4             }
+  51   3              i++;
+  52   3              if(i==9)//多出一个按键输入为了清屏 原本应该为8
+  53   3            {
+C51 COMPILER V7.06   _卣蠹蘝_羅蒧描                                                      09/10/2012 09:25:06 PAGE 2   
+
+  54   4                i=0;
+  55   4                       for(j=0;j<8;j++)//清屏
+  56   4               TempData[j]=0;
+  57   4             }
+  58   3         }
+  59   2        //Display(0,8); //显示全部8位
+  60   2           //主循环中添加其他需要一直工作的程序
+  61   2              
+  62   2        }
+  63   1      }
+  64          /*------------------------------------------------
+  65           uS延时函数，含有输入参数 unsigned char t，无返回值
+  66           unsigned char 是定义无符号字符变量，其值的范围是
+  67           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  68           长度如下 T=tx2+5 uS 
+  69          ------------------------------------------------*/
+  70          void DelayUs2x(unsigned char t)
+  71          {   
+  72   1       while(--t);
+  73   1      }
+  74          /*------------------------------------------------
+  75           mS延时函数，含有输入参数 unsigned char t，无返回值
+  76           unsigned char 是定义无符号字符变量，其值的范围是
+  77           0~255 这里使用晶振12M，精确延时请使用汇编
+  78          ------------------------------------------------*/
+  79          void DelayMs(unsigned char t)
+  80          {
+  81   1           
+  82   1       while(t--)
+  83   1       {
+  84   2           //大致延时1mS
+  85   2           DelayUs2x(245);
+  86   2               DelayUs2x(245);
+  87   2       }
+  88   1      }
+  89          /*------------------------------------------------
+  90           显示函数，用于动态扫描数码管
+  91           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+  92           如输入0表示从第一个显示。
+  93           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+  94          ------------------------------------------------*/
+  95          void Display(unsigned char FirstBit,unsigned char Num)
+  96          {
+  97   1            static unsigned char i=0;
+  98   1                
+  99   1      
+ 100   1                 DataPort=0;   //清空数据，防止有交替重影
+ 101   1             LATCH1=1;     //段锁存
+ 102   1             LATCH1=0;
+ 103   1      
+ 104   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+ 105   1             LATCH2=1;     //位锁存
+ 106   1             LATCH2=0;
+ 107   1      
+ 108   1             DataPort=TempData[i]; //取显示数据，段码
+ 109   1             LATCH1=1;     //段锁存
+ 110   1             LATCH1=0;
+ 111   1             
+ 112   1                 i++;
+ 113   1             if(i==Num)
+ 114   1                    i=0;
+ 115   1      
+C51 COMPILER V7.06   _卣蠹蘝_羅蒧描                                                      09/10/2012 09:25:06 PAGE 3   
+
+ 116   1      
+ 117   1      }
+ 118          /*------------------------------------------------
+ 119                              定时器初始化子程序
+ 120          ------------------------------------------------*/
+ 121          void Init_Timer0(void)
+ 122          {
+ 123   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 124   1       //TH0=0x00;          //给定初值
+ 125   1       //TL0=0x00;
+ 126   1       EA=1;            //总中断打开
+ 127   1       ET0=1;           //定时器中断打开
+ 128   1       TR0=1;           //定时器开关打开
+ 129   1      }
+ 130          /*------------------------------------------------
+ 131                           定时器中断子程序
+ 132          ------------------------------------------------*/
+ 133          void Timer0_isr(void) interrupt 1 
+ 134          {
+ 135   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+ 136   1       TL0=(65536-2000)%256;
+ 137   1       
+ 138   1       Display(0,8);       // 调用数码管扫描
+ 139   1      
+ 140   1      }
+ 141          
+ 142          /*------------------------------------------------
+ 143                  按键扫描函数，返回扫描键值
+ 144          ------------------------------------------------*/
+ 145          unsigned char KeyScan(void)  //键盘扫描函数，使用行列逐级扫描法
+ 146          {
+ 147   1       unsigned char Val;
+ 148   1       KeyPort=0xf0;//高四位置高，低四位拉低
+ 149   1       if(KeyPort!=0xf0)//表示有按键按下
+ 150   1         {
+ 151   2          DelayMs(10);  //去抖
+ 152   2              if(KeyPort!=0xf0)
+ 153   2                {           //表示有按键按下
+ 154   3              KeyPort=0xfe; //检测第一行
+ 155   3                      if(KeyPort!=0xfe)
+ 156   3                              {
+ 157   4                                Val=KeyPort&0xf0;
+ 158   4                            Val+=0x0e;
+ 159   4                                while(KeyPort!=0xfe);
+ 160   4                                DelayMs(10); //去抖
+ 161   4                                while(KeyPort!=0xfe);
+ 162   4                        return Val;
+ 163   4                      }
+ 164   3              KeyPort=0xfd; //检测第二行
+ 165   3                      if(KeyPort!=0xfd)
+ 166   3                              {
+ 167   4                                Val=KeyPort&0xf0;
+ 168   4                            Val+=0x0d;
+ 169   4                                while(KeyPort!=0xfd);
+ 170   4                                DelayMs(10); //去抖
+ 171   4                                while(KeyPort!=0xfd);
+ 172   4                        return Val;
+ 173   4                      }
+ 174   3              KeyPort=0xfb; //检测第三行
+ 175   3                      if(KeyPort!=0xfb)
+ 176   3                              {
+ 177   4                                Val=KeyPort&0xf0;
+C51 COMPILER V7.06   _卣蠹蘝_羅蒧描                                                      09/10/2012 09:25:06 PAGE 4   
+
+ 178   4                            Val+=0x0b;
+ 179   4                                while(KeyPort!=0xfb);
+ 180   4                                DelayMs(10); //去抖
+ 181   4                                while(KeyPort!=0xfb);
+ 182   4                        return Val;
+ 183   4                      }
+ 184   3              KeyPort=0xf7; //检测第四行
+ 185   3                      if(KeyPort!=0xf7)
+ 186   3                              {
+ 187   4                                Val=KeyPort&0xf0;
+ 188   4                            Val+=0x07;
+ 189   4                                while(KeyPort!=0xf7);
+ 190   4                                DelayMs(10); //去抖
+ 191   4                                while(KeyPort!=0xf7);
+ 192   4                        return Val;
+ 193   4                      }
+ 194   3           }
+ 195   2         }
+ 196   1        return 0xff;
+ 197   1      }
+ 198          /*------------------------------------------------
+ 199                   按键值处理函数，返回扫键值
+ 200          ------------------------------------------------*/
+ 201          unsigned char KeyPro(void)
+ 202          {
+ 203   1       switch(KeyScan())
+ 204   1       {
+ 205   2        case 0x7e:return 0;break;//0 按下相应的键显示相对应的码值
+ 206   2        case 0x7d:return 1;break;//1
+ 207   2        case 0x7b:return 2;break;//2
+ 208   2        case 0x77:return 3;break;//3
+ 209   2        case 0xbe:return 4;break;//4
+ 210   2        case 0xbd:return 5;break;//5
+ 211   2        case 0xbb:return 6;break;//6
+ 212   2        case 0xb7:return 7;break;//7
+ 213   2        case 0xde:return 8;break;//8
+ 214   2        case 0xdd:return 9;break;//9
+ 215   2        case 0xdb:return 10;break;//a
+ 216   2        case 0xd7:return 11;break;//b
+ 217   2        case 0xee:return 12;break;//c
+ 218   2        case 0xed:return 13;break;//d
+ 219   2        case 0xeb:return 14;break;//e
+ 220   2        case 0xe7:return 15;break;//f
+ 221   2        default:return 0xff;break;
+ 222   2       }
+ 223   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    490    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

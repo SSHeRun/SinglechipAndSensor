@@ -1,0 +1,121 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  14:42:14  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\步进电机转动原理.obj TO .\obj\步进电机转动原理 PRINT (.\obj\步进电机转动原理.m51) RAMSIZE
+>>  (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\步进电机转动原理.obj (步进_缁_转__訽理)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\步进电机转动原理 (步进_缁_转__訽理)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?步进_缁_转__訽理
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0029H     UNIT         ?PR?MAIN?步进_缁_转__訽理
+            CODE    002CH     001BH     UNIT         ?PR?_DELAYMS?步进_缁_转__訽理
+            CODE    0047H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0053H     0003H     UNIT         ?PR?_DELAYUS2X?步进_缁_转__訽理
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\步进电机转动原理 (步进_缁_转__訽理)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?步进_缁_转__訽理
+
+?PR?MAIN?步进_缁_转__訽理
+  +--> ?PR?_DELAYMS?步进_缁_转__訽理
+
+?PR?_DELAYMS?步进_缁_转__訽理
+  +--> ?PR?_DELAYUS2X?步进_缁_转__訽理
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\步进电机转动原理 (步进_缁_转__訽理)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        步进_缁_转__訽理
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  14:42:14  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0032H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0053H         PUBLIC        _DelayUs2x
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.0       PUBLIC        A1
+  B:0090H.1       PUBLIC        B1
+  D:0008H         PUBLIC        Speed
+  B:0090H.2       PUBLIC        C1
+  B:0090H.3       PUBLIC        D1
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0053H         LINE#         35
+  C:0053H         LINE#         36
+  C:0053H         LINE#         37
+  C:0055H         LINE#         38
+  -------         ENDPROC       _DELAYUS2X
+  C:002EH         SYMBOL        L?0011
+  -------         PROC          L?0010
+  -------         ENDPROC       L?0010
+  C:002EH         SYMBOL        L?0011
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0032H         LINE#         44
+  C:0034H         LINE#         45
+  C:0034H         LINE#         47
+  C:003AH         LINE#         48
+  C:003AH         LINE#         50
+  C:003FH         LINE#         51
+  C:0044H         LINE#         52
+  C:0046H         LINE#         53
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          MAIN
+  C:0003H         LINE#         57
+  C:0003H         LINE#         58
+  C:0003H         LINE#         60
+  C:0006H         LINE#         61
+  C:0006H         LINE#         62
+  C:0006H         LINE#         63
+  C:000AH         LINE#         64
+  C:000DH         LINE#         65
+  C:0011H         LINE#         66
+  C:0014H         LINE#         67
+  C:001AH         LINE#         68
+  C:001DH         LINE#         69
+  C:0025H         LINE#         70
+  C:002AH         LINE#         71
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        步进_缁_转__訽理
+
+Program Size: data=10.0 xdata=0 code=86
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

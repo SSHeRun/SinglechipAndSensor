@@ -1,0 +1,110 @@
+C51 COMPILER V7.06   _然_声音                                                            05/20/2010 10:14:17 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _然_声音
+OBJECT MODULE PLACED IN .\obj\救护车声音.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 救护车声音.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\救护车声音.lst) OBJECT(.
+                    -\obj\救护车声音.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：喇叭
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：模拟警车发声
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit SPK=P1^2;    //定义喇叭端口
+  12          unsigned char frq; 
+  13          
+  14          void DelayUs2x(unsigned char t);//函数声明 
+  15          void DelayMs(unsigned char t);
+  16          /*------------------------------------------------
+  17                              定时器初始化子程序
+  18          ------------------------------------------------*/
+  19          void Init_Timer0(void)
+  20          {
+  21   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+  22   1       //TH0=0x00;          //给定初值
+  23   1       //TL0=0x00;
+  24   1       EA=1;            //总中断打开
+  25   1       ET0=1;           //定时器中断打开
+  26   1       TR0=1;           //定时器开关打开
+  27   1      }
+  28          /*------------------------------------------------
+  29                              主函数
+  30          ------------------------------------------------*/
+  31          main()
+  32          {
+  33   1       unsigned char i;
+  34   1       Init_Timer0(); //初始化定时器
+  35   1       while(1)
+  36   1            {
+  37   2         frq=0;
+  38   2         for(i=0;i<60;i++)//播放1s左右一种频率
+  39   2            {
+  40   3            DelayMs(10); 
+  41   3                }
+  42   2         frq=100;
+  43   2         for(i=0;i<60;i++)//播放1s左右另外一种频率
+  44   2            {  
+  45   3            DelayMs(10); 
+  46   3                }
+  47   2                
+  48   2               }
+  49   1      }
+  50          /*------------------------------------------------
+  51           uS延时函数，含有输入参数 unsigned char t，无返回值
+  52           unsigned char 是定义无符号字符变量，其值的范围是
+  53           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  54           长度如下 T=tx2+5 uS 
+C51 COMPILER V7.06   _然_声音                                                            05/20/2010 10:14:17 PAGE 2   
+
+  55          ------------------------------------------------*/
+  56          void DelayUs2x(unsigned char t)
+  57          {   
+  58   1       while(--t);
+  59   1      }
+  60          /*------------------------------------------------
+  61           mS延时函数，含有输入参数 unsigned char t，无返回值
+  62           unsigned char 是定义无符号字符变量，其值的范围是
+  63           0~255 这里使用晶振12M，精确延时请使用汇编
+  64          ------------------------------------------------*/
+  65          void DelayMs(unsigned char t)
+  66          {
+  67   1           
+  68   1       while(t--)
+  69   1       {
+  70   2           //大致延时1mS
+  71   2           DelayUs2x(245);
+  72   2               DelayUs2x(245);
+  73   2       }
+  74   1      }/*------------------------------------------------
+  75                           定时器中断子程序
+  76          ------------------------------------------------*/
+  77          void Timer0_isr(void) interrupt 1 
+  78          {
+  79   1       TH0=0xfe;                //重新赋值 
+  80   1       TL0=frq;         //低8位值在主程序中不断累加
+  81   1       
+  82   1       SPK=!SPK;        //端口电平取反
+  83   1      
+  84   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     87    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

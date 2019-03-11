@@ -1,0 +1,90 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/13/2010  17:02:05  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\LED…¡À∏.obj TO .\obj\…¡À∏led PRINT (.\obj\…¡À∏led.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\LED…¡À∏.obj (LED…¡À_)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\…¡À∏led (LED…¡À_)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0014H     UNIT         ?PR?MAIN?LED…¡À_
+            CODE    0017H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0023H     000AH     UNIT         ?PR?_DELAY?LED…¡À_
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\…¡À∏led (LED…¡À_)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?LED…¡À_
+
+?PR?MAIN?LED…¡À_
+  +--> ?PR?_DELAY?LED…¡À_
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\…¡À∏led (LED…¡À_)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LED…¡À_
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:0090H.0       PUBLIC        LED0
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/13/2010  17:02:05  PAGE 2
+
+
+  D:0088H         PUBLIC        TCON
+  C:0023H         PUBLIC        _Delay
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         25
+  C:0003H         LINE#         26
+  C:0003H         LINE#         27
+  C:0005H         LINE#         28
+  C:000CH         LINE#         29
+  C:000EH         LINE#         30
+  C:0015H         LINE#         32
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:0023H         LINE#         38
+  C:0023H         LINE#         39
+  C:0023H         LINE#         40
+  C:002CH         LINE#         41
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        LED…¡À_
+
+Program Size: data=9.0 xdata=0 code=45
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

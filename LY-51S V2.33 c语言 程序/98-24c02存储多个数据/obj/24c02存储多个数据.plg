@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Documents and Settings\Administrator\桌面\98-24c02存储多个数据\24c02存储多个数据.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 24c02存储多个数据.c...
+linking...
+Program Size: data=20.1 xdata=0 code=779
+creating hex file from ".\obj\24c02存储多个数据"...
+".\obj\24c02存储多个数据" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 24c02存储多个数据.c...
+linking...
+Program Size: data=20.1 xdata=0 code=784
+creating hex file from ".\obj\24c02存储多个数据"...
+".\obj\24c02存储多个数据" - 0 Error(s), 0 Warning(s).

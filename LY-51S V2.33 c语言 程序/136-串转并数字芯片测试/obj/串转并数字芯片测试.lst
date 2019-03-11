@@ -1,0 +1,77 @@
+C51 COMPILER V7.06   __转瞋数字__芲测试                                                    06/10/2010 12:37:43 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE __转瞋数字__芲测试
+OBJECT MODULE PLACED IN .\obj\串转并数字芯片测试.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 串转并数字芯片测试.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\串转并数字芯片测
+                    -试.lst) OBJECT(.\obj\串转并数字芯片测试.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：74hc164流水灯 串转并
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过74hc164串行信号转并行信号依次点亮8个LED灯，
+   8                  然后依次熄灭8个灯，先下载好该程序，然后用8个杜邦线连接LED排针J9和P1口插针
+   9                  J22,端子CLK连接P2.0，A或者B连接P2.1，另外悬空的一端A或B连接至VCC，共需要11根杜邦线
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          
+  13          sbit CLK=P2^0;    //串行时钟
+  14          sbit INPUT=P2^1;  //串行数据
+  15          /*------------------------------------------------
+  16                             延时子程序
+  17          ------------------------------------------------*/
+  18          void delay(unsigned int cnt) 
+  19          {
+  20   1       while(--cnt);
+  21   1      }
+  22          /*------------------------------------------------
+  23                              主函数
+  24          ------------------------------------------------*/
+  25          main()
+  26          {
+  27   1       unsigned char temp;        //作为测试数据
+  28   1       unsigned char i;
+  29   1       while(1)
+  30   1            {
+  31   2                temp=0x00;            //初始值0
+  32   2                for(i=0;i<8;i++)
+  33   2                   {
+  34   3                     INPUT=temp&0x01;//取最后一位赋值
+  35   3                         temp>>=1;       //右移
+  36   3                         CLK=0;          //上升沿作用
+  37   3                         CLK=1;
+  38   3                         delay(30000);   //演示有助于观察效果
+  39   3                         }
+  40   2             temp=0xff;          
+  41   2                 for(i=0;i<8;i++)
+  42   2                   {
+  43   3                     INPUT=temp&0x01;
+  44   3                         temp>>=1;
+  45   3                         CLK=0;
+  46   3                         CLK=1;
+  47   3                         delay(30000);
+  48   3                         }
+  49   2      
+  50   2            }
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V7.06   __转瞋数字__芲测试                                                    06/10/2010 12:37:43 PAGE 2   
+
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

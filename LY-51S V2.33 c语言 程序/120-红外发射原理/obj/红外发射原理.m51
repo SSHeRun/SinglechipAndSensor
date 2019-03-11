@@ -1,0 +1,130 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        03/13/2014  11:04:08  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE .\obj\红外发射原理.obj TO .\obj\红外发射原理 PRINT (.\obj\红外发射原理.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\红外发射原理.obj (_焱鈅_蒧訽理)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\红外发射原理 (_焱鈅_蒧訽理)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?_焱鈅_蒧訽理
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0017H     UNIT         ?PR?MAIN?_焱鈅_蒧訽理
+            CODE    0025H     0010H     UNIT         ?PR?INIT_TIMER0?_焱鈅_蒧訽理
+            CODE    0035H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0041H     0009H     UNIT         ?PR?TIMER0_ISR?_焱鈅_蒧訽理
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\红外发射原理 (_焱鈅_蒧訽理)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?_焱鈅_蒧訽理
+
+?PR?MAIN?_焱鈅_蒧訽理
+  +--> ?PR?INIT_TIMER0?_焱鈅_蒧訽理
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\红外发射原理 (_焱鈅_蒧訽理)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        _焱鈅_蒧訽理
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V5.03                                                      03/13/2014  11:04:08  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  B:0090H.3       PUBLIC        LED1
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  B:00B0H.2       PUBLIC        IR
+  C:000EH         PUBLIC        main
+  C:0025H         PUBLIC        Init_Timer0
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:00B0H.3       PUBLIC        LED
+  B:0088H.4       PUBLIC        TR0
+  C:0041H         PUBLIC        Timer0_isr
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  B:0020H.0       PUBLIC        Flag
+  -------         PROC          INIT_TIMER0
+  C:0025H         LINE#         21
+  C:0025H         LINE#         22
+  C:0025H         LINE#         23
+  C:0028H         LINE#         24
+  C:002BH         LINE#         25
+  C:002EH         LINE#         26
+  C:0030H         LINE#         27
+  C:0032H         LINE#         28
+  C:0034H         LINE#         29
+  -------         ENDPROC       INIT_TIMER0
+  -------         PROC          TIMER0_ISR
+  C:0041H         LINE#         35
+  C:0041H         LINE#         37
+  C:0044H         LINE#         38
+  C:0047H         LINE#         39
+  C:0049H         LINE#         40
+  -------         ENDPROC       TIMER0_ISR
+  -------         PROC          MAIN
+  C:000EH         LINE#         45
+  C:000EH         LINE#         46
+  C:000EH         LINE#         49
+  C:0011H         LINE#         51
+  C:0011H         LINE#         52
+  C:0011H         LINE#         54
+  C:0015H         LINE#         55
+  C:0018H         LINE#         56
+  C:0018H         LINE#         57
+  C:0019H         LINE#         58
+  C:001AH         LINE#         59
+  C:001BH         LINE#         60
+  C:001CH         LINE#         61
+  C:001DH         LINE#         62
+  C:001EH         LINE#         63
+  C:001FH         LINE#         64
+  C:0020H         LINE#         65
+  C:0021H         LINE#         66
+BL51 BANKED LINKER/LOCATER V5.03                                                      03/13/2014  11:04:08  PAGE 3
+
+
+  C:0023H         LINE#         67
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        _焱鈅_蒧訽理
+
+Program Size: data=9.1 xdata=0 code=66
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

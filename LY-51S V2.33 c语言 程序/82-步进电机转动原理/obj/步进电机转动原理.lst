@@ -1,0 +1,100 @@
+C51 COMPILER V7.06   步进_缁_转__訽理                                                      05/20/2010 14:42:14 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 步进_缁_转__訽理
+OBJECT MODULE PLACED IN .\obj\步进电机转动原理.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 步进电机转动原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\步进电机转动原理.l
+                    -st) OBJECT(.\obj\步进电机转动原理.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：步进电机
+   3            公司：上海浩豚电子科技有限公司
+   4            网站：www.doflye.cn
+   5            编写：师访
+   6            日期：2009.5
+   7            修改：无
+   8            内容：本程序用于测试4相步进电机常规驱动 使用1相励磁
+   9          
+  10           ------------------------------------------------*/
+  11          
+  12          #include <reg52.h>
+  13          
+  14          
+  15          
+  16          sbit A1=P1^0; //定义步进电机连接端口
+  17          sbit B1=P1^1;
+  18          sbit C1=P1^2;
+  19          sbit D1=P1^3;
+  20          
+  21          
+  22          #define Coil_A1 {A1=1;B1=0;C1=0;D1=0;}//A相通电，其他相断电
+  23          #define Coil_B1 {A1=0;B1=1;C1=0;D1=0;}//B相通电，其他相断电
+  24          #define Coil_C1 {A1=0;B1=0;C1=1;D1=0;}//C相通电，其他相断电
+  25          #define Coil_D1 {A1=0;B1=0;C1=0;D1=1;}//D相通电，其他相断电
+  26          #define Coil_OFF {A1=0;B1=0;C1=0;D1=0;}//全部断电
+  27          
+  28          unsigned char Speed;
+  29          /*------------------------------------------------
+  30           uS延时函数，含有输入参数 unsigned char t，无返回值
+  31           unsigned char 是定义无符号字符变量，其值的范围是
+  32           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  33           长度如下 T=tx2+5 uS 
+  34          ------------------------------------------------*/
+  35          void DelayUs2x(unsigned char t)
+  36          {   
+  37   1       while(--t);
+  38   1      }
+  39          /*------------------------------------------------
+  40           mS延时函数，含有输入参数 unsigned char t，无返回值
+  41           unsigned char 是定义无符号字符变量，其值的范围是
+  42           0~255 这里使用晶振12M，精确延时请使用汇编
+  43          ------------------------------------------------*/
+  44          void DelayMs(unsigned char t)
+  45          {
+  46   1           
+  47   1       while(t--)
+  48   1       {
+  49   2           //大致延时1mS
+  50   2           DelayUs2x(245);
+  51   2               DelayUs2x(245);
+  52   2       }
+  53   1      }
+  54          /*------------------------------------------------
+C51 COMPILER V7.06   步进_缁_转__訽理                                                      05/20/2010 14:42:14 PAGE 2   
+
+  55                              主函数
+  56          ------------------------------------------------*/
+  57          main()
+  58          {
+  59   1       //unsigned int i=64*16; //转2周停止
+  60   1       Speed=5;
+  61   1       while(1)  
+  62   1        {         
+  63   2           Coil_A1                 //遇到Coil_A1  用{A1=1;B1=0;C1=0;D1=0;}代替
+  64   2           DelayMs(Speed);         //改变这个参数可以调整电机转速 ,数字越小，转速越大,力矩越小
+  65   2           Coil_B1
+  66   2           DelayMs(Speed);
+  67   2           Coil_C1
+  68   2           DelayMs(Speed);
+  69   2           Coil_D1
+  70   2           DelayMs(Speed);
+  71   2        }
+  72   1       // Coil_OFF
+  73   1       // while(1) ; 
+  74   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     71    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\51开发板\LY-51S 开发板光盘资料\5、配套程序\复件 LY-51S c语言 程序\144-1602液晶显示的计算器\1602液晶显示计算器.uv2
+Project File Date:  06/09/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1602.c...
+compiling delay.c...
+compiling keyboard.c...
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_CHECK_BUSY?1602
+Program Size: data=71.5 xdata=0 code=4816
+creating hex file from ".\obj\1602液晶显示计算器"...
+".\obj\1602液晶显示计算器" - 0 Error(s), 1 Warning(s).

@@ -1,0 +1,132 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/19/2010  23:48:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\外部中断1下降沿触发.obj TO .\obj\外部中断1下降沿触发 PRINT (.\obj\外部中断1下降沿触发.m51
+>> ) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\外部中断1下降沿触发.obj (外部謃__1_陆_沿__)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\外部中断1下降沿触发 (外部謃__1_陆_沿__)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000CH     UNIT         ?C_C51STARTUP
+            CODE    000FH     0003H     UNIT         ?PR?_DELAYUS2X?外部謃__1_陆_沿__
+                    0012H     0001H                  *** GAP ***
+            CODE    0013H     0003H     ABSOLUTE     
+            CODE    0016H     0045H     UNIT         ?PR?ISR_INT1?外部謃__1_陆_沿__
+            CODE    005BH     0015H     UNIT         ?PR?_DELAYMS?外部謃__1_陆_沿__
+            CODE    0070H     000AH     UNIT         ?PR?MAIN?外部謃__1_陆_沿__
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\外部中断1下降沿触发 (外部謃__1_陆_沿__)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?ISR_INT1?外部謃__1_陆_沿__
+  +--> ?PR?_DELAYMS?外部謃__1_陆_沿__
+
+?PR?_DELAYMS?外部謃__1_陆_沿__
+  +--> ?PR?_DELAYUS2X?外部謃__1_陆_沿__
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?外部謃__1_陆_沿__
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\外部中断1下降沿触发 (外部謃__1_陆_沿__)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/19/2010  23:48:29  PAGE 2
+
+
+
+  -------         MODULE        外部謃__1_陆_沿__
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  C:005BH         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  B:00B0H.3       PUBLIC        INT1
+  C:0070H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:000FH         PUBLIC        _DelayUs2x
+  B:00A8H.2       PUBLIC        EX1
+  B:0088H.2       PUBLIC        IT1
+  B:0090H.0       PUBLIC        LED
+  D:00C8H         PUBLIC        T2CON
+  C:0016H         PUBLIC        ISR_INT1
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0070H         LINE#         19
+  C:0070H         LINE#         20
+  C:0070H         LINE#         21
+  C:0072H         LINE#         22
+  C:0074H         LINE#         23
+  C:0076H         LINE#         24
+  C:0078H         LINE#         25
+  C:0078H         LINE#         26
+  C:0078H         LINE#         28
+  -------         ENDPROC       MAIN
+  -------         PROC          ISR_INT1
+  C:0016H         LINE#         33
+  C:0033H         LINE#         36
+  C:0036H         LINE#         37
+  C:0036H         LINE#         38
+  C:003BH         LINE#         39
+  C:003EH         LINE#         41
+  C:003EH         LINE#         42
+  C:0040H         LINE#         43
+  C:0040H         LINE#         44
+  C:0040H         LINE#         45
+  -------         ENDPROC       ISR_INT1
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:000FH         LINE#         53
+  C:000FH         LINE#         54
+  C:000FH         LINE#         55
+  C:0011H         LINE#         56
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:005BH         LINE#         62
+  C:005DH         LINE#         63
+  C:005DH         LINE#         65
+  C:0063H         LINE#         66
+  C:0063H         LINE#         68
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/19/2010  23:48:29  PAGE 3
+
+
+  C:0068H         LINE#         69
+  C:006DH         LINE#         70
+  C:006FH         LINE#         71
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        外部謃__1_陆_沿__
+
+Program Size: data=9.0 xdata=0 code=121
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

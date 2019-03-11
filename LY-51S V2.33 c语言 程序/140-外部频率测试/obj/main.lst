@@ -1,0 +1,140 @@
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:39:22 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+line level    source
+
+   1          /*-----------------------------------------------
+   2            名称：频率计
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：T0外部计数，T1计时1S，计算1S内外部脉冲个数，并在液晶显示
+   8                  频率：单位时间内完成振动的次数
+   9          ------------------------------------------------*/
+  10          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  11          #include<stdio.h>
+  12          #include"1602.h"
+  13          #include"delay.h"
+  14          #define HIGH (65536-10000)/256
+  15          #define LOW  (65536-10000)%256
+  16          
+  17          sbit LED=P1^2;    //定义LED端口
+  18          bit OVERFLOWFLAG;
+  19          bit TIMERFLAG;
+  20          /*------------------------------------------------
+  21                              定时器0初始化子程序
+  22                                                  本程序用于计数
+  23          ------------------------------------------------*/
+  24          void Init_Timer0(void)
+  25          {
+  26   1       TMOD |= 0x01 | 0x04;     //使用模式1，16位计数器，使用"|"符号可以在使用多个定时器时不受影响                 
+  27   1       TH0=0x00;            //给定初值
+  28   1       TL0=0x00;         
+  29   1       EA=1;            //总中断打开
+  30   1       ET0=1;           //定时器中断打开
+  31   1       TR0=1;           //定时器开关打开
+  32   1      }
+  33          /*------------------------------------------------
+  34                              定时器1初始化子程序
+  35                                                  本程序用于定时
+  36          ------------------------------------------------*/
+  37          void Init_Timer1(void)
+  38          {
+  39   1       TMOD |= 0x10;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响 
+  40   1       TH1=HIGH;            //给定初值，这里使用定时器最大值从0开始计数一直到65535溢出
+  41   1       TL1=LOW;
+  42   1       EA=1;            //总中断打开
+  43   1       ET1=1;           //定时器中断打开
+  44   1       TR1=1;           //定时器开关打开
+  45   1      }
+  46          /*------------------------------------------------
+  47                              主程序
+  48          ------------------------------------------------*/
+  49          main()
+  50          {
+  51   1       unsigned  long int a;
+  52   1       char temp[16];      //定义字符显示缓冲数组
+  53   1       Init_Timer0();      //初始化定时器0
+  54   1       Init_Timer1();      //初始化定时器1
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:39:22 PAGE 2   
+
+  55   1       LCD_Init();         //初始化液晶屏
+  56   1       DelayMs(10);        //延时用于稳定，可以去掉
+  57   1       LCD_Clear();        //清屏
+  58   1       LCD_Write_String(0,0,"www.doflye.net");//写入第一行信息，主循环中不再更改此信息，所以在while之前写入
+  59   1       while(1)
+  60   1       {
+  61   2        if(OVERFLOWFLAG)//检测溢出标志，如果溢出表明频率过高，显示溢出信息
+  62   2          {
+  63   3               OVERFLOWFLAG=0;//标志清零
+  64   3           LCD_Write_String(0,1,"overflow >655KHz");
+  65   3              }
+  66   2        if(TIMERFLAG)      //定时100ms到，做数据处理
+  67   2          {
+  68   3               a=TL0+TH0*256;//读取计数值
+  69   3               a=a*10;     //扩大到实际值
+  70   3           sprintf(temp,"FREQ:%08.0f Hz",(float)a);
+  71   3           LCD_Write_String(0,1,temp);//显示到液晶第二行
+  72   3               TR0=1;                     //2个定时器打开
+  73   3               TR1=1;
+  74   3               TH0=0;                     //保证计数器初值为0
+  75   3               TL0=0;
+  76   3               TIMERFLAG=0;               //打开计时计数标志
+  77   3               
+  78   3              }
+  79   2        }
+  80   1      }
+  81          
+  82          /*------------------------------------------------
+  83                           定时器0中断子程序
+  84          ------------------------------------------------*/
+  85          void Timer0_isr(void) interrupt 1
+  86          {
+  87   1       TH0=00;              //重新给定初值
+  88   1       TL0=00; 
+  89   1      
+  90   1       OVERFLOWFLAG=1;  //溢出标志
+  91   1      
+  92   1      }
+  93          /*------------------------------------------------
+  94                           定时器1中断子程序
+  95          ------------------------------------------------*/
+  96          void Timer1_isr(void) interrupt 3
+  97          {
+  98   1       static unsigned char i;
+  99   1       TH1=HIGH;               //重新赋值10ms
+ 100   1       TL1=LOW;
+ 101   1      
+ 102   1       i++;
+ 103   1       if(i==10)       //100ms 计数时间单位，得出100ms脉冲个数 x10就是1s中脉冲个数，即为频率 Hz 
+ 104   1         {
+ 105   2         i=0;
+ 106   2         TR0=0;        //2个定时器关闭
+ 107   2         TR1=0;
+ 108   2         TIMERFLAG=1;  //标志位清零
+ 109   2         TH1=HIGH;     //重新赋值
+ 110   2         TL1=LOW;
+ 111   2         }
+ 112   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    226    ----
+C51 COMPILER V8.02   MAIN                                                                  09/18/2010 23:39:22 PAGE 3   
+
+   CONSTANT SIZE    =     47    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      20
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

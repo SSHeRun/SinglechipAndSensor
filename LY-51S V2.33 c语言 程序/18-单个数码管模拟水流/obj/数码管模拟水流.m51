@@ -1,0 +1,96 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/14/2010  09:58:56  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\数码管模拟水流.obj TO .\obj\数码管模拟水流 PRINT (.\obj\数码管模拟水流.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\数码管模拟水流.obj (数码_苣_拟薩流)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\数码管模拟水流 (数码_苣_拟薩流)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0021H     UNIT         ?PR?MAIN?数码_苣_拟薩流
+            CODE    0024H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0030H     000AH     UNIT         ?PR?_DELAY?数码_苣_拟薩流
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\数码管模拟水流 (数码_苣_拟薩流)
+
+
+SEGMENT                             DATA_GROUP 
+  +--> CALLED SEGMENT             START    LENGTH
+-------------------------------------------------
+?C_C51STARTUP                     -----    -----
+  +--> ?PR?MAIN?数码_苣_拟薩流
+
+?PR?MAIN?数码_苣_拟薩流           0008H    0001H
+  +--> ?PR?_DELAY?数码_苣_拟薩流
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\数码管模拟水流 (数码_苣_拟薩流)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        数码_苣_拟薩流
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/14/2010  09:58:56  PAGE 2
+
+
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0030H         PUBLIC        _Delay
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0003H         LINE#         21
+  C:0003H         LINE#         22
+  C:0003H         LINE#         23
+  C:0006H         LINE#         24
+  C:0009H         LINE#         25
+  C:0009H         LINE#         26
+  C:0010H         LINE#         27
+  C:0016H         LINE#         28
+  C:0019H         LINE#         30
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:0030H         LINE#         39
+  C:0030H         LINE#         40
+  C:0030H         LINE#         41
+  C:0039H         LINE#         42
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        数码_苣_拟薩流
+
+Program Size: data=10.0 xdata=0 code=58
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

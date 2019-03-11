@@ -1,0 +1,7 @@
+".\obj\18b20.obj",
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\main.obj",
+".\obj\18b20a.obj" 
+TO ".\obj\多个18b20液晶显示" 
+PRINT(".\obj\多个18b20液晶显示.m51") RAMSIZE(256) 

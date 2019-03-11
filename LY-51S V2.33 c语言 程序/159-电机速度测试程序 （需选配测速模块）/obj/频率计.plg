@@ -1,0 +1,17 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\速度测试程序\频率计.uv2
+Project File Date:  09/06/2012
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 1602.c...
+compiling delay.c...
+compiling main.c...
+linking...
+Program Size: data=59.3 xdata=0 code=3377
+creating hex file from ".\obj\频率计"...
+".\obj\频率计" - 0 Error(s), 0 Warning(s).

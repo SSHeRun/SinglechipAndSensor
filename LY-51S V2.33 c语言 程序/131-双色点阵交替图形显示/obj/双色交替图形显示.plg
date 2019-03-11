@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\131-双色点阵交替图形显示\双色交替图形显示.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+compiling 双色交替图形显示.c...
+双色交替图形显示.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=17.0 xdata=0 code=444
+creating hex file from ".\obj\双色交替图形显示"...
+".\obj\双色交替图形显示" - 0 Error(s), 0 Warning(s).

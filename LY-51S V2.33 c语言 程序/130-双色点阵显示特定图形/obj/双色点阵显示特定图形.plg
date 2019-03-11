@@ -1,0 +1,17 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\130-双色点阵显示特定图形\双色点阵显示特定图形.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 双色点阵显示特定图形.c...
+双色点阵显示特定图形.C(116): warning C280: 'j': unreferenced local variable
+双色点阵显示特定图形.C(116): warning C280: 'k': unreferenced local variable
+linking...
+Program Size: data=19.0 xdata=0 code=288
+creating hex file from ".\obj\双色点阵显示特定图形"...
+".\obj\双色点阵显示特定图形" - 0 Error(s), 2 Warning(s).

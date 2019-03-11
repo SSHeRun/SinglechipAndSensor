@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\公司重要资料\51开发板\LY-Micro 51开发板光盘资料\4、配套测试程序\Micro 51 程序\23-2-串口通讯中断应用12M晶振 波特率2400\串口通讯中断.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 串口通讯中断.c...
+linking...
+Program Size: data=9.0 xdata=0 code=187
+creating hex file from ".\obj\串口通讯中断"...
+".\obj\串口通讯中断" - 0 Error(s), 0 Warning(s).

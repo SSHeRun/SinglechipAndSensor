@@ -1,0 +1,66 @@
+C51 COMPILER V7.06   左移                                                                  05/13/2010 20:35:11 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 左移
+OBJECT MODULE PLACED IN .\obj\左移.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 左移.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\左移.lst) OBJECT(.\obj\左移.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IO口高低电平控制
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：点亮P1口的1个LED灯闪烁
+   8                  该程序是单片机学习中最简单最基础的，
+   9                          通过程序了解如何控制端口的高低电平
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          
+  13          
+  14          void Delay(unsigned int t); //函数声明
+  15          
+  16          /*------------------------------------------------
+  17                              主函数
+  18          ------------------------------------------------*/
+  19          void main (void)
+  20          {
+  21   1                        //此方法使用bit位对单个端口赋值
+  22   1      unsigned char i;  //定义一个无符号字符型局部变量 i 取值范围 0~255
+  23   1      Delay(50000);
+  24   1      P1=0xfe;
+  25   1      for(i=0;i<8;i++)   //加入 for循环，表明for循环大括号中的程序循环执行10次
+  26   1        {
+  27   2         Delay(50000);
+  28   2         P1<<=1;
+  29   2        }
+  30   1      while (1)         //主循环
+  31   1        {
+  32   2                         //主循环中添加其他需要一直工作的程序
+  33   2        }
+  34   1      }/*------------------------------------------------
+  35           延时函数，含有输入参数 unsigned int t，无返回值
+  36           unsigned int 是定义无符号整形变量，其值的范围是
+  37           0~65535
+  38          ------------------------------------------------*/
+  39          void Delay(unsigned int t)
+  40          {
+  41   1       while(--t);
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     47    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

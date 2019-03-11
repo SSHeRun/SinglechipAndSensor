@@ -1,0 +1,397 @@
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 2402____Ò»_öÊý_Ý
+OBJECT MODULE PLACED IN .\obj\2402´æ´¢Ò»¸öÊý¾Ý.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 2402´æ´¢Ò»¸öÊý¾Ý.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\2402´æ´¢Ò»¸öÊý¾Ý.l
+                    -st) OBJECT(.\obj\2402´æ´¢Ò»¸öÊý¾Ý.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºIICÐ­Òé EEPROM24c02 ´æÊý¶ÁÈ¡Êý¾Ý
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÐÞ¸Ä£ºÎÞ
+   6            ÄÚÈÝ£º´Ë³ÌÐòÓÃÓÚ¼ì²âEEPROMÐÔÄÜ£¬²âÊÔ·½·¨ÈçÏÂ£ºÐ´Èë24c02Ò»¸öÊý¾Ý£¬È»ºóÔÚÄÚ´æÖÐ¸Ä±äÕâÐ©Êý¾Ý£¬
+   7                  µôµçºóÖ÷ÄÚ´æ½«Ê§È¥ÕâÐ©ÐÅÏ¢£¬È»ºó´Ó24c02ÖÐµ÷ÈëÕâÐ©Êý¾Ý¡£¿´ÊÇ·ñÓëÐ´ÈëµÄÏàÍ¬¡£
+   8                          º¯ÊýÊÇ²ÉÓÃÈí¼þÑÓÊ±µÄ·½·¨²úÉúSCLÂö³å,¹Ì¶Ô¸ß¾§ÕñÆµÂÊÒª×÷ Ò»¶¨µÄÐÞ¸Ä....(±¾ÀýÊÇ1us»úÆ÷
+   9                          ÖÜÆÚ,¼´¾§ÕñÆµÂÊÒªÐ¡ÓÚ12MHZ)
+  10          ------------------------------------------------*/  
+  11            
+  12                        
+  13          #include <reg52.h>          //Í·ÎÄ¼þµÄ°üº¬
+  14          #include <intrins.h>
+  15          
+  16          #define  _Nop()  _nop_()        //¶¨Òå¿ÕÖ¸Áî
+  17          
+  18          // ³£,±äÁ¿¶¨ÒåÇø
+  19          
+  20                                                        
+  21          sbit SDA=P2^1;            //Ä£ÄâI2CÊý¾Ý´«ËÍÎ»
+  22          sbit SCL=P2^0;            //Ä£ÄâI2CÊ±ÖÓ¿ØÖÆÎ»
+  23          
+  24                                    
+  25          bit ack;                      //Ó¦´ð±êÖ¾Î»
+  26             
+  27          
+  28          void DelayUs2x(unsigned char t);//º¯ÊýÉùÃ÷ 
+  29          void DelayMs(unsigned char t);
+  30          
+  31          /*------------------------------------------------
+  32           uSÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned char t£¬ÎÞ·µ»ØÖµ
+  33           unsigned char ÊÇ¶¨ÒåÎÞ·ûºÅ×Ö·û±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  34           0~255 ÕâÀïÊ¹ÓÃ¾§Õñ12M£¬¾«È·ÑÓÊ±ÇëÊ¹ÓÃ»ã±à,´óÖÂÑÓÊ±
+  35           ³¤¶ÈÈçÏÂ T=tx2+5 uS 
+  36          ------------------------------------------------*/
+  37          void DelayUs2x(unsigned char t)
+  38          {   
+  39   1       while(--t);
+  40   1      }
+  41          /*------------------------------------------------
+  42           mSÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned char t£¬ÎÞ·µ»ØÖµ
+  43           unsigned char ÊÇ¶¨ÒåÎÞ·ûºÅ×Ö·û±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  44           0~255 ÕâÀïÊ¹ÓÃ¾§Õñ12M£¬¾«È·ÑÓÊ±ÇëÊ¹ÓÃ»ã±à
+  45          ------------------------------------------------*/
+  46          void DelayMs(unsigned char t)
+  47          {
+  48   1           
+  49   1       while(t--)
+  50   1       {
+  51   2           //´óÖÂÑÓÊ±1mS
+  52   2           DelayUs2x(245);
+  53   2               DelayUs2x(245);
+  54   2       }
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 2   
+
+  55   1      }
+  56          
+  57          /*------------------------------------------------
+  58                              Æô¶¯×ÜÏß
+  59          ------------------------------------------------*/
+  60          void Start_I2c()
+  61          {
+  62   1        SDA=1;   //·¢ËÍÆðÊ¼Ìõ¼þµÄÊý¾ÝÐÅºÅ
+  63   1        _Nop();
+  64   1        SCL=1;
+  65   1        _Nop();    //ÆðÊ¼Ìõ¼þ½¨Á¢Ê±¼ä´óÓÚ4.7us,ÑÓÊ±
+  66   1        _Nop();
+  67   1        _Nop();
+  68   1        _Nop();
+  69   1        _Nop();    
+  70   1        SDA=0;     //·¢ËÍÆðÊ¼ÐÅºÅ
+  71   1        _Nop();    //ÆðÊ¼Ìõ¼þËø¶¨Ê±¼ä´óÓÚ4¦Ì
+  72   1        _Nop();
+  73   1        _Nop();
+  74   1        _Nop();
+  75   1        _Nop();       
+  76   1        SCL=0;    //Ç¯×¡I2C×ÜÏß£¬×¼±¸·¢ËÍ»ò½ÓÊÕÊý¾Ý
+  77   1        _Nop();
+  78   1        _Nop();
+  79   1      }
+  80          /*------------------------------------------------
+  81                              ½áÊø×ÜÏß
+  82          ------------------------------------------------*/
+  83          void Stop_I2c()
+  84          {
+  85   1        SDA=0;    //·¢ËÍ½áÊøÌõ¼þµÄÊý¾ÝÐÅºÅ
+  86   1        _Nop();   //·¢ËÍ½áÊøÌõ¼þµÄÊ±ÖÓÐÅºÅ
+  87   1        SCL=1;    //½áÊøÌõ¼þ½¨Á¢Ê±¼ä´óÓÚ4¦Ì
+  88   1        _Nop();
+  89   1        _Nop();
+  90   1        _Nop();
+  91   1        _Nop();
+  92   1        _Nop();
+  93   1        SDA=1;    //·¢ËÍI2C×ÜÏß½áÊøÐÅºÅ
+  94   1        _Nop();
+  95   1        _Nop();
+  96   1        _Nop();
+  97   1        _Nop();
+  98   1      }
+  99          
+ 100          
+ 101          
+ 102          
+ 103          /*----------------------------------------------------------------
+ 104                           ×Ö½ÚÊý¾Ý´«ËÍº¯Êý               
+ 105          º¯ÊýÔ­ÐÍ: void  SendByte(unsigned char c);
+ 106          ¹¦ÄÜ:  ½«Êý¾Ýc·¢ËÍ³öÈ¥,¿ÉÒÔÊÇµØÖ·,Ò²¿ÉÒÔÊÇÊý¾Ý,·¢ÍêºóµÈ´ýÓ¦´ð,²¢¶Ô
+ 107               ´Ë×´Ì¬Î»½øÐÐ²Ù×÷.(²»Ó¦´ð»ò·ÇÓ¦´ð¶¼Ê¹ack=0 ¼Ù)     
+ 108               ·¢ËÍÊý¾ÝÕý³££¬ack=1; ack=0±íÊ¾±»¿ØÆ÷ÎÞÓ¦´ð»òËð»µ¡£
+ 109          ------------------------------------------------------------------*/
+ 110          void  SendByte(unsigned char c)
+ 111          {
+ 112   1       unsigned char BitCnt;
+ 113   1       
+ 114   1       for(BitCnt=0;BitCnt<8;BitCnt++)  //Òª´«ËÍµÄÊý¾Ý³¤¶ÈÎª8Î»
+ 115   1          {
+ 116   2           if((c<<BitCnt)&0x80)SDA=1;   //ÅÐ¶Ï·¢ËÍÎ»
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 3   
+
+ 117   2             else  SDA=0;                
+ 118   2           _Nop();
+ 119   2           SCL=1;               //ÖÃÊ±ÖÓÏßÎª¸ß£¬Í¨Öª±»¿ØÆ÷¿ªÊ¼½ÓÊÕÊý¾ÝÎ»
+ 120   2            _Nop(); 
+ 121   2            _Nop();             //±£Ö¤Ê±ÖÓ¸ßµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
+ 122   2            _Nop();
+ 123   2            _Nop();
+ 124   2            _Nop();         
+ 125   2           SCL=0; 
+ 126   2          }
+ 127   1          
+ 128   1          _Nop();
+ 129   1          _Nop();
+ 130   1          SDA=1;               //8Î»·¢ËÍÍêºóÊÍ·ÅÊý¾ÝÏß£¬×¼±¸½ÓÊÕÓ¦´ðÎ»
+ 131   1          _Nop();
+ 132   1          _Nop();   
+ 133   1          SCL=1;
+ 134   1          _Nop();
+ 135   1          _Nop();
+ 136   1          _Nop();
+ 137   1          if(SDA==1)ack=0;     
+ 138   1             else ack=1;        //ÅÐ¶ÏÊÇ·ñ½ÓÊÕµ½Ó¦´ðÐÅºÅ
+ 139   1          SCL=0;
+ 140   1          _Nop();
+ 141   1          _Nop();
+ 142   1      }
+ 143          
+ 144          
+ 145          
+ 146          
+ 147          
+ 148          
+ 149          
+ 150          /*----------------------------------------------------------------
+ 151                           ×Ö½ÚÊý¾Ý´«ËÍº¯Êý               
+ 152          º¯ÊýÔ­ÐÍ: unsigned char  RcvByte();
+ 153          ¹¦ÄÜ:  ÓÃÀ´½ÓÊÕ´ÓÆ÷¼þ´«À´µÄÊý¾Ý,²¢ÅÐ¶Ï×ÜÏß´íÎó(²»·¢Ó¦´ðÐÅºÅ)£¬
+ 154               ·¢ÍêºóÇëÓÃÓ¦´ðº¯Êý¡£  
+ 155          ------------------------------------------------------------------*/    
+ 156          unsigned char  RcvByte()
+ 157          {
+ 158   1        unsigned char retc;
+ 159   1        unsigned char BitCnt;
+ 160   1        
+ 161   1        retc=0; 
+ 162   1        SDA=1;             //ÖÃÊý¾ÝÏßÎªÊäÈë·½Ê½
+ 163   1        for(BitCnt=0;BitCnt<8;BitCnt++)
+ 164   1            {
+ 165   2              _Nop();           
+ 166   2              SCL=0;       //ÖÃÊ±ÖÓÏßÎªµÍ£¬×¼±¸½ÓÊÕÊý¾ÝÎ»
+ 167   2              _Nop();
+ 168   2              _Nop();      //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4.7us
+ 169   2              _Nop();
+ 170   2              _Nop();
+ 171   2              _Nop();
+ 172   2              SCL=1;       //ÖÃÊ±ÖÓÏßÎª¸ßÊ¹Êý¾ÝÏßÉÏÊý¾ÝÓÐÐ§
+ 173   2              _Nop();
+ 174   2              _Nop();
+ 175   2              retc=retc<<1;
+ 176   2              if(SDA==1)retc=retc+1; //¶ÁÊý¾ÝÎ»,½ÓÊÕµÄÊý¾ÝÎ»·ÅÈëretcÖÐ
+ 177   2              _Nop();
+ 178   2              _Nop(); 
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 4   
+
+ 179   2            }
+ 180   1        SCL=0;    
+ 181   1        _Nop();
+ 182   1        _Nop();
+ 183   1        return(retc);
+ 184   1      }
+ 185          
+ 186          
+ 187          
+ 188          /*----------------------------------------------------------------
+ 189                               Ó¦´ð×Óº¯Êý
+ 190          Ô­ÐÍ:  void Ack_I2c(void);
+ 191           
+ 192          ----------------------------------------------------------------*/
+ 193          void Ack_I2c(void)
+ 194          {
+ 195   1        
+ 196   1        SDA=0;     
+ 197   1        _Nop();
+ 198   1        _Nop();
+ 199   1        _Nop();      
+ 200   1        SCL=1;
+ 201   1        _Nop();
+ 202   1        _Nop();              //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
+ 203   1        _Nop();
+ 204   1        _Nop();
+ 205   1        _Nop();  
+ 206   1        SCL=0;               //ÇåÊ±ÖÓÏß£¬Ç¯×¡I2C×ÜÏßÒÔ±ã¼ÌÐø½ÓÊÕ
+ 207   1        _Nop();
+ 208   1        _Nop();    
+ 209   1      }
+ 210          /*----------------------------------------------------------------
+ 211                               ·ÇÓ¦´ð×Óº¯Êý
+ 212          Ô­ÐÍ:  void NoAck_I2c(void);
+ 213           
+ 214          ----------------------------------------------------------------*/
+ 215          void NoAck_I2c(void)
+ 216          {
+ 217   1        
+ 218   1        SDA=1;
+ 219   1        _Nop();
+ 220   1        _Nop();
+ 221   1        _Nop();      
+ 222   1        SCL=1;
+ 223   1        _Nop();
+ 224   1        _Nop();              //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
+ 225   1        _Nop();
+ 226   1        _Nop();
+ 227   1        _Nop();  
+ 228   1        SCL=0;                //ÇåÊ±ÖÓÏß£¬Ç¯×¡I2C×ÜÏßÒÔ±ã¼ÌÐø½ÓÊÕ
+ 229   1        _Nop();
+ 230   1        _Nop();    
+ 231   1      }
+ 232          
+ 233          
+ 234          
+ 235          
+ 236          
+ 237          
+ 238          /*----------------------------------------------------------------
+ 239                              ÏòÎÞ×ÓµØÖ·Æ÷¼þ·¢ËÍ×Ö½ÚÊý¾Ýº¯Êý               
+ 240          º¯ÊýÔ­ÐÍ: bit  ISendByte(unsigned char sla,ucahr c);  
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 5   
+
+ 241          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬Êý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þµØÖ·sla.
+ 242                     Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
+ 243          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
+ 244          ----------------------------------------------------------------*/
+ 245          /*bit ISendByte(unsigned char sla,unsigned char c)
+ 246          {
+ 247             Start_I2c();               //Æô¶¯×ÜÏß
+ 248             SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
+ 249               if(ack==0)return(0);
+ 250             SendByte(c);               //·¢ËÍÊý¾Ý
+ 251               if(ack==0)return(0);
+ 252            Stop_I2c();                 //½áÊø×ÜÏß
+ 253            return(1);
+ 254          }
+ 255          */
+ 256          
+ 257          /*----------------------------------------------------------------
+ 258                              ÏòÓÐ×ÓµØÖ·Æ÷¼þ·¢ËÍ¶à×Ö½ÚÊý¾Ýº¯Êý               
+ 259          º¯ÊýÔ­ÐÍ: bit  ISendStr(unsigned char sla,unsigned char suba,ucahr *s,unsigned char no);  
+ 260          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬×ÓµØÖ·,Êý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þ
+ 261                    µØÖ·sla£¬×ÓµØÖ·suba£¬·¢ËÍÄÚÈÝÊÇsÖ¸ÏòµÄÄÚÈÝ£¬·¢ËÍno¸ö×Ö½Ú¡£
+ 262                     Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
+ 263          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
+ 264          ----------------------------------------------------------------*/
+ 265          bit ISendStr(unsigned char sla,unsigned char suba,unsigned char *s,unsigned char no)
+ 266          {
+ 267   1         unsigned char i;
+ 268   1      
+ 269   1         Start_I2c();               //Æô¶¯×ÜÏß
+ 270   1         SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
+ 271   1           if(ack==0)return(0);
+ 272   1         SendByte(suba);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
+ 273   1           if(ack==0)return(0);
+ 274   1      
+ 275   1         for(i=0;i<no;i++)
+ 276   1          {   
+ 277   2           SendByte(*s);            //·¢ËÍÊý¾Ý
+ 278   2             if(ack==0)return(0);
+ 279   2           s++;
+ 280   2          } 
+ 281   1       Stop_I2c();                  //½áÊø×ÜÏß
+ 282   1        return(1);
+ 283   1      }
+ 284          
+ 285          /*----------------------------------------------------------------
+ 286                              ÏòÎÞ×ÓµØÖ·Æ÷¼þ¶Á×Ö½ÚÊý¾Ýº¯Êý               
+ 287          º¯ÊýÔ­ÐÍ: bit  IRcvByte(unsigned char sla,ucahr *c);  
+ 288          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬¶ÁÊý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þµØ
+ 289                    Ö·sla£¬·µ»ØÖµÔÚc.
+ 290                     Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
+ 291          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
+ 292          ----------------------------------------------------------------*/
+ 293          /*bit IRcvByte(unsigned char sla,unsigned char *c)
+ 294          {
+ 295             Start_I2c();                //Æô¶¯×ÜÏß
+ 296             SendByte(sla+1);            //·¢ËÍÆ÷¼þµØÖ·
+ 297               if(ack==0)return(0);
+ 298             *c=RcvByte();               //¶ÁÈ¡Êý¾Ý
+ 299               NoAck_I2c();              //·¢ËÍ·Ç¾Í´ðÎ»
+ 300               Stop_I2c();               //½áÊø×ÜÏß
+ 301            return(1);
+ 302          }
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 6   
+
+ 303          
+ 304          */
+ 305          /*----------------------------------------------------------------
+ 306                              ÏòÓÐ×ÓµØÖ·Æ÷¼þ¶ÁÈ¡¶à×Ö½ÚÊý¾Ýº¯Êý               
+ 307          º¯ÊýÔ­ÐÍ: bit  ISendStr(unsigned char sla,unsigned char suba,ucahr *s,unsigned char no);  
+ 308          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬×ÓµØÖ·,¶ÁÊý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þ
+ 309                    µØÖ·sla£¬×ÓµØÖ·suba£¬¶Á³öµÄÄÚÈÝ·ÅÈësÖ¸ÏòµÄ´æ´¢Çø£¬¶Áno¸ö×Ö½Ú¡£
+ 310                     Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
+ 311          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
+ 312          ----------------------------------------------------------------*/
+ 313          bit IRcvStr(unsigned char sla,unsigned char suba,unsigned char *s,unsigned char no)
+ 314          {
+ 315   1         unsigned char i;
+ 316   1      
+ 317   1         Start_I2c();               //Æô¶¯×ÜÏß
+ 318   1         SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
+ 319   1           if(ack==0)return(0);
+ 320   1         SendByte(suba);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
+ 321   1           if(ack==0)return(0);
+ 322   1      
+ 323   1         Start_I2c();
+ 324   1         SendByte(sla+1);
+ 325   1            if(ack==0)return(0);
+ 326   1      
+ 327   1         for(i=0;i<no-1;i++)
+ 328   1          {   
+ 329   2           *s=RcvByte();              //·¢ËÍÊý¾Ý
+ 330   2            Ack_I2c();                //·¢ËÍ¾Í´ðÎ» 
+ 331   2           s++;
+ 332   2          } 
+ 333   1         *s=RcvByte();
+ 334   1          NoAck_I2c();                 //·¢ËÍ·ÇÓ¦Î»
+ 335   1         Stop_I2c();                    //½áÊø×ÜÏß
+ 336   1        return(1);
+ 337   1      }
+ 338          /*------------------------------------------------
+ 339                              Ö÷º¯Êý
+ 340          ------------------------------------------------*/
+ 341          void main()
+ 342                  {
+ 343   1               unsigned char doflye;                      // ¶¨ÒåÁÙÊ±±äÁ¿
+ 344   1               unsigned char i;
+ 345   1               
+ 346   1               IRcvStr(0xae,4,&doflye,1);                  //µ÷ÓÃ´æ´¢Êý¾Ý
+ 347   1               
+ 348   1               while(1)
+ 349   1                    {  
+ 350   2                        P1=doflye;                            //ÊýÖµÓÃ¶þ½øÖÆÏÔÊ¾£¬Ö±½ÓÓÃ8¸öLED±íÊ¾
+ 351   2                for(i=0;i<5;i++)   
+ 352   2                    DelayMs(200);
+ 353   2                doflye++;                             //1sÖÓ±äÁ¿×Ô¼Ó1£¬¸Ä±äÖµºó´æ´¢µ½24c02
+ 354   2                                                      //ÏÂ´Î¿ª»úÊ±½«ÏÔÊ¾µ±Ç°ÊýÖµ
+ 355   2                ISendStr(0xae,4,&doflye,1);                   //Ð´Èë24c02
+ 356   2                        }
+ 357   1       }
+ 358          
+ 359          
+ 360          
+ 361          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V7.06   2402____Ò»_öÊý_Ý                                                      06/15/2010 23:19:14 PAGE 7   
+
+   CODE SIZE        =    384    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      13
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

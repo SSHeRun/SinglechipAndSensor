@@ -1,0 +1,6 @@
+".\obj\1602.obj",
+".\obj\delay.obj",
+".\obj\i2c.obj",
+".\obj\main.obj" 
+TO ".\obj\pcf8591 1602“∫æßœ‘ æ" 
+PRINT(".\obj\pcf8591 1602“∫æßœ‘ æ.m51") RAMSIZE(256) 

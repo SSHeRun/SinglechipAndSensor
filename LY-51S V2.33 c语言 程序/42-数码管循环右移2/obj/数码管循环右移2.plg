@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\复件 LY-51S c语言 程序\42-数码管循环右移2\数码管循环右移2.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 数码管循环右移2.c...
+linking...
+Program Size: data=33.0 xdata=0 code=396
+creating hex file from ".\obj\数码管循环右移2"...
+".\obj\数码管循环右移2" - 0 Error(s), 0 Warning(s).

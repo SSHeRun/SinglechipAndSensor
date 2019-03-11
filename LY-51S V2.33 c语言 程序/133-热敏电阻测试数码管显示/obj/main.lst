@@ -1,0 +1,117 @@
+C51 COMPILER V7.06   MAIN                                                                  06/12/2010 10:59:06 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\obj\main.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\main.lst) OBJECT(.\obj\main.ob
+                    -j)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IIC协议 PCF8591 AD/DA转换 测试热敏电阻
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            修改：无
+   6            内容：使用1路ad测试热敏电阻阻值，并查表得到温度值，温度精度和多种参数有关。
+   7          ------------------------------------------------*/  
+   8          #include <reg52.h>                
+   9          #include "i2c.h"
+  10          #include "delay.h"
+  11          #include "display.h"
+  12          
+  13          
+  14          code unsigned int  vt_table[]=  // 电压温度对照表
+  15                  {
+  16                          4132,4098,4063,4026,3988,3949,3908,3866,3823,3779,
+  17                          3733,3686,3639,3590,3540,3489,3437,3385,3331,3277,
+  18                          3222,3166,3110,3054,2997,2940,2882,2824,2767,2709,
+  19                          2651,2593,2536,2478,2421,2365,2309,2253,2198,2143,
+  20                          2089,2036,1984,1932,1881,1831,1782,1734,1686,1640,
+  21                          1594,1550,1506,1464,1422,1381,1341,1303,1265,1228,
+  22                          1192
+  23                  
+  24                  };
+  25          
+  26          #define AddWr 0x90   //写数据地址 PCF8591
+  27          #define AddRd 0x91   //读数据地址 PCF8591
+  28          
+  29          extern bit ack;
+  30          unsigned char ReadADC(unsigned char Chl);
+  31          /*------------------------------------------------
+  32                        主程序
+  33          ------------------------------------------------*/
+  34          main()
+  35          {
+  36   1       unsigned int num=0;
+  37   1       unsigned char i,temp;
+  38   1       Init_Timer0();
+  39   1      
+  40   1      while (1)         //主循环
+  41   1        {
+  42   2        
+  43   2       num=ReadADC(0);// 
+  44   2       num=num*19;    //变成mv
+  45   2       for(i=0;i<61;i++)
+  46   2         {
+  47   3          if(num >= vt_table[i])
+  48   3             {
+  49   4              temp=i;
+  50   4              if(i<10)
+  51   4                {
+  52   5                temp=10-temp; 
+  53   5                TempData[0]=0x40;//'-'号
+  54   5                }
+C51 COMPILER V7.06   MAIN                                                                  06/12/2010 10:59:06 PAGE 2   
+
+  55   4              else
+  56   4                {
+  57   5                temp-=10;
+  58   5                TempData[0]=0x00;
+  59   5                }
+  60   4                      break;
+  61   4              }
+  62   3                
+  63   3            }
+  64   2       TempData[3]=dofly_DuanMa[temp/10];
+  65   2       TempData[4]=dofly_DuanMa[temp%10];
+  66   2       //主循环中添加其他需要一直工作的程序
+  67   2       DelayMs(200);
+  68   2        }
+  69   1      }
+  70          /*------------------------------------------------
+  71                       读AD转值程序
+  72          输入参数 Chl 表示需要转换的通道，范围从0-3
+  73          返回值范围0-255
+  74          ------------------------------------------------*/
+  75          unsigned char ReadADC(unsigned char Chl)
+  76           {
+  77   1         unsigned char Val;
+  78   1         Start_I2c();               //启动总线
+  79   1         SendByte(AddWr);             //发送器件地址
+  80   1           if(ack==0)return(0);
+  81   1         SendByte(0x40|Chl);            //发送器件子地址
+  82   1           if(ack==0)return(0);
+  83   1         Start_I2c();
+  84   1         SendByte(AddWr+1);
+  85   1            if(ack==0)return(0);
+  86   1         Val=RcvByte();
+  87   1         NoAck_I2c();                 //发送非应位
+  88   1         Stop_I2c();                  //结束总线
+  89   1        return(Val);
+  90   1       }
+  91          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    180    ----
+   CONSTANT SIZE    =    122    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

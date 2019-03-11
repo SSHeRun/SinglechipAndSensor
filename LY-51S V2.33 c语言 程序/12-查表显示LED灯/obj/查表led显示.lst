@@ -1,0 +1,77 @@
+C51 COMPILER V7.06   查_鞮ED_允_                                                           07/01/2010 17:12:48 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 查_鞮ED_允_
+OBJECT MODULE PLACED IN .\obj\查表led显示.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 查表led显示.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\查表led显示.lst) OBJECT
+                    -(.\obj\查表led显示.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：IO口高低电平控制
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过查表获得1个字节的值然后赋值给P1端口，ROM允许情况可以设置更多表格
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          /*------------------------------------------------
+  12                             查表表格
+  13          ------------------------------------------------*/
+  14          unsigned char code table[]={0x7f,0xbf,0xdf,0xef,
+  15                                      0xf7,0xfb,0xfd,0xfe,
+  16                                                                  0xff,0xff,0x00,0x00,
+  17                                                                  0x55,0x55,0xaa,0xaa
+  18                                                                  };
+  19                                                          //rom允许情况可以无限添加
+  20          /*------------------------------------------------
+  21                            函数声明
+  22          ------------------------------------------------*/
+  23          void Delay(unsigned int t); //函数声明
+  24          /*------------------------------------------------
+  25                              主函数
+  26          ------------------------------------------------*/
+  27          void main (void)
+  28          {
+  29   1                        
+  30   1      unsigned char i;  //定义一个无符号字符型局部变量 i 取值范围 0~255
+  31   1      
+  32   1      while (1)         //主循环
+  33   1        {
+  34   2       for(i=0;i<16;i++)   //加入 for循环，表明for循环大括号中的程序循环
+  35   2                           //执行16次，表明表格中有16个元素
+  36   2          {
+  37   3           P1=table[i];
+  38   3           Delay(30000);
+  39   3          }
+  40   2                           //主循环中添加其他需要一直工作的程序
+  41   2        }
+  42   1      }
+  43          /*------------------------------------------------
+  44           延时函数，含有输入参数 unsigned int t，无返回值
+  45           unsigned int 是定义无符号整形变量，其值的范围是
+  46           0~65535
+  47          ------------------------------------------------*/
+  48          void Delay(unsigned int t)
+  49          {
+  50   1       while(--t);
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V7.06   查_鞮ED_允_                                                           07/01/2010 17:12:48 PAGE 2   
+
+   CODE SIZE        =     39    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

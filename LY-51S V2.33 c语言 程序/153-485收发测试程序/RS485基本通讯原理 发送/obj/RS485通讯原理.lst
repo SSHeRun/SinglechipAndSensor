@@ -1,0 +1,137 @@
+C51 COMPILER V7.06   RS485蚠裚訽理                                                         03/12/2012 11:11:51 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE RS485蚠裚訽理
+OBJECT MODULE PLACED IN .\obj\RS485通讯原理.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE RS485通讯原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\RS485通讯原理.lst) OB
+                    -JECT(.\obj\RS485通讯原理.obj)
+
+stmt level    source
+
+   1           
+   2          /*-----------------------------------------------
+   3            名称：串口通信 rs485
+   4            网站：www.doflye.net
+   5            编写：shifang
+   6            日期：2009.5
+   7            修改：无
+   8            内容：485 与 232 使用相同软件协议，是半双工，需要有2套开发板对发测试，或者使用
+   9                  另外一个485设备配套，这里提供测试程序
+  10          ------------------------------------------------*/
+  11          
+  12          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义                        
+  13          #include"delay.h"
+  14          
+  15          unsigned char KeyScan(void);
+  16          void SendByte(unsigned char dat);
+  17          /*------------------------------------------------
+  18                          硬件端口定义
+  19          ------------------------------------------------*/
+  20          #define KeyPort P1
+  21          
+  22          sbit Ctrl_EN = P2^0;  //发送接收控制端
+  23          /*------------------------------------------------
+  24                           函数声明
+  25          ------------------------------------------------*/
+  26          void SendStr(unsigned char *s);
+  27          /*------------------------------------------------
+  28                          串口初始化
+  29          ------------------------------------------------*/
+  30          void InitUART  (void)
+  31          {
+  32   1      
+  33   1          SCON  = 0x50;                       // SCON: 模式 1, 8-bit UART, 使能接收  
+  34   1          TMOD |= 0x20;               // TMOD: timer 1, mode 2, 8-bit 重装
+  35   1          TH1   = 0xFD;               // TH1:  重装值 9600 波特率 晶振 11.0592MHz  
+  36   1          TR1   = 1;                  // TR1:  timer 1 打开                         
+  37   1          EA    = 1;                  //打开总中断
+  38   1          //ES    = 1;                  //打开串口中断
+  39   1      }                            
+  40          /*------------------------------------------------
+  41                              主函数
+  42          ------------------------------------------------*/
+  43          void main (void)
+  44          {
+  45   1      unsigned char keynum;
+  46   1      InitUART();
+  47   1      
+  48   1      Ctrl_EN=1;  //发送模式
+  49   1      //SendStr("UART test，技术论坛：www.doflye.net thank you!");
+  50   1      while (1)                       
+  51   1          {
+  52   2          keynum= KeyScan();
+  53   2          if(keynum!=0)
+  54   2             SendByte(keynum);
+C51 COMPILER V7.06   RS485蚠裚訽理                                                         03/12/2012 11:11:51 PAGE 2   
+
+  55   2      
+  56   2          }
+  57   1      }
+  58          
+  59          /*------------------------------------------------
+  60                              发送一个字节
+  61          ------------------------------------------------*/
+  62          void SendByte(unsigned char dat)
+  63          {
+  64   1       SBUF = dat;
+  65   1       while(!TI);
+  66   1            TI = 0;
+  67   1      }
+  68          /*------------------------------------------------
+  69                              发送一个字符串
+  70          ------------------------------------------------*/
+  71          void SendStr(unsigned char *s)
+  72          {
+  73   1       while(*s!='\0')// \0 表示字符串结束标志，通过检测是否字符串末尾
+  74   1        {
+  75   2        SendByte(*s);
+  76   2        s++;
+  77   2        }
+  78   1      }
+  79          
+  80          /*------------------------------------------------
+  81                    按键扫描函数，返回扫描键值
+  82          ------------------------------------------------*/
+  83          unsigned char KeyScan(void)
+  84          {
+  85   1       unsigned char keyvalue;
+  86   1       if(KeyPort!=0xff)
+  87   1         {
+  88   2          DelayMs(10);
+  89   2          if(KeyPort!=0xff)
+  90   2                 {
+  91   3                  keyvalue=KeyPort;
+  92   3                  while(KeyPort!=0xff);
+  93   3                      switch(keyvalue)
+  94   3                      {
+  95   4                       case 0xfe:return 1;break;
+  96   4                       case 0xfd:return 2;break;
+  97   4                       case 0xfb:return 3;break;
+  98   4                       case 0xf7:return 4;break;
+  99   4                       case 0xef:return 5;break;
+ 100   4                       case 0xdf:return 6;break;
+ 101   4                       case 0xbf:return 7;break;
+ 102   4                       case 0x7f:return 8;break;
+ 103   4                       default:return 0;break;
+ 104   4                      }
+ 105   3                }
+ 106   2         }
+ 107   1         return 0;
+ 108   1      }
+ 109          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    144    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V7.06   RS485蚠裚訽理                                                         03/12/2012 11:11:51 PAGE 3   
+
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

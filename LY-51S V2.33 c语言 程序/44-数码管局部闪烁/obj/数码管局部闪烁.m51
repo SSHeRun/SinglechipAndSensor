@@ -1,0 +1,173 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        06/15/2010  18:07:59  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\数码管局部闪烁.obj TO .\obj\数码管局部闪烁 PRINT (.\obj\数码管局部闪烁.m51) RAMSIZE (256)
+>> 
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\数码管局部闪烁.obj (数码_躝植可了_)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  .\obj\数码管局部闪烁 (数码_躝植可了_)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0008H     UNIT         ?DT?数码_躝植可了_
+            DATA    0010H     0006H     UNIT         _DATA_GROUP_
+                    0016H     000AH                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     011FH     UNIT         ?PR?MAIN?数码_躝植可了_
+            CODE    0122H     0055H     UNIT         ?C?LIB_CODE
+            CODE    0177H     0032H     UNIT         ?PR?_DISPLAY?数码_躝植可了_
+            CODE    01A9H     0012H     UNIT         ?CO?数码_躝植可了_
+            CODE    01BBH     000CH     UNIT         ?C_C51STARTUP
+            CODE    01C7H     000AH     UNIT         ?PR?_DELAY?数码_躝植可了_
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\数码管局部闪烁 (数码_躝植可了_)
+
+
+SEGMENT                                BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT               START    LENGTH     START    LENGTH
+-----------------------------------------------------------------------
+?C_C51STARTUP                       -----    -----      -----    -----
+  +--> ?PR?MAIN?数码_躝植可了_
+
+?PR?MAIN?数码_躝植可了_             0020H.0  0000H.1    0010H    0006H
+  +--> ?CO?数码_躝植可了_
+  +--> ?PR?_DISPLAY?数码_躝植可了_
+
+?PR?_DISPLAY?数码_躝植可了_         -----    -----      -----    -----
+  +--> ?CO?数码_躝植可了_
+  +--> ?PR?_DELAY?数码_躝植可了_
+
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  18:07:59  PAGE 2
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\数码管局部闪烁 (数码_躝植可了_)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        数码_躝植可了_
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:0008H         PUBLIC        TempData
+  D:00B8H         PUBLIC        IP
+  B:00A0H.2       PUBLIC        LATCH1
+  B:00A0H.3       PUBLIC        LATCH2
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0177H         PUBLIC        _Display
+  C:01A9H         PUBLIC        dofly_DuanMa
+  C:01C7H         PUBLIC        _Delay
+  C:01B3H         PUBLIC        dofly_WeiMa
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0010H         SYMBOL        numA
+  D:0012H         SYMBOL        numB
+  D:0014H         SYMBOL        j
+  B:0020H.0       SYMBOL        FlashFlag
+  -------         ENDDO         
+  C:0003H         LINE#         23
+  C:0003H         LINE#         24
+  C:0003H         LINE#         25
+  C:000EH         LINE#         28
+  C:000EH         LINE#         29
+  C:000EH         LINE#         30
+  C:0016H         LINE#         31
+  C:001CH         LINE#         32
+  C:001CH         LINE#         33
+  C:0020H         LINE#         34
+  C:0022H         LINE#         35
+  C:002AH         LINE#         36
+  C:0035H         LINE#         37
+  C:003FH         LINE#         39
+  C:0045H         LINE#         40
+  C:004FH         LINE#         41
+  C:0054H         LINE#         42
+  C:0054H         LINE#         44
+  C:006DH         LINE#         45
+  C:0095H         LINE#         46
+  C:00AEH         LINE#         48
+  C:00B1H         LINE#         49
+  C:00B1H         LINE#         50
+  C:00B4H         LINE#         51
+BL51 BANKED LINKER/LOCATER V5.03                                                      06/15/2010  18:07:59  PAGE 3
+
+
+  C:00B7H         LINE#         52
+  C:00B9H         LINE#         54
+  C:00B9H         LINE#         55
+  C:00BCH         LINE#         56
+  C:00BEH         LINE#         57
+  C:00BEH         LINE#         59
+  C:00D7H         LINE#         60
+  C:00FFH         LINE#         61
+  C:0118H         LINE#         63
+  C:011FH         LINE#         64
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  C:01C7H         LINE#         71
+  C:01C7H         LINE#         72
+  C:01C7H         LINE#         73
+  C:01D0H         LINE#         74
+  -------         ENDPROC       _DELAY
+  -------         PROC          _DISPLAY
+  D:0004H         SYMBOL        FirstBit
+  D:0005H         SYMBOL        Num
+  -------         DO            
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:0177H         LINE#         81
+  C:0179H         LINE#         82
+  C:0179H         LINE#         85
+  C:0180H         LINE#         86
+  C:0180H         LINE#         87
+  C:0183H         LINE#         88
+  C:0185H         LINE#         89
+  C:0187H         LINE#         91
+  C:018FH         LINE#         92
+  C:0191H         LINE#         93
+  C:0193H         LINE#         95
+  C:019AH         LINE#         96
+  C:019CH         LINE#         97
+  C:019EH         LINE#         99
+  C:01A5H         LINE#         101
+  C:01A8H         LINE#         103
+  -------         ENDPROC       _DISPLAY
+  -------         ENDMOD        数码_躝植可了_
+
+  -------         MODULE        ?C?UIDIV
+  C:0122H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=23.1 xdata=0 code=465
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

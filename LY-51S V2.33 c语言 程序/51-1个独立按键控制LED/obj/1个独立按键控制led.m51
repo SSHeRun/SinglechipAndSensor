@@ -1,0 +1,80 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/16/2010  10:34:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\1个独立按键控制led.obj TO .\obj\1个独立按键控制led PRINT (.\obj\1个独立按键控制led.m51) R
+>> AMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\1个独立按键控制led.obj (1_鯻懒___键控制LED)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\1个独立按键控制led (1_鯻懒___键控制LED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000DH     UNIT         ?PR?MAIN?1_鯻懒___键控制LED
+            CODE    0010H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\1个独立按键控制led (1_鯻懒___键控制LED)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?1_鯻懒___键控制LED
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\1个独立按键控制led (1_鯻懒___键控制LED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        1_鯻懒___键控制LED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  B:0090H.2       PUBLIC        LED
+  D:00C8H         PUBLIC        T2CON
+  B:00B0H.3       PUBLIC        KEY
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/16/2010  10:34:07  PAGE 2
+
+
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0003H         LINE#         17
+  C:0003H         LINE#         18
+  C:0003H         LINE#         20
+  C:0005H         LINE#         21
+  C:0005H         LINE#         22
+  C:0005H         LINE#         24
+  C:0008H         LINE#         25
+  C:000CH         LINE#         27
+  C:000EH         LINE#         30
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        1_鯻懒___键控制LED
+
+Program Size: data=9.0 xdata=0 code=28
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

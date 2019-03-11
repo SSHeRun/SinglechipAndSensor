@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\公司重要资料\51开发板\LY-51S 开发板光盘资料\5、配套程序\复件 LY-51S c语言 程序\151-红外解码数码管显示\红外解码数码管显示.uv2
+Project File Date:  08/09/2011
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 红外解码数码管显示.c...
+linking...
+Program Size: data=57.3 xdata=0 code=506
+creating hex file from ".\obj\红外解码数码管显示"...
+".\obj\红外解码数码管显示" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,288 @@
+C51 COMPILER V7.06   蔩用99_种觃_计蔩器                                                    06/07/2010 14:02:27 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 蔩用99_种觃_计蔩器
+OBJECT MODULE PLACED IN .\obj\使用99分钟倒计时器.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 使用99分钟倒计时器.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\使用99分钟倒计时
+                    -器.lst) OBJECT(.\obj\使用99分钟倒计时器.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：99分钟倒计时数码管显示
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：99分钟倒计时器，可以通过按键上调下调时间，定时器到时喇叭发声报警
+   8                  带有点按和连按功能
+   9          ------------------------------------------------*/
+  10          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  11          
+  12          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  13          
+  14          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  15          sbit LATCH2=P2^3;//                 位锁存
+  16          
+  17          sbit BEEP = P1^1;//定义喇叭端口 
+  18          bit BeepFlag;
+  19          
+  20          sbit KEY_ADD=P3^0;  //定义按键输入端口
+  21          sbit KEY_DEC=P3^1;
+  22          
+  23          unsigned char hour,minute,second;//定义时分秒
+  24          
+  25          bit UpdateTimeFlag;//定义读时间标志
+  26          
+  27          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  28          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  29          unsigned char TempData[8]; //存储显示值的全局变量
+  30          
+  31          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  32          void DelayMs(unsigned char t); //ms级延时
+  33          void Display(unsigned char FirstBit,unsigned char Num);//数码管显示函数
+  34          void Init_Timer0(void);//定时器初始化
+  35          void  Beep_OFF(void);
+  36          void  Beep_ON(void);
+  37          void Display_Data_Operation(void);
+  38          /*------------------------------------------------
+  39                          显示数据处理函数
+  40          ------------------------------------------------*/
+  41          void Display_Data_Operation(void)
+  42          {
+  43   1       TempData[2]=dofly_DuanMa[minute/10];//分解显示信息，如要显示68，则68/10=6  68%10=8 
+  44   1       TempData[3]=dofly_DuanMa[minute%10];//分解显示信息，如要显示68，则68/10=6  68%10=8  
+  45   1       TempData[4]=0x40;
+  46   1       TempData[5]=dofly_DuanMa[second/10];//分解显示信息，如要显示68，则68/10=6  68%10=8 
+  47   1       TempData[6]=dofly_DuanMa[second%10];//分解显示信息，如要显示68，则68/10=6  68%10=8 
+  48   1      }
+  49          /*------------------------------------------------
+  50                              主函数
+  51          ------------------------------------------------*/
+  52          void main (void)
+  53          {
+C51 COMPILER V7.06   蔩用99_种觃_计蔩器                                                    06/07/2010 14:02:27 PAGE 2   
+
+  54   1      unsigned char key_press_num;                  
+  55   1      
+  56   1      Init_Timer0();
+  57   1      
+  58   1      while (1)         //主循环
+  59   1        {
+  60   2      
+  61   2       if(!KEY_ADD)  //如果检测到低电平，说明按键按下
+  62   2          {
+  63   3               DelayMs(10); //延时去抖，一般10-20ms
+  64   3           if(!KEY_ADD)     //再次确认按键是否按下，没有按下则退出
+  65   3                 {
+  66   4                 while(!KEY_ADD)
+  67   4                  {
+  68   5                      key_press_num++;
+  69   5              DelayMs(10);           //10x200=2000ms=2s 
+  70   5                      if(key_press_num==200) //大约2s
+  71   5                        {
+  72   6                         key_press_num=0;    //如果达到长按键标准 则进入长按键动作
+  73   6                 while(!KEY_ADD)     //这里用于识别是否按键还在按下，如果按下执行相关动作，否则退出
+  74   6                             {
+  75   7                              if(minute<99)    //加操作
+  76   7                            minute++;
+  77   7                                      //即时把显示数据处理，如果去掉下面2句处理信息，实际上看不到渐变效果，而是看到跳变效果
+  78   7                                      //用户可以自行屏蔽测试
+  79   7                      Display_Data_Operation();
+  80   7                      DelayMs(50);//用于调节长按循环操作的速度
+  81   7                                      }
+  82   6                          }
+  83   5                      }
+  84   4            key_press_num=0;//防止累加造成错误识别
+  85   4                         if(minute<99)    //加操作
+  86   4                        minute++;
+  87   4                 }
+  88   3              }
+  89   2      
+  90   2       if(!KEY_DEC)  //如果检测到低电平，说明按键按下
+  91   2          {
+  92   3               DelayMs(10); //延时去抖，一般10-20ms
+  93   3           if(!KEY_DEC)     //再次确认按键是否按下，没有按下则退出
+  94   3                 {
+  95   4                 while(!KEY_DEC)
+  96   4                  {
+  97   5                      key_press_num++;
+  98   5              DelayMs(10);
+  99   5                      if(key_press_num==200) //大约2s
+ 100   5                        {
+ 101   6                         key_press_num=0;
+ 102   6                 while(!KEY_DEC)
+ 103   6                             {
+ 104   7                              if(minute>0)  //减操作
+ 105   7                             minute--;
+ 106   7                      Display_Data_Operation();
+ 107   7                      DelayMs(50);//用于调节长按循环操作的速度
+ 108   7                                      }
+ 109   6                          }
+ 110   5                      }
+ 111   4            key_press_num=0;//防止累加造成错误识别
+ 112   4                     if(minute>0)  //减操作
+ 113   4                        minute--;
+ 114   4                      
+ 115   4                 }
+C51 COMPILER V7.06   蔩用99_种觃_计蔩器                                                    06/07/2010 14:02:27 PAGE 3   
+
+ 116   3              }
+ 117   2      
+ 118   2      if(UpdateTimeFlag==1)
+ 119   2       {
+ 120   3       UpdateTimeFlag=0;
+ 121   3                                                             
+ 122   3       Display_Data_Operation();      
+ 123   3      
+ 124   3       if((minute==0)&&(second==0))//条件满足蜂鸣器闪响
+ 125   3         {
+ 126   4          Beep_ON();
+ 127   4         }
+ 128   3       else
+ 129   3          Beep_OFF();   //不满足时关掉
+ 130   3        }     
+ 131   2       }
+ 132   1      }
+ 133          /*------------------------------------------------
+ 134           uS延时函数，含有输入参数 unsigned char t，无返回值
+ 135           unsigned char 是定义无符号字符变量，其值的范围是
+ 136           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+ 137           长度如下 T=tx2+5 uS 
+ 138          ------------------------------------------------*/
+ 139          void DelayUs2x(unsigned char t)
+ 140          {   
+ 141   1       while(--t);
+ 142   1      }
+ 143          /*------------------------------------------------
+ 144           mS延时函数，含有输入参数 unsigned char t，无返回值
+ 145           unsigned char 是定义无符号字符变量，其值的范围是
+ 146           0~255 这里使用晶振12M，精确延时请使用汇编
+ 147          ------------------------------------------------*/
+ 148          void DelayMs(unsigned char t)
+ 149          {
+ 150   1           
+ 151   1       while(t--)
+ 152   1       {
+ 153   2           //大致延时1mS
+ 154   2           DelayUs2x(245);
+ 155   2               DelayUs2x(245);
+ 156   2       }
+ 157   1      }
+ 158          /*------------------------------------------------
+ 159           显示函数，用于动态扫描数码管
+ 160           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+ 161           如输入0表示从第一个显示。
+ 162           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+ 163          ------------------------------------------------*/
+ 164          void Display(unsigned char FirstBit,unsigned char Num)
+ 165          {
+ 166   1            static unsigned char i=0;
+ 167   1                
+ 168   1      
+ 169   1                 DataPort=0;   //清空数据，防止有交替重影
+ 170   1             LATCH1=1;     //段锁存
+ 171   1             LATCH1=0;
+ 172   1      
+ 173   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+ 174   1             LATCH2=1;     //位锁存
+ 175   1             LATCH2=0;
+ 176   1      
+ 177   1             DataPort=TempData[i]; //取显示数据，段码
+C51 COMPILER V7.06   蔩用99_种觃_计蔩器                                                    06/07/2010 14:02:27 PAGE 4   
+
+ 178   1             LATCH1=1;     //段锁存
+ 179   1             LATCH1=0;
+ 180   1             
+ 181   1                 i++;
+ 182   1             if(i==Num)
+ 183   1                    i=0;
+ 184   1      
+ 185   1      
+ 186   1      }
+ 187          /*------------------------------------------------
+ 188                              定时器初始化子程序
+ 189          ------------------------------------------------*/
+ 190          void Init_Timer0(void)
+ 191          {
+ 192   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 193   1       //TH0=0x00;          //给定初值
+ 194   1       //TL0=0x00;
+ 195   1       EA=1;            //总中断打开
+ 196   1       ET0=1;           //定时器中断打开
+ 197   1       TR0=1;           //定时器开关打开
+ 198   1      }
+ 199          /*------------------------------------------------
+ 200                           定时器中断子程序
+ 201          ------------------------------------------------*/
+ 202          void Timer0_isr(void) interrupt 1 
+ 203          {
+ 204   1       static unsigned int num,i;
+ 205   1      
+ 206   1       TH0=(65536-1000)/256;//重新赋值 1ms
+ 207   1       TL0=(65536-1000)%256;
+ 208   1       if(BeepFlag)         //启动喇叭标志
+ 209   1         {
+ 210   2         if(num<300 || (num>500&&num<800)   )
+ 211   2           BEEP=!BEEP;     //闪响
+ 212   2         else
+ 213   2           BEEP=0;
+ 214   2         }
+ 215   1       Display(0,8);       // 调用数码管扫描
+ 216   1       i++;
+ 217   1       if(i==20)          //20ms更新一次
+ 218   1          {
+ 219   2              i=0;
+ 220   2              UpdateTimeFlag=1; //更新时间志位置1
+ 221   2              }
+ 222   1       num++;
+ 223   1       if(num==1000)        //大致1s
+ 224   1         {
+ 225   2          num=0;
+ 226   2          if((minute!=0)||second)//如果分钟和秒都为0，不进行计时
+ 227   2             second--;//秒减1
+ 228   2          if(second==0xff)//如果=0后再减1则赋值59，即00过后显示59
+ 229   2                 {
+ 230   3                 second=59;
+ 231   3                 if(minute>0)//倒计时条件
+ 232   3                   {
+ 233   4                    minute--;
+ 234   4                    }
+ 235   3      
+ 236   3                 }
+ 237   2        }
+ 238   1      }
+ 239          
+C51 COMPILER V7.06   蔩用99_种觃_计蔩器                                                    06/07/2010 14:02:27 PAGE 5   
+
+ 240          
+ 241          /*------------------------------------------------
+ 242                       喇叭警报声音开
+ 243          ------------------------------------------------*/
+ 244          void  Beep_ON(void)
+ 245          {
+ 246   1       BeepFlag=1;
+ 247   1      }
+ 248          /*------------------------------------------------
+ 249                       喇叭警报声音关
+ 250          ------------------------------------------------*/
+ 251          void  Beep_OFF(void)
+ 252          {
+ 253   1       BeepFlag=0;
+ 254   1       BEEP=0;
+ 255   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    447    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

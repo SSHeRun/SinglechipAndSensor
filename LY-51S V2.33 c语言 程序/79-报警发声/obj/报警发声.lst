@@ -1,0 +1,90 @@
+C51 COMPILER V7.06   ______声                                                              05/20/2010 10:30:14 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE ______声
+OBJECT MODULE PLACED IN .\obj\报警发声.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 报警发声.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\报警发声.lst) OBJECT(.\obj
+                    -\报警发声.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：喇叭
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：模拟报警声，如闹钟 滴 滴 滴 滴
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit SPK=P1^2;    //定义喇叭端口
+  12          unsigned char frq; 
+  13          
+  14          void DelayUs2x(unsigned char t);//函数声明 
+  15          void DelayMs(unsigned char t);
+  16          
+  17          /*------------------------------------------------
+  18                              主函数
+  19          ------------------------------------------------*/
+  20          main()
+  21          {
+  22   1       unsigned int i;
+  23   1      
+  24   1       while(1)
+  25   1            {
+  26   2         for(i=0;i<200;i++)
+  27   2            {
+  28   3            DelayUs2x(200); 
+  29   3               // DelayUs2x(200); 
+  30   3                SPK=!SPK;
+  31   3                }
+  32   2                SPK=0;//防止一直给喇叭通电造成损坏
+  33   2         for(i=0;i<200;i++)
+  34   2            {
+  35   3            DelayMs(1);  
+  36   3                }
+  37   2                
+  38   2                }
+  39   1      }
+  40          /*------------------------------------------------
+  41           uS延时函数，含有输入参数 unsigned char t，无返回值
+  42           unsigned char 是定义无符号字符变量，其值的范围是
+  43           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  44           长度如下 T=tx2+5 uS 
+  45          ------------------------------------------------*/
+  46          void DelayUs2x(unsigned char t)
+  47          {   
+  48   1       while(--t);
+  49   1      }
+  50          /*------------------------------------------------
+  51           mS延时函数，含有输入参数 unsigned char t，无返回值
+  52           unsigned char 是定义无符号字符变量，其值的范围是
+  53           0~255 这里使用晶振12M，精确延时请使用汇编
+  54          ------------------------------------------------*/
+C51 COMPILER V7.06   ______声                                                              05/20/2010 10:30:14 PAGE 2   
+
+  55          void DelayMs(unsigned char t)
+  56          {
+  57   1           
+  58   1       while(t--)
+  59   1       {
+  60   2           //大致延时1mS
+  61   2           DelayUs2x(245);
+  62   2               DelayUs2x(245);
+  63   2       }
+  64   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     86    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

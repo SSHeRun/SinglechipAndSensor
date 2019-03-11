@@ -1,0 +1,101 @@
+C51 COMPILER V7.06   RS485蚠裚訽理                                                         03/12/2012 11:13:32 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE RS485蚠裚訽理
+OBJECT MODULE PLACED IN .\obj\RS485通讯原理.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE RS485通讯原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\RS485通讯原理.lst) OB
+                    -JECT(.\obj\RS485通讯原理.obj)
+
+stmt level    source
+
+   1           
+   2          /*-----------------------------------------------
+   3            名称：串口通信 rs485
+   4            网站：www.doflye.net
+   5            编写：shifang
+   6            日期：2009.5
+   7            修改：无
+   8            内容：485 与 232 使用相同软件协议，是半双工，需要有2套开发板对发测试，或者使用
+   9                  另外一个485设备配套，这里提供测试程序
+  10          ------------------------------------------------*/
+  11          
+  12          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义                        
+  13          #include"delay.h"
+  14          #include "1602.h"
+  15          
+  16          unsigned char code dofly_table[10]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,};
+  17           // 显示数值表0-9
+  18          
+  19          void SendByte(unsigned char dat);
+  20          /*------------------------------------------------
+  21                          硬件端口定义
+  22          ------------------------------------------------*/
+  23          
+  24          sbit Ctrl_EN = P2^0;  //发送接收控制端
+  25          /*------------------------------------------------
+  26                           函数声明
+  27          ------------------------------------------------*/
+  28          void SendStr(unsigned char *s);
+  29          /*------------------------------------------------
+  30                          串口初始化
+  31          ------------------------------------------------*/
+  32          void InitUART  (void)
+  33          {
+  34   1      
+  35   1          SCON  = 0x50;                       // SCON: 模式 1, 8-bit UART, 使能接收  
+  36   1          TMOD |= 0x20;               // TMOD: timer 1, mode 2, 8-bit 重装
+  37   1          TH1   = 0xFD;               // TH1:  重装值 9600 波特率 晶振 11.0592MHz  
+  38   1          TR1   = 1;                  // TR1:  timer 1 打开                         
+  39   1          EA    = 1;                  //打开总中断
+  40   1          ES    = 1;                  //打开串口中断
+  41   1      }                            
+  42          /*------------------------------------------------
+  43                              主函数
+  44          ------------------------------------------------*/
+  45          void main (void)
+  46          {
+  47   1      InitUART();
+  48   1      
+  49   1      Ctrl_EN=0;  //接收模式
+  50   1      
+  51   1      while (1)                       
+  52   1          {
+  53   2      
+  54   2          }
+C51 COMPILER V7.06   RS485蚠裚訽理                                                         03/12/2012 11:13:32 PAGE 2   
+
+  55   1      }
+  56          
+  57          
+  58          /*------------------------------------------------
+  59                               串口中断程序
+  60          ------------------------------------------------*/
+  61          void UART_SER (void) interrupt 4 //串行中断服务程序
+  62          {
+  63   1          unsigned char Temp;          //定义临时变量 
+  64   1         
+  65   1         if(RI)                        //判断是接收中断产生
+  66   1           {
+  67   2                RI=0;                      //标志位清零
+  68   2                Temp=SBUF;                 //读入缓冲区的值
+  69   2                P1=dofly_table[Temp];
+  70   2            P0=Temp;
+  71   2               }
+  72   1         if(TI)                        //如果是发送标志位，清零
+  73   1           TI=0;
+  74   1      } 
+  75          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     68    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

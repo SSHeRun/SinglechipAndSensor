@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+C:\Users\shifang\Desktop\129-双色点阵2种颜色显示测试\双色点阵2种颜色测试.uv2
+Project File Date:  02/05/2036
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 双色点阵2种颜色测试.c...
+linking...
+Program Size: data=17.0 xdata=0 code=341
+creating hex file from ".\obj\双色点阵2种颜色测试"...
+".\obj\双色点阵2种颜色测试" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 双色点阵2种颜色测试.c...
+linking...
+Program Size: data=17.0 xdata=0 code=341
+creating hex file from ".\obj\双色点阵2种颜色测试"...
+".\obj\双色点阵2种颜色测试" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,113 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/15/2010  23:50:12  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\产生200mS方波.obj TO .\obj\产生200mS方波 PRINT (.\obj\产生200mS方波.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\产生200mS方波.obj (瞋蒧200MS_讲_)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\产生200mS方波 (瞋蒧200MS_讲_)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?瞋蒧200MS_讲_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?PR?MAIN?瞋蒧200MS_讲_
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     001BH     UNIT         ?PR?TIMER0_ISR?瞋蒧200MS_讲_
+            CODE    0029H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0035H     000AH     UNIT         ?PR?INIT_TIMER0?瞋蒧200MS_讲_
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\产生200mS方波 (瞋蒧200MS_讲_)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?瞋蒧200MS_讲_
+
+?PR?MAIN?瞋蒧200MS_讲_
+  +--> ?PR?INIT_TIMER0?瞋蒧200MS_讲_
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\产生200mS方波 (瞋蒧200MS_讲_)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        瞋蒧200MS_讲_
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/15/2010  23:50:12  PAGE 2
+
+
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  C:0035H         PUBLIC        Init_Timer0
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:000EH         PUBLIC        Timer0_isr
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.2       PUBLIC        OUT
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INIT_TIMER0
+  C:0035H         LINE#         16
+  C:0035H         LINE#         17
+  C:0035H         LINE#         18
+  C:0038H         LINE#         21
+  C:003AH         LINE#         22
+  C:003CH         LINE#         23
+  C:003EH         LINE#         24
+  -------         ENDPROC       INIT_TIMER0
+  -------         PROC          MAIN
+  C:0003H         LINE#         28
+  C:0003H         LINE#         29
+  C:0003H         LINE#         30
+  C:0006H         LINE#         31
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0_ISR
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:000EH         LINE#         37
+  C:0012H         LINE#         40
+  C:0015H         LINE#         41
+  C:0018H         LINE#         43
+  C:001AH         LINE#         44
+  C:001FH         LINE#         45
+  C:001FH         LINE#         46
+  C:0022H         LINE#         47
+  C:0024H         LINE#         48
+  C:0024H         LINE#         50
+  -------         ENDPROC       TIMER0_ISR
+  -------         ENDMOD        瞋蒧200MS_讲_
+
+Program Size: data=10.0 xdata=0 code=60
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

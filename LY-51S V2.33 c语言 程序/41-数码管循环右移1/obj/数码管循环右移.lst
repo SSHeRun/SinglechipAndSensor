@@ -1,0 +1,123 @@
+C51 COMPILER V7.06   数码_苎_籣右移                                                        09/10/2012 08:56:11 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 数码_苎_籣右移
+OBJECT MODULE PLACED IN .\obj\数码管循环右移.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 数码管循环右移.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\数码管循环右移.lst) 
+                    -OBJECT(.\obj\数码管循环右移.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：多位数码管动态扫描显示变化数据
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：多位数码管分别显示不同数字，这种扫描显示方式成为动态扫描，并不停变化赋值
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  12          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  13          sbit LATCH2=P2^3;//                 位锁存
+  14          
+  15          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  16          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  17          unsigned char TempData[10]; //存储显示值的全局变量
+  18          void Delay(unsigned int t); //函数声明
+  19          void Display(unsigned char FirstBit,unsigned char Num);
+  20          /*------------------------------------------------
+  21                              主函数
+  22          ------------------------------------------------*/
+  23          main()
+  24          {
+  25   1       
+  26   1       unsigned int i,j,k=7,m;
+  27   1       unsigned char *pa=TempData,*pb=dofly_DuanMa;//定义2个指针，并赋值2个数组初始地址
+  28   1                    //*pa=TempData 等效于 *pa=&TempData[0]
+  29   1       while(1)
+  30   1            {
+  31   2      
+  32   2                 j++;
+  33   2                 if(j==20)  //用于延时，改变值可以改变延时长度
+  34   2                   {
+  35   3                        j=0;    //延时到重新赋值
+  36   3                        for(i=0;i<(8-k);i++) //循环把显示的字符值赋值给临时缓冲数组TempData
+  37   3                         {
+  38   4                          *(pa+k+i)=*(pb+i+m);//使用指针操作赋值
+  39   4              
+  40   4                              }
+  41   3                        for(i=0;i<m;i++)     //8位左移出去，右边空出来的数码管需要熄灭，所有
+  42   3                                     //赋值0 m表示移出位置，同时也表示右边需要熄灭位数
+  43   3                           *(pa+8-m+i)=0;    
+  44   3                         if(k>0)             //判断这些值以便循环显示
+  45   3                    k--;
+  46   3                         if(m<8&&k==0)
+  47   3                           m++;
+  48   3                         else if(m==8)
+  49   3                           {m=0;k=7;}
+  50   3      
+  51   3      
+  52   3                       }
+  53   2      
+C51 COMPILER V7.06   数码_苎_籣右移                                                        09/10/2012 08:56:11 PAGE 2   
+
+  54   2      
+  55   2                 Display(0,8);//从第一位显示，共显示8位
+  56   2            }
+  57   1      }
+  58          /*------------------------------------------------
+  59           延时函数，含有输入参数 unsigned int t，无返回值
+  60           unsigned int 是定义无符号整形变量，其值的范围是
+  61           0~65535
+  62          ------------------------------------------------*/
+  63          void Delay(unsigned int t)
+  64          {
+  65   1       while(--t);
+  66   1      }
+  67          /*------------------------------------------------
+  68           显示函数，用于动态扫描数码管
+  69           输入参数 FirstBit 表示需要显示的第一位，如赋值2表示从第三个数码管开始显示
+  70           如输入0表示从第一个显示。
+  71           Num表示需要显示的位数，如需要显示99两位数值则该值输入2
+  72          ------------------------------------------------*/
+  73          void Display(unsigned char FirstBit,unsigned char Num)
+  74          {
+  75   1            unsigned char i;
+  76   1                
+  77   1                for(i=0;i<Num;i++)
+  78   1                 { 
+  79   2                 DataPort=0;   //清空数据，防止有交替重影
+  80   2             LATCH1=1;     //段锁存
+  81   2             LATCH1=0;
+  82   2      
+  83   2             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+  84   2             LATCH2=1;     //位锁存
+  85   2             LATCH2=0;
+  86   2      
+  87   2             DataPort=TempData[7-i]; //取显示数据，段码     
+  88   2                                         //取反显示顺序，就把左移变成右移
+  89   2             LATCH1=1;     //段锁存
+  90   2             LATCH1=0;
+  91   2             
+  92   2                 Delay(200); // 扫描间隙延时，时间太长会闪烁，太短会造成重影
+  93   2      
+  94   2             }
+  95   1      
+  96   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    320    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10      14
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

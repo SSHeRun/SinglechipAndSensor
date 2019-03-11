@@ -1,0 +1,283 @@
+C51 COMPILER V7.06   薩继_缙髂_拟__衣籣控制                                                06/10/2010 12:13:31 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE 薩继_缙髂_拟__衣籣控制
+OBJECT MODULE PLACED IN .\obj\双继电器模拟洗衣机控制.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 双继电器模拟洗衣机控制.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\双继电器模拟
+                    -洗衣机控制.lst) OBJECT(.\obj\双继电器模拟洗衣机控制.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：独立按键控制继电器开关
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：对应的继电器接口需用杜邦线连接到uln2003继电器控制端
+   8                  通过控制2个继电器循环工作状态，模拟洗衣机间歇正反转
+   9                  
+  10          ------------------------------------------------*/
+  11          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  12          
+  13          #define KeyPort P3
+  14          
+  15          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  16          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  17          sbit LATCH2=P2^3;//                 位锁存
+  18          
+  19          sbit RELAY1 = P1^1;//定义继电器信号输出端口1
+  20          sbit RELAY2 = P1^2;//定义继电器信号输出端口2
+  21          /*------------------------------------------------
+  22                            全局变量
+  23          ------------------------------------------------*/
+  24          unsigned char hour,minute,second;//定义时分秒
+  25          
+  26          bit UpdateTimeFlag;//定义读时间标志
+  27          
+  28          unsigned char code dofly_DuanMa[10]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};// 显示段码值0~9
+  29          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};//分别对应相应的数码管点亮,即位
+             -码
+  30          unsigned char TempData[8]; //存储显示值的全局变量
+  31          /*------------------------------------------------
+  32                            函数声明
+  33          ------------------------------------------------*/
+  34          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  35          void DelayMs(unsigned char t); //ms级延时
+  36          void Display(unsigned char FirstBit,unsigned char Num);//数码管显示函数
+  37          unsigned char KeyScan(void);//键盘扫描
+  38          void Init_Timer0(void);//定时器初始化
+  39          void Stop(void);
+  40          void Clockwise (void);
+  41          void Anticlockwise(void);
+  42          /*------------------------------------------------
+  43                              主函数
+  44          ------------------------------------------------*/
+  45          void main (void)
+  46          {
+  47   1      unsigned char num;                  
+  48   1      
+  49   1      Init_Timer0();    //初始化定时器0，主要用于数码管动态扫描
+  50   1      
+  51   1      while (1)         //主循环
+  52   1        {
+  53   2      
+C51 COMPILER V7.06   薩继_缙髂_拟__衣籣控制                                                06/10/2010 12:13:31 PAGE 2   
+
+  54   2       
+  55   2       num=KeyScan();    //循环调用按键扫描
+  56   2      
+  57   2       if(num==1)
+  58   2         {
+  59   3          if(minute<99)
+  60   3                minute++;
+  61   3         }
+  62   2       else if(num==2)
+  63   2         {
+  64   3          if(minute>0)
+  65   3                minute--;
+  66   3         }
+  67   2       if(UpdateTimeFlag==1)//定时刷新显示数据
+  68   2         {
+  69   3          UpdateTimeFlag=0;
+  70   3              TempData[2]=dofly_DuanMa[minute/10];//分解显示信息，如要显示68，则68/10=6  68%10=8 
+  71   3          TempData[3]=dofly_DuanMa[minute%10];//分解显示信息，如要显示68，则68/10=6  68%10=8  
+  72   3          TempData[4]=0x40;
+  73   3          TempData[5]=dofly_DuanMa[second/10];//分解显示信息，如要显示68，则68/10=6  68%10=8 
+  74   3          TempData[6]=dofly_DuanMa[second%10];//分解显示信息，如要显示68，则68/10=6  68%10=8 
+  75   3      
+  76   3              if((minute==0)&&(second==0))//定时时间到，洗衣机停止转动
+  77   3            {
+  78   4            Stop();
+  79   4            } 
+  80   3              }
+  81   2        }
+  82   1      }
+  83          /*------------------------------------------------
+  84           uS延时函数，含有输入参数 unsigned char t，无返回值
+  85           unsigned char 是定义无符号字符变量，其值的范围是
+  86           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  87           长度如下 T=tx2+5 uS 
+  88          ------------------------------------------------*/
+  89          void DelayUs2x(unsigned char t)
+  90          {   
+  91   1       while(--t);
+  92   1      }
+  93          /*------------------------------------------------
+  94           mS延时函数，含有输入参数 unsigned char t，无返回值
+  95           unsigned char 是定义无符号字符变量，其值的范围是
+  96           0~255 这里使用晶振12M，精确延时请使用汇编
+  97          ------------------------------------------------*/
+  98          void DelayMs(unsigned char t)
+  99          {
+ 100   1           
+ 101   1       while(t--)
+ 102   1       {
+ 103   2           //大致延时1mS
+ 104   2           DelayUs2x(245);
+ 105   2               DelayUs2x(245);
+ 106   2       }
+ 107   1      }
+ 108          /*------------------------------------------------
+ 109           显示函数，用于动态扫描数码管
+ 110           输入参数 FirstBit 表示需要显示的第一位，如赋值2表
+ 111           示从第三个数码管开始显示，如输入0表示从第一个显示。
+ 112           Num表示需要显示的位数，如需要显示99两位数值则该值
+ 113           输入2
+ 114          ------------------------------------------------*/
+ 115          void Display(unsigned char FirstBit,unsigned char Num)
+C51 COMPILER V7.06   薩继_缙髂_拟__衣籣控制                                                06/10/2010 12:13:31 PAGE 3   
+
+ 116          {
+ 117   1            static unsigned char i=0;
+ 118   1                
+ 119   1      
+ 120   1                 DataPort=0;   //清空数据，防止有交替重影
+ 121   1             LATCH1=1;     //段锁存
+ 122   1             LATCH1=0;
+ 123   1      
+ 124   1             DataPort=dofly_WeiMa[i+FirstBit]; //取位码 
+ 125   1             LATCH2=1;     //位锁存
+ 126   1             LATCH2=0;
+ 127   1      
+ 128   1             DataPort=TempData[i]; //取显示数据，段码
+ 129   1             LATCH1=1;     //段锁存
+ 130   1             LATCH1=0;
+ 131   1             
+ 132   1                 i++;
+ 133   1             if(i==Num)
+ 134   1                    i=0;
+ 135   1      }
+ 136          /*------------------------------------------------
+ 137                              定时器初始化子程序
+ 138          ------------------------------------------------*/
+ 139          void Init_Timer0(void)
+ 140          {
+ 141   1       TMOD |= 0x01;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
+ 142   1       //TH0=0x00;          //给定初值
+ 143   1       //TL0=0x00;
+ 144   1       EA=1;            //总中断打开
+ 145   1       ET0=1;           //定时器中断打开
+ 146   1       TR0=1;           //定时器开关打开
+ 147   1      }
+ 148          /*------------------------------------------------
+ 149                           定时器中断子程序
+ 150          ------------------------------------------------*/
+ 151          void Timer0_isr(void) interrupt 1 
+ 152          {
+ 153   1       static unsigned int num,i,times;
+ 154   1       TH0=(65536-2000)/256;            //重新赋值 2ms
+ 155   1       TL0=(65536-2000)%256;
+ 156   1       
+ 157   1       Display(0,8);                // 调用数码管扫描
+ 158   1       i++;
+ 159   1       if(i==20)          //20ms更新一次
+ 160   1          {
+ 161   2              i=0;
+ 162   2              UpdateTimeFlag=1; //更新时间志位置1
+ 163   2              }
+ 164   1       num++;
+ 165   1       if(num==500)        //大致1s
+ 166   1         {
+ 167   2          num=0;
+ 168   2         
+ 169   2          ///////////////////////////////////////
+ 170   2              //执行正反转动作。
+ 171   2              switch(times)
+ 172   2                 {
+ 173   3                  case 1:Clockwise ();   break;
+ 174   3                      case 4:Stop();         break;
+ 175   3                      case 6:Anticlockwise();break;
+ 176   3                      case 9:Stop();         break;
+ 177   3                      case 11:times=0;       break;
+C51 COMPILER V7.06   薩继_缙髂_拟__衣籣控制                                                06/10/2010 12:13:31 PAGE 4   
+
+ 178   3                      default:break;
+ 179   3                 }
+ 180   2              times++;
+ 181   2         ///////////////////////////////////////////////////////
+ 182   2          if((minute!=0)||second)//如果分钟和秒都为0，不进行计时
+ 183   2             second--;//秒减1
+ 184   2          if(second==0xff)//如果=0后再减1则赋值59，即00过后显示59
+ 185   2                 {
+ 186   3                 second=59;
+ 187   3                 if(minute>0)//倒计时条件
+ 188   3                   {
+ 189   4                    minute--;
+ 190   4                    }
+ 191   3      
+ 192   3                 }
+ 193   2        }
+ 194   1      }
+ 195          
+ 196          /*------------------------------------------------
+ 197          按键扫描函数，返回扫描键值
+ 198          ------------------------------------------------*/
+ 199          unsigned char KeyScan(void)
+ 200          {
+ 201   1       unsigned char keyvalue;
+ 202   1       if(KeyPort!=0xff)
+ 203   1         {
+ 204   2          DelayMs(10);
+ 205   2          if(KeyPort!=0xff)
+ 206   2                 {
+ 207   3                  keyvalue=KeyPort;
+ 208   3                  while(KeyPort!=0xff);
+ 209   3                      switch(keyvalue)
+ 210   3                      {
+ 211   4                       case 0xfe:return 1;break;
+ 212   4                       case 0xfd:return 2;break;
+ 213   4                       case 0xfb:return 3;break;
+ 214   4                       case 0xf7:return 4;break;
+ 215   4                       case 0xef:return 5;break;
+ 216   4                       case 0xdf:return 6;break;
+ 217   4                       case 0xbf:return 7;break;
+ 218   4                       case 0x7f:return 8;break;
+ 219   4                       default:return 0;break;
+ 220   4                      }
+ 221   3                }
+ 222   2         }
+ 223   1         return 0;
+ 224   1      }
+ 225          
+ 226          /*------------------------------------------------
+ 227                           顺时针转动
+ 228          ------------------------------------------------*/
+ 229          void Clockwise (void)
+ 230          {
+ 231   1       RELAY1=1;    //继电器1吸合，接通正向线圈
+ 232   1       RELAY2=0;
+ 233   1      }
+ 234          /*------------------------------------------------
+ 235                           逆时针转动
+ 236          ------------------------------------------------*/
+ 237          void Anticlockwise(void)
+ 238          {
+ 239   1        RELAY1=0;
+C51 COMPILER V7.06   薩继_缙髂_拟__衣籣控制                                                06/10/2010 12:13:31 PAGE 5   
+
+ 240   1        RELAY2=1;   //继电器2吸合，接通反向线圈
+ 241   1      }
+ 242          
+ 243          /*------------------------------------------------
+ 244                           停止转动
+ 245          ------------------------------------------------*/
+ 246          void Stop(void)
+ 247          {
+ 248   1        RELAY1=0;   
+ 249   1        RELAY2=0;
+ 250   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    467    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     18    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

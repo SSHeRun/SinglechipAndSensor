@@ -1,0 +1,55 @@
+C51 COMPILER V7.06   _¥_öÊýÂë_ÜÖ_Ê_Âß¼__çÆ½                                                06/15/2010 17:54:19 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _¥_öÊýÂë_ÜÖ_Ê_Âß¼__çÆ½
+OBJECT MODULE PLACED IN .\obj\µ¥¸öÊýÂë¹ÜÖ¸Ê¾Âß¼­µçÆ½.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE µ¥¸öÊýÂë¹ÜÖ¸Ê¾Âß¼­µçÆ½.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\µ¥¸öÊýÂë¹ÜÖ¸
+                    -Ê¾Âß¼­µçÆ½.lst) OBJECT(.\obj\µ¥¸öÊýÂë¹ÜÖ¸Ê¾Âß¼­µçÆ½.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            Ãû³Æ£ºµ¥¸ö¹²ÑôÊýÂë¹ÜÖ¸Ê¾Âß¼­µçÆ½
+   3            ÂÛÌ³£ºwww.doflye.net
+   4            ±àÐ´£ºshifang
+   5            ÈÕÆÚ£º2009.5
+   6            ÐÞ¸Ä£ºÎÞ
+   7            ÄÚÈÝ£ºÍ¨¹ýÑ­»·¼ì²âP3.2¿ÚµçÆ½ÊäÈëÖµ£¬È»ºóÓÃÊýÂë¹ÜÊä³ö"H" or "L"£¬±íÊ¾¸Ã¶Ë¿ÚÏÖÔÚÁ¬½ÓµÄÊÇ¸ßµçÆ½»¹ÊÇµÍµçÆ½
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //°üº¬Í·ÎÄ¼þ£¬Ò»°ãÇé¿ö²»ÐèÒª¸Ä¶¯£¬Í·ÎÄ¼þ°üº¬ÌØÊâ¹¦ÄÜ¼Ä´æÆ÷µÄ¶¨Òå
+  10          
+  11          sbit IO_IN=P3^2;  //¶¨ÒåIO ÐÅºÅÊäÈë¶Ë
+  12          
+  13          /*------------------------------------------------
+  14                              Ö÷º¯Êý
+  15          ------------------------------------------------*/
+  16          void main (void)
+  17          {
+  18   1                        
+  19   1      
+  20   1      while (1)         //Ö÷Ñ­»·
+  21   1        {
+  22   2        if(IO_IN==1)//Èç¹û¶Ë¿Ú¼ì²âµ½1±íÊ¾¸ßµçÆ½
+  23   2          P1=0x89;  //"H"
+  24   2        else
+  25   2          P1=0xc7;  //"L"
+  26   2                        //·ñÔò±íÊ¾µÍµçÆ½£¬ÕâÀïÊ¹ÓÃ Ìõ¼þÓï¾ä if ¡£¡£¡£else ¡£¡£¡£ 
+  27   2          
+  28   2        
+  29   2                           //Ö÷Ñ­»·ÖÐÌí¼ÓÆäËûÐèÒªÒ»Ö±¹¤×÷µÄ³ÌÐò
+  30   2        }
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     13    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

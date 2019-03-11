@@ -1,0 +1,193 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        07/15/2010  16:30:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\交通灯实例.obj TO .\obj\交通灯实例 PRINT (.\obj\交通灯实例.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\交通灯实例.obj (交蚠_剖_例)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\obj\交通灯实例 (交蚠_剖_例)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?交蚠_剖_例
+                    000CH     0014H                  *** GAP ***
+            BIT     0020H.0   0000H.4   UNIT         ?BI?交蚠_剖_例
+                    0020H.4   0000H.4                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0004H     UNIT         ?C_INITSEG
+                    0007H     0004H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0086H     UNIT         ?PR?TIM?交蚠_剖_例
+            CODE    0120H     002FH     UNIT         ?PR?MAIN?交蚠_剖_例
+            CODE    014FH     0012H     UNIT         ?PR?_DELAY?交蚠_剖_例
+            CODE    0161H     000AH     UNIT         ?CO?交蚠_剖_例
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\交通灯实例 (交蚠_剖_例)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIM?交蚠_剖_例
+  +--> ?CO?交蚠_剖_例
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?交蚠_剖_例
+  +--> ?C_INITSEG
+
+?PR?MAIN?交蚠_剖_例
+  +--> ?PR?_DELAY?交蚠_剖_例
+
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/15/2010  16:30:19  PAGE 2
+
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\交通灯实例 (交蚠_剖_例)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        交蚠_剖_例
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:0020H.0       PUBLIC        turnred
+  D:00A8H         PUBLIC        IE
+  B:0020H.1       PUBLIC        green
+  D:00B8H         PUBLIC        IP
+  B:0020H.2       PUBLIC        yellow
+  C:0120H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0161H         PUBLIC        tab
+  B:0020H.3       PUBLIC        red
+  C:009AH         PUBLIC        tim
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  B:00A0H.2       PUBLIC        LACTCH1
+  B:00A0H.3       PUBLIC        LACTCH2
+  D:00C8H         PUBLIC        T2CON
+  D:000AH         PUBLIC        Dis_Shiwei
+  C:0157H         PUBLIC        _delay
+  D:000BH         PUBLIC        Dis_Gewei
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          L?0018
+  -------         ENDPROC       L?0018
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        cnt
+  C:0157H         LINE#         34
+  C:0157H         LINE#         35
+  C:0157H         LINE#         36
+  C:0160H         LINE#         37
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  C:0120H         LINE#         41
+  C:0120H         LINE#         42
+  C:0120H         LINE#         43
+  C:0123H         LINE#         44
+  C:0126H         LINE#         45
+  C:0129H         LINE#         46
+  C:012CH         LINE#         47
+  C:012EH         LINE#         49
+  C:0131H         LINE#         50
+  C:0133H         LINE#         51
+  C:0133H         LINE#         52
+  C:0133H         LINE#         53
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/15/2010  16:30:19  PAGE 3
+
+
+  C:0136H         LINE#         54
+  C:0138H         LINE#         55
+  C:013AH         LINE#         56
+  C:013DH         LINE#         57
+  C:013DH         LINE#         58
+  C:013DH         LINE#         59
+  C:0140H         LINE#         60
+  C:0143H         LINE#         61
+  C:0145H         LINE#         62
+  C:0147H         LINE#         63
+  C:014AH         LINE#         64
+  C:014AH         LINE#         65
+  C:014AH         LINE#         66
+  C:014DH         LINE#         67
+  -------         ENDPROC       MAIN
+  -------         PROC          TIM
+  -------         DO            
+  D:0008H         SYMBOL        second
+  D:0009H         SYMBOL        count
+  -------         ENDDO         
+  C:009AH         LINE#         73
+  C:00A4H         LINE#         77
+  C:00A7H         LINE#         78
+  C:00AAH         LINE#         79
+  C:00ACH         LINE#         80
+  C:00B2H         LINE#         81
+  C:00B2H         LINE#         82
+  C:00B4H         LINE#         83
+  C:00B6H         LINE#         84
+  C:00BAH         LINE#         85
+  C:00BAH         LINE#         86
+  C:00BDH         LINE#         87
+  C:00BDH         LINE#         88
+  C:00C1H         LINE#         89
+  C:00C4H         LINE#         90
+  C:00C7H         LINE#         91
+  C:00C9H         LINE#         92
+  C:00CFH         LINE#         93
+  C:00CFH         LINE#         94
+  C:00D3H         LINE#         95
+  C:00D6H         LINE#         96
+  C:00D9H         LINE#         97
+  C:00DBH         LINE#         98
+  C:00DEH         LINE#         99
+  C:00DEH         LINE#         100
+  C:00E2H         LINE#         101
+  C:00E5H         LINE#         102
+  C:00E8H         LINE#         103
+  C:00EAH         LINE#         104
+  C:00ECH         LINE#         105
+  C:00F2H         LINE#         106
+  C:00F2H         LINE#         107
+  C:00F6H         LINE#         108
+  C:00F9H         LINE#         109
+  C:00FCH         LINE#         110
+  C:00FEH         LINE#         111
+  C:00FEH         LINE#         113
+BL51 BANKED LINKER/LOCATER V5.03                                                      07/15/2010  16:30:19  PAGE 4
+
+
+  C:00FEH         LINE#         114
+  C:010AH         LINE#         115
+  C:0115H         LINE#         117
+  C:0115H         LINE#         118
+  -------         ENDPROC       TIM
+  -------         ENDMOD        交蚠_剖_例
+
+Program Size: data=13.4 xdata=0 code=359
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

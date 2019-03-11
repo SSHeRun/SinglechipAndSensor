@@ -1,0 +1,119 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        05/20/2010  10:25:56  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+D:\KEIL\C51\BIN\BL51.EXE .\obj\À®°ÈµÎ´ðÉù.obj TO .\obj\À®°ÈµÎ´ðÉù PRINT (.\obj\À®°ÈµÎ´ðÉù.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\À®°ÈµÎ´ðÉù.obj (À__È_Î_ðÉù)
+  D:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\À®°ÈµÎ´ðÉù (À__È_Î_ðÉù)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            DATA    000AH     0001H     UNIT         ?DT?À__È_Î_ðÉù
+            IDATA   000BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0043H     UNIT         ?PR?MAIN?À__È_Î_ðÉù
+            CODE    0046H     0015H     UNIT         ?PR?_DELAYMS?À__È_Î_ðÉù
+            CODE    005BH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0067H     0003H     UNIT         ?PR?_DELAYUS2X?À__È_Î_ðÉù
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\À®°ÈµÎ´ðÉù (À__È_Î_ðÉù)
+
+
+SEGMENT                             DATA_GROUP 
+  +--> CALLED SEGMENT             START    LENGTH
+-------------------------------------------------
+?C_C51STARTUP                     -----    -----
+  +--> ?PR?MAIN?À__È_Î_ðÉù
+
+?PR?MAIN?À__È_Î_ðÉù               0008H    0002H
+  +--> ?PR?_DELAYUS2X?À__È_Î_ðÉù
+  +--> ?PR?_DELAYMS?À__È_Î_ðÉù
+
+?PR?_DELAYMS?À__È_Î_ðÉù           -----    -----
+  +--> ?PR?_DELAYUS2X?À__È_Î_ðÉù
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\À®°ÈµÎ´ðÉù (À__È_Î_ðÉù)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        À__È_Î_ðÉù
+  C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V5.03                                                      05/20/2010  10:25:56  PAGE 2
+
+
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0046H         PUBLIC        _DelayMs
+  D:00B8H         PUBLIC        IP
+  C:0003H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0067H         PUBLIC        _DelayUs2x
+  D:000AH         PUBLIC        frq
+  D:00C8H         PUBLIC        T2CON
+  B:0090H.2       PUBLIC        SPK
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         24
+  C:0003H         LINE#         25
+  C:0003H         LINE#         26
+  C:0008H         LINE#         27
+  C:0008H         LINE#         28
+  C:000DH         LINE#         29
+  C:0012H         LINE#         30
+  C:0014H         LINE#         31
+  C:0025H         LINE#         32
+  C:0035H         LINE#         33
+  C:0035H         LINE#         34
+  C:003AH         LINE#         35
+  C:003CH         LINE#         36
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAYUS2X
+  D:0007H         SYMBOL        t
+  C:0067H         LINE#         46
+  C:0067H         LINE#         47
+  C:0067H         LINE#         48
+  C:0069H         LINE#         49
+  -------         ENDPROC       _DELAYUS2X
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  C:0046H         LINE#         55
+  C:0048H         LINE#         56
+  C:0048H         LINE#         58
+  C:004EH         LINE#         59
+  C:004EH         LINE#         61
+  C:0053H         LINE#         62
+  C:0058H         LINE#         63
+  C:005AH         LINE#         64
+  -------         ENDPROC       _DELAYMS
+  -------         ENDMOD        À__È_Î_ðÉù
+
+Program Size: data=12.0 xdata=0 code=106
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

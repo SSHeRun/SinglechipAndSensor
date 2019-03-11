@@ -1,0 +1,92 @@
+C51 COMPILER V7.06   MAIN                                                                  09/10/2012 09:54:20 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：数码管飞行模式
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：
+   8          
+   9          ------------------------------------------------*/
+  10          
+  11          #include <reg52.h>
+  12          
+  13          
+  14          
+  15          #define DataPort P0 //定义数据端口 程序中遇到DataPort 则用P0 替换
+  16          sbit LATCH1=P2^2;//定义锁存使能端口 段锁存
+  17          sbit LATCH2=P2^3;//                 位锁存
+  18          
+  19          unsigned char code dofly_DuanMa[]={0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x5e,0x5c,0x71,0x38,0x6e,0x40,0
+             -x40,0x40,0x40,0x40,0x40,0x40,0x40,};
+  20          // 显示段码值01234567
+  21          unsigned char code dofly_WeiMa[]={0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f};
+  22          //分别对应相应的数码管点亮,即位码
+  23          
+  24          void Delay(unsigned int t); //函数声明
+  25          
+  26          /*------------------------------------------------
+  27                              主函数
+  28          ------------------------------------------------*/
+  29          main()
+  30          {
+  31   1       unsigned char i=0,j,k=0;
+  32   1       
+  33   1       while(1)
+  34   1            {
+  35   2           for(j=0;j<100;j++){//延时取决于流动的快慢
+  36   3             DataPort=0;   //清除数据
+  37   3             LATCH1=1;     //位锁存
+  38   3             LATCH1=0;
+  39   3      
+  40   3                 DataPort=dofly_WeiMa[i]; //取位码 
+  41   3             LATCH2=1;     //位锁存
+  42   3             LATCH2=0;
+  43   3      
+  44   3             DataPort=dofly_DuanMa[i+k]; //取显示数据，段码
+  45   3             LATCH1=1;     //段锁存
+  46   3             LATCH1=0;
+  47   3      
+  48   3                 Delay(200); //扫描间隙延时，时间太长会闪烁，太短会造成重影
+  49   3                 i++;
+  50   3                 if(8==i)    //检测8位扫描完全结束？如扫描完成则从第一个开始再次扫描8位
+  51   3                   i=0;
+  52   3              }
+  53   2            k++;
+  54   2            if(12==k)
+C51 COMPILER V7.06   MAIN                                                                  09/10/2012 09:54:20 PAGE 2   
+
+  55   2               k=0;
+  56   2            }
+  57   1      }
+  58          /*------------------------------------------------
+  59           延时函数，含有输入参数 unsigned int t，无返回值
+  60           unsigned int 是定义无符号整形变量，其值的范围是
+  61           0~65535
+  62          ------------------------------------------------*/
+  63          void Delay(unsigned int t)
+  64          {
+  65   1       while(--t);
+  66   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     89    ----
+   CONSTANT SIZE    =     29    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

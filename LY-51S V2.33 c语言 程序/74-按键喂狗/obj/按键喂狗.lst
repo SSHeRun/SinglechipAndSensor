@@ -1,0 +1,120 @@
+C51 COMPILER V7.06   __键蝊__                                                              05/20/2010 09:10:03 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE __键蝊__
+OBJECT MODULE PLACED IN .\obj\按键喂狗.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 按键喂狗.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\按键喂狗.lst) OBJECT(.\obj
+                    -\按键喂狗.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：看门狗溢出实验 按键不停喂狗
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：通过按键喂狗防止溢出复位 看门狗演示程序  
+   8                  在16383个机器周期内必须至少喂狗一次
+   9          ------------------------------------------------*/
+  10          #include <reg52.h>
+  11          
+  12          sfr WDTRST = 0xA6;
+  13          
+  14          sbit  K1 = P3^0; 
+  15          sbit  K2 = P3^1;
+  16          sbit  LED1=P1^1;
+  17          sbit  LED2=P1^2;
+  18          
+  19          void DelayUs2x(unsigned char t);//us级延时函数声明 
+  20          void DelayMs(unsigned char t); //ms级延时
+  21          /*------------------------------------------------
+  22                              主函数
+  23          ------------------------------------------------*/
+  24          main()
+  25          {
+  26   1         LED1=0;
+  27   1         DelayMs(100);
+  28   1         LED1=1;
+  29   1         DelayMs(100);
+  30   1      
+  31   1         TMOD=0x01;
+  32   1         TH0=0xc6;      //定时16ms
+  33   1         TL0=0x66;
+  34   1         EA=1;
+  35   1         ET0=1;
+  36   1      
+  37   1         WDTRST=0x1e;   //在程序初始化中激活看门狗。
+  38   1         WDTRST=0xe1;   //先送1E,后送E1
+  39   1      
+  40   1         if(K1==0)
+  41   1         {
+  42   2           TR0=1;
+  43   2         }
+  44   1      
+  45   1         while(1)
+  46   1         {    
+  47   2           if(K2==0)
+  48   2           {
+  49   3             TR0=0;
+  50   3           }
+  51   2               LED2=1;
+  52   2               LED1=1;
+  53   2               DelayMs(100);
+  54   2               LED2=0;
+C51 COMPILER V7.06   __键蝊__                                                              05/20/2010 09:10:03 PAGE 2   
+
+  55   2               DelayMs(100);
+  56   2         }
+  57   1      }
+  58          /*------------------------------------------------
+  59                        定时器中断函数
+  60          ------------------------------------------------*/
+  61          void Time0(void) interrupt 1
+  62          {
+  63   1         TH0=0xc6;      //定时16ms
+  64   1         TL0=0x66;
+  65   1      
+  66   1         WDTRST=0x1e;   //喂狗指令
+  67   1         WDTRST=0xe1;
+  68   1      }
+  69          
+  70          /*------------------------------------------------
+  71           uS延时函数，含有输入参数 unsigned char t，无返回值
+  72           unsigned char 是定义无符号字符变量，其值的范围是
+  73           0~255 这里使用晶振12M，精确延时请使用汇编,大致延时
+  74           长度如下 T=tx2+5 uS 
+  75          ------------------------------------------------*/
+  76          void DelayUs2x(unsigned char t)
+  77          {   
+  78   1       while(--t);
+  79   1      }
+  80          /*------------------------------------------------
+  81           mS延时函数，含有输入参数 unsigned char t，无返回值
+  82           unsigned char 是定义无符号字符变量，其值的范围是
+  83           0~255 这里使用晶振12M，精确延时请使用汇编
+  84          ------------------------------------------------*/
+  85          void DelayMs(unsigned char t)
+  86          {
+  87   1           
+  88   1       while(t--)
+  89   1       {
+  90   2           //大致延时1mS
+  91   2           DelayUs2x(245);
+  92   2               DelayUs2x(245);
+  93   2       }
+  94   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     98    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

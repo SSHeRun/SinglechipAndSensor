@@ -1,0 +1,49 @@
+C51 COMPILER V7.06   _焱饨邮赵_理                                                          06/12/2010 17:09:17 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE _焱饨邮赵_理
+OBJECT MODULE PLACED IN .\obj\红外接收原理.obj
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE 红外接收原理.c BROWSE DEBUG OBJECTEXTEND PRINT(.\obj\红外接收原理.lst) OBJE
+                    -CT(.\obj\红外接收原理.obj)
+
+stmt level    source
+
+   1          /*-----------------------------------------------
+   2            名称：从红外接收读取电平信息
+   3            论坛：www.doflye.net
+   4            编写：shifang
+   5            日期：2009.5
+   6            修改：无
+   7            内容：从红外接收头接收到信息反映到LED上
+   8          ------------------------------------------------*/
+   9          #include<reg52.h> //包含头文件，一般情况不需要改动，头文件包含特殊功能寄存器的定义
+  10          
+  11          sbit LED=P1^0;// 用sbit 关键字 定义 LED到P1.0端口，LED是自己任意定义且容易记忆的符号
+  12          
+  13          sbit IR_IN=P3^2;
+  14          /*------------------------------------------------
+  15                              主函数
+  16          ------------------------------------------------*/
+  17          void main (void)
+  18          {
+  19   1                      
+  20   1      
+  21   1      while (1)         //主循环
+  22   1        {
+  23   2        LED=IR_IN;//主循环中添加其他需要一直工作的程序
+  24   2        }
+  25   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      6    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

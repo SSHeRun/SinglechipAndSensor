@@ -1,0 +1,235 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/25/2011  20:59:53  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE .\obj\音量.obj TO .\obj\音量调节 PRINT (.\list\音量调节.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\obj\音量.obj (音量)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\obj\音量调节 (音量)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0018H     UNIT         ?PR?_MDELAY?音量
+            CODE    001BH     0003H     ABSOLUTE     
+            CODE    001EH     001DH     UNIT         ?PR?_SEND?音量
+            CODE    003BH     001AH     UNIT         ?PR?_DAC?音量
+            CODE    0055H     0011H     UNIT         ?PR?MAIN?音量
+            CODE    0066H     0010H     UNIT         ?PR?INIT_TIMER1?音量
+            CODE    0076H     000DH     UNIT         ?PR?ACK?音量
+            CODE    0083H     000CH     UNIT         ?PR?START?音量
+            CODE    008FH     000CH     UNIT         ?PR?STOP?音量
+            CODE    009BH     000CH     UNIT         ?C_C51STARTUP
+            CODE    00A7H     0009H     UNIT         ?PR?TIMER1_ISR?音量
+
+
+
+OVERLAY MAP OF MODULE:   .\obj\音量调节 (音量)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?音量
+
+?PR?MAIN?音量                  0008H    0001H
+  +--> ?PR?INIT_TIMER1?音量
+  +--> ?PR?_DAC?音量
+  +--> ?PR?_MDELAY?音量
+
+?PR?_DAC?音量                  -----    -----
+  +--> ?PR?START?音量
+  +--> ?PR?ACK?音量
+  +--> ?PR?_SEND?音量
+  +--> ?PR?STOP?音量
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/25/2011  20:59:53  PAGE 2
+
+
+
+?PR?ACK?音量                   -----    -----
+  +--> ?PR?_SEND?音量
+
+
+
+SYMBOL TABLE OF MODULE:  .\obj\音量调节 (音量)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        音量
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  C:0079H         PUBLIC        Ack
+  C:0083H         PUBLIC        Start
+  B:00A0H.1       PUBLIC        Sda
+  D:00B8H         PUBLIC        IP
+  B:00A0H.0       PUBLIC        Scl
+  C:0055H         PUBLIC        main
+  C:003BH         PUBLIC        _DAC
+  C:008FH         PUBLIC        Stop
+  C:0066H         PUBLIC        Init_Timer1
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0003H         PUBLIC        _mDelay
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  B:0090H.2       PUBLIC        spk
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  C:00A7H         PUBLIC        Timer1_isr
+  D:00C8H         PUBLIC        T2CON
+  C:001EH         PUBLIC        _Send
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _MDELAY
+  D:0007H         SYMBOL        j
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         26
+  C:0003H         LINE#         27
+  C:0003H         LINE#         29
+  C:0009H         LINE#         30
+  C:0009H         LINE#         31
+  C:000CH         LINE#         32
+  C:0017H         LINE#         33
+  C:001AH         LINE#         34
+  -------         ENDPROC       _MDELAY
+  -------         PROC          INIT_TIMER1
+  C:0066H         LINE#         38
+  C:0066H         LINE#         39
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/25/2011  20:59:53  PAGE 3
+
+
+  C:0066H         LINE#         40
+  C:0069H         LINE#         41
+  C:006CH         LINE#         42
+  C:006FH         LINE#         44
+  C:0071H         LINE#         45
+  C:0073H         LINE#         46
+  C:0075H         LINE#         47
+  -------         ENDPROC       INIT_TIMER1
+  -------         PROC          START
+  C:0083H         LINE#         51
+  C:0083H         LINE#         52
+  C:0083H         LINE#         53
+  C:0085H         LINE#         54
+  C:0086H         LINE#         55
+  C:0088H         LINE#         56
+  C:0089H         LINE#         57
+  C:008BH         LINE#         58
+  C:008CH         LINE#         59
+  C:008EH         LINE#         60
+  -------         ENDPROC       START
+  -------         PROC          STOP
+  C:008FH         LINE#         64
+  C:008FH         LINE#         65
+  C:008FH         LINE#         66
+  C:0091H         LINE#         67
+  C:0092H         LINE#         68
+  C:0094H         LINE#         69
+  C:0095H         LINE#         70
+  C:0097H         LINE#         71
+  C:0098H         LINE#         72
+  C:009AH         LINE#         73
+  -------         ENDPROC       STOP
+  -------         PROC          L?0024
+  -------         ENDPROC       L?0024
+  -------         PROC          ACK
+  C:0079H         LINE#         79
+  C:0079H         LINE#         80
+  C:0079H         LINE#         81
+  C:007BH         LINE#         82
+  C:007CH         LINE#         83
+  C:007EH         LINE#         84
+  C:007FH         LINE#         85
+  C:0081H         LINE#         86
+  C:0082H         LINE#         87
+  -------         ENDPROC       ACK
+  -------         PROC          _SEND
+  D:0007H         SYMBOL        Data
+  -------         DO            
+  D:0006H         SYMBOL        BitCounter
+  D:0005H         SYMBOL        temp
+  -------         ENDDO         
+  C:001EH         LINE#         92
+  C:001EH         LINE#         93
+  C:001EH         LINE#         94
+  C:0020H         LINE#         98
+  C:0020H         LINE#         99
+  C:0022H         LINE#         100
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/25/2011  20:59:53  PAGE 4
+
+
+  C:0024H         LINE#         101
+  C:0025H         LINE#         102
+  C:0029H         LINE#         103
+  C:002DH         LINE#         105
+  C:002FH         LINE#         107
+  C:0031H         LINE#         108
+  C:0035H         LINE#         109
+  C:0036H         LINE#         110
+  C:0038H         LINE#         111
+  C:0038H         LINE#         112
+  C:0038H         LINE#         113
+  C:003AH         LINE#         114
+  -------         ENDPROC       _SEND
+  -------         PROC          _DAC
+  D:0004H         SYMBOL        Data
+  C:003BH         LINE#         121
+  C:003DH         LINE#         122
+  C:003DH         LINE#         123
+  C:0040H         LINE#         124
+  C:0042H         LINE#         125
+  C:0045H         LINE#         126
+  C:0047H         LINE#         127
+  C:004AH         LINE#         128
+  C:004FH         LINE#         129
+  C:0052H         LINE#         130
+  -------         ENDPROC       _DAC
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        num
+  -------         ENDDO         
+  C:0055H         LINE#         138
+  C:0055H         LINE#         139
+  C:0055H         LINE#         142
+  C:0058H         LINE#         144
+  C:0058H         LINE#         145
+  C:0058H         LINE#         146
+  C:005DH         LINE#         147
+  C:005FH         LINE#         148
+  C:0064H         LINE#         150
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER1_ISR
+  C:00A7H         LINE#         156
+  C:00A7H         LINE#         159
+  C:00AAH         LINE#         160
+  C:00ADH         LINE#         162
+  C:00AFH         LINE#         165
+  -------         ENDPROC       TIMER1_ISR
+  -------         ENDMOD        音量
+
+Program Size: data=10.0 xdata=0 code=176
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
