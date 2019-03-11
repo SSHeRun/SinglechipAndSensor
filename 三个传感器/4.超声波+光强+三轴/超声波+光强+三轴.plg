@@ -1,0 +1,135 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+I:\WorkSpace\Keil\³¬Éù²¨+¹âÇ¿+ÈıÖá\³¬Éù²¨+¹âÇ¿+ÈıÖá.uvproj
+Project File Date:  11/23/2017
+
+<h2>Output:</h2>
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(37): error C231: 'SCL': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(38): error C231: 'SDA': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.c(43): warning C317: attempt to redefine macro 'SlaveAddress'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(45): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(46): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 1 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.c(43): warning C317: attempt to redefine macro 'SlaveAddress'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(45): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(46): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(265): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(453): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 1 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(45): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(46): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(265): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(453): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(45): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(46): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(265): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(453): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(45): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(46): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(266): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(454): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(45): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(46): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(259): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(447): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(41): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(42): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(255): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(443): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(41): error C231: 'BYTE': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(42): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(255): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(443): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(19): error C129: missing ';' before 'BUF'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(41): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(43): error C231: 'BUF': redefinition
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(254): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(442): error C202: 'SDA': undefined identifier
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 4 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(41): error C141: syntax error near 'WORD'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(43): error C231: 'BUF': redefinition
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 2 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(20): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(18): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+Target not created
+Build target 'Target 1'
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+Target not created
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(17): error C129: missing ';' before 'char'
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(38): error C141: syntax error near 'unsigned'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(40): error C231: 'BUF': redefinition
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 2 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(38): error C141: syntax error near 'unsigned'
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(40): error C231: 'BUF': redefinition
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 2 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(39): error C231: 'BUF': redefinition
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(39): error C231: 'BUF': redefinition
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 1 Error(s), 0 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈÖá.C(657): warning C206: 'Multiple_Read_ADXL345': missing function-prototype
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 0 Error(s), 1 Warning(s).
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+³¬Éù²¨+¹âÇ¿+ÈıÖá.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+linking...
+Program Size: data=69.2 xdata=0 code=4588
+creating hex file from "³¬Éù²¨+¹âÇ¿+ÈıÖá"...
+"³¬Éù²¨+¹âÇ¿+ÈıÖá" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ³¬Éù²¨+¹âÇ¿+ÈıÖá.c...
+linking...
+Program Size: data=69.2 xdata=0 code=4588
+creating hex file from "³¬Éù²¨+¹âÇ¿+ÈıÖá"...
+"³¬Éù²¨+¹âÇ¿+ÈıÖá" - 0 Error(s), 0 Warning(s).

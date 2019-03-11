@@ -1,0 +1,369 @@
+C51 COMPILER V9.01   DS18B20                                                               11/22/2017 23:27:53 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN DS18B20.OBJ
+COMPILER INVOKED BY: N:\keil\C51\BIN\C51.EXE DS18B20.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************
+   2          *该示例实现了用温度传感器件DS18B20对温度的采集，并在数码管上显示出来。
+   3          ***********************************************************************/
+   4          #include<reg52.h>
+   5          #define uchar unsigned char
+   6          #define uint  unsigned int
+   7          
+   8          #define jump_ROM 0xCC
+   9          #define start 0x44
+  10          #define read_EEROM 0xBE
+  11          
+  12          sbit DQ = P3^5;            //DS18B20数据口
+  13          
+  14          unsigned char TMPH,TMPL; 
+  15          
+  16          uchar code table[10] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+  17          
+  18          sbit IRIN = P3^2;         //红外接收器数据线
+  19          
+  20          uchar IRCOM[7];
+  21          
+  22          sbit E=P2^3;
+  23          sbit RW=P2^4;
+  24          sbit RS=P2^5;
+  25          
+  26          #define LCM_Data  P0
+  27          
+  28          uchar code  cdis1[ ] = {"  Red Control  "};
+  29          uchar code  cdis2[ ] = {"  IR-CODE:--H  "};
+  30          /********************************************************************
+  31          * 名称 : delay()
+  32          * 功能 : 延时,延时时间大概为140US。
+  33          * 输入 : 无
+  34          * 输出 : 无
+  35          ***********************************************************************/
+  36          
+  37          void delay_1()
+  38          {
+  39   1              int i,j;
+  40   1              for(i=0; i<=10; i++)
+  41   1              for(j=0; j<=2; j++)
+  42   1      ;
+  43   1      }
+  44          
+  45          //延时设置
+  46          void Delay1(unsigned int t)   // delay 40us
+  47          {
+  48   1       for(;t!=0;t--) ;
+  49   1      }
+  50          
+  51          
+  52          //写指令
+  53          void WriteCommandLCM(unsigned char ch)
+  54          {
+  55   1         RS=0;
+C51 COMPILER V9.01   DS18B20                                                               11/22/2017 23:27:53 PAGE 2   
+
+  56   1         RW=0;
+  57   1         E=1;
+  58   1         LCM_Data=ch;
+  59   1         Delay1(1);
+  60   1         E=0;
+  61   1         Delay1(100);  //delay 40us
+  62   1      }
+  63          //写数据
+  64          void WriteDataLCM(unsigned char ch)
+  65          {  RS=1;
+  66   1         RW=0;
+  67   1         E=1;
+  68   1         LCM_Data=ch;
+  69   1         Delay1(1);
+  70   1         E=0;
+  71   1         Delay1(100); //delay 40us
+  72   1      }
+  73          
+  74          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  75          {                                               
+  76   1              Y&=1;                                           
+  77   1              X&=15;                                          
+  78   1              if(Y)X|=0x40;                                   
+  79   1              X|=0x80;                        
+  80   1              WriteCommandLCM(X);             
+  81   1              WriteDataLCM(DData);            
+  82   1      }
+  83          /*******************************************************************/
+  84          /*  LCD初始化设定                                                  */
+  85          /*******************************************************************/
+  86          void InitLcd()
+  87          {
+  88   1       WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+  89   1       WriteCommandLCM(0x30);
+  90   1       WriteCommandLCM(0x30);
+  91   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+  92   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+  93   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+  94   1       WriteCommandLCM(0x01); //清屏
+  95   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+  96   1      }
+  97          /********************************************************************
+  98          * 名称 : delay()
+  99          * 功能 : 延时函数
+ 100          * 输入 : 无
+ 101          * 输出 : 无
+ 102          ***********************************************************************/
+ 103          void delay(uint N)
+ 104          {
+ 105   1              int i;
+ 106   1              for(i=0; i<N; i++)
+ 107   1              ;
+ 108   1      }
+ 109          
+ 110          /********************************************************************
+ 111          * 名称 : Delay_1ms()
+ 112          * 功能 : 延时子程序，延时时间为 1ms * x
+ 113          * 输入 : x (延时一毫秒的个数)
+ 114          * 输出 : 无
+ 115          ***********************************************************************/
+ 116          void Delay_1ms(uint i)//1ms延时
+ 117          {
+C51 COMPILER V9.01   DS18B20                                                               11/22/2017 23:27:53 PAGE 3   
+
+ 118   1              uchar x,j;
+ 119   1              for(j=0;j<i;j++)
+ 120   1              for(x=0;x<=148;x++);    
+ 121   1      }
+ 122          /********************************************************************
+ 123          * 名称 : Reset()
+ 124          * 功能 : 复位DS18B20
+ 125          * 输入 : 无
+ 126          * 输出 : 无
+ 127          ***********************************************************************/
+ 128          uchar Reset(void)
+ 129          {
+ 130   1              uchar deceive_ready;
+ 131   1              DQ = 0;
+ 132   1              delay(29);
+ 133   1              DQ = 1;
+ 134   1              delay(3);
+ 135   1              deceive_ready = DQ;
+ 136   1              delay(25);
+ 137   1              return(deceive_ready);
+ 138   1      }
+ 139          
+ 140          /********************************************************************
+ 141          * 名称 : read_bit()
+ 142          * 功能 : 从DS18B20读一个位值
+ 143          * 输入 : 无
+ 144          * 输出 : 从DS18B20读出的一个位值
+ 145          ***********************************************************************/
+ 146          uchar read_bit(void)
+ 147          {
+ 148   1              uchar i;
+ 149   1              DQ = 0;
+ 150   1              DQ = 1;
+ 151   1              for(i=0; i<3; i++);
+ 152   1              return(DQ);
+ 153   1      }
+ 154          
+ 155          /********************************************************************
+ 156          * 名称 : write_bit()
+ 157          * 功能 : 向DS18B20写一位
+ 158          * 输入 : bitval（要对DS18B20写入的位值）
+ 159          * 输出 : 无
+ 160          ***********************************************************************/
+ 161          void write_bit(uchar bitval)
+ 162          {
+ 163   1      DQ=0;if(bitval==1)
+ 164   1      DQ=1;
+ 165   1      delay(5);
+ 166   1      DQ=1;
+ 167   1      }
+ 168          
+ 169          /********************************************************************
+ 170          * 名称 : read_byte()
+ 171          * 功能 : 从DS18B20读一个字节
+ 172          * 输入 : 无
+ 173          * 输出 : 从DS18B20读到的值
+ 174          ***********************************************************************/
+ 175          uchar read_byte(void)
+ 176          {
+ 177   1              uchar i,m,receive_data;
+ 178   1              m = 1;
+ 179   1              receive_data = 0;
+C51 COMPILER V9.01   DS18B20                                                               11/22/2017 23:27:53 PAGE 4   
+
+ 180   1              for(i=0; i<8; i++)
+ 181   1              {
+ 182   2                      if(read_bit())
+ 183   2                      {
+ 184   3                              receive_data = receive_data + (m << i);
+ 185   3                      }
+ 186   2                      delay(6);
+ 187   2              }
+ 188   1              return(receive_data);
+ 189   1      }
+ 190          
+ 191          /********************************************************************
+ 192          * 名称 : write_byte()
+ 193          * 功能 : 向DS18B20写一个字节
+ 194          * 输入 : val（要对DS18B20写入的命令值）
+ 195          * 输出 : 无
+ 196          ***********************************************************************/
+ 197          void write_byte(uchar val)
+ 198          {
+ 199   1              uchar i,temp;
+ 200   1              for(i=0; i<8; i++)
+ 201   1              {
+ 202   2                      temp = val >> i;
+ 203   2                      temp = temp & 0x01;
+ 204   2                      write_bit(temp);
+ 205   2                      delay(5);
+ 206   2              }
+ 207   1      }
+ 208          
+ 209          
+ 210          
+ 211          
+ 212          /********************************************************************
+ 213          * 名称 : Main()
+ 214          * 功能 : 主函数
+ 215          * 输入 : 无
+ 216          * 输出 : 无
+ 217          ***********************************************************************/
+ 218          void main()
+ 219          {
+ 220   1      /*
+ 221   1      
+ 222   1              */
+ 223   1       uchar m;
+ 224   1          
+ 225   1          IRIN=1;                    //I/O口初始化
+ 226   1      
+ 227   1          Delay1(10);                 //延时
+ 228   1          InitLcd();                //初始化LCD             
+ 229   1      
+ 230   1           m = 0;
+ 231   1          while(cdis1[m] != '\0')
+ 232   1           {                         //显示字符
+ 233   2             WriteDataLCM(cdis1[m]);
+ 234   2             m++;
+ 235   2           }
+ 236   1      
+ 237   1          //lcd_pos(0x40);             //设置显示位置为第二行第1个字符
+ 238   1              WriteCommandLCM(0x40 | 0x80);
+ 239   1           m = 0;
+ 240   1          while(cdis2[m] != '\0')
+ 241   1           {
+C51 COMPILER V9.01   DS18B20                                                               11/22/2017 23:27:53 PAGE 5   
+
+ 242   2             WriteDataLCM(cdis2[m]);      //显示字符
+ 243   2             m++;
+ 244   2           }
+ 245   1         
+ 246   1      
+ 247   1              IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+ 248   1              TCON = 0x01;               //触发方式为脉冲负边沿触发
+ 249   1      
+ 250   1         while(1)     ;
+ 251   1      
+ 252   1      } //end main
+ 253          
+ 254          /**********************************************************/
+ 255          void IR_IN() interrupt 0 using 0
+ 256          {
+ 257   1        unsigned char j,k,N=0;
+ 258   1           EX0 = 0;   
+ 259   1               Delay1(200);
+ 260   1               if (IRIN==1) 
+ 261   1           { EX0 =1;
+ 262   2                 return;
+ 263   2                } 
+ 264   1                                 //确认IR信号出现
+ 265   1        while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+ 266   1          {Delay1(13);}
+ 267   1      
+ 268   1       for (j=0;j<4;j++)         //收集四组数据
+ 269   1       { 
+ 270   2        for (k=0;k<8;k++)        //每组数据有8位
+ 271   2        {
+ 272   3         while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+ 273   3           {Delay1(13);}
+ 274   3          while (!IRIN)          //等 IR 变为高电平
+ 275   3           {Delay1(13);}
+ 276   3           while (IRIN)           //计算IR高电平时长
+ 277   3            {
+ 278   4         Delay1(13);
+ 279   4          N++;           
+ 280   4          if (N>=30)
+ 281   4               { EX0=1;
+ 282   5               return;}                  //0.14ms计数过长自动离开。
+ 283   4            }                        //高电平计数完毕                
+ 284   3           IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+ 285   3           if (N>=8) {IRCOM[j] = IRCOM[j] | 0x80;}  //数据最高位补“1”
+ 286   3           N=0;
+ 287   3        }//end for k
+ 288   2       }//end for j
+ 289   1         
+ 290   1         if (IRCOM[2]!=~IRCOM[3])
+ 291   1         { EX0=1;
+ 292   2           return; }
+ 293   1      
+ 294   1         IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+ 295   1         IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+ 296   1      
+ 297   1         if(IRCOM[5]>9)
+ 298   1          { IRCOM[5]=IRCOM[5]+0x37;}
+ 299   1         else
+ 300   1                IRCOM[5]=IRCOM[5]+0x30;
+ 301   1      
+ 302   1         if(IRCOM[6]>9)
+ 303   1          { IRCOM[6]=IRCOM[6]+0x37;}
+C51 COMPILER V9.01   DS18B20                                                               11/22/2017 23:27:53 PAGE 6   
+
+ 304   1         else
+ 305   1                IRCOM[6]=IRCOM[6]+0x30;
+ 306   1      
+ 307   1           
+ 308   1           DisplayOneChar(10,1,IRCOM[6]);          //第一位数显示         
+ 309   1           DisplayOneChar(11,1,IRCOM[5]);        //第二位数显示
+ 310   1      
+ 311   1           EX0 = 1; 
+ 312   1      
+ 313   1               if(IRCOM[6] == '0' && IRCOM[5] == '8'){
+ 314   2                              //float tt;
+ 315   2              uint temp;
+ 316   2              P2 = 0x00;
+ 317   2              while(1)
+ 318   2              {
+ 319   3                      Reset();
+ 320   3                      write_byte(jump_ROM);
+ 321   3                      write_byte(start);
+ 322   3                      Reset();
+ 323   3                      write_byte(jump_ROM);
+ 324   3                      write_byte(read_EEROM);
+ 325   3                      TMPL = read_byte();
+ 326   3                      TMPH = read_byte();
+ 327   3                      temp = TMPL / 16 + TMPH * 16;
+ 328   3                      P0 = table[temp/10%10];
+ 329   3                      P2 = 6;
+ 330   3                      Delay_1ms(5);
+ 331   3                      P0 = table[temp%10];
+ 332   3                      P2 = 7;
+ 333   3                      Delay_1ms(5);
+ 334   3              }
+ 335   2              }     
+ 336   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    760    ----
+   CONSTANT SIZE    =     42    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

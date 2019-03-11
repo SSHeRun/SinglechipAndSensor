@@ -1,0 +1,223 @@
+C51 COMPILER V9.01   红蚠_人体红蚠_芲体                                                    11/23/2017 21:37:11 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 红蚠_人体红蚠_芲体
+OBJECT MODULE PLACED IN 红外+人体红外+气体.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE 红外+人体红外+气体.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************************
+   2          *          lcd1602显示 遥控键值读取器                                          *
+   3          *         lcd1602显示 遥控器接p3.2                                             *
+   4          ********************************************************************************/
+   5          
+   6          #include <reg51.h>
+   7          #include <intrins.h>
+   8          
+   9          #define uchar unsigned char
+  10          #define uint  unsigned int
+  11          
+  12          
+  13          sbit IRIN = P3^2;         //红外接收器数据线
+  14          
+  15          uchar IRCOM[7];
+  16          
+  17          sbit E=P2^3;
+  18          sbit RW=P2^4;
+  19          sbit RS=P2^5;
+  20          
+  21          #define LCM_Data  P0
+  22          
+  23          uchar code  cdis1[ ] = {"  Red Control  "};
+  24          uchar code  cdis2[ ] = {"  IR-CODE:--H  "};
+  25          
+  26          sbit LED=P1^0;   
+  27          sbit DOUT=P2^0;  
+  28          
+  29          //延时设置
+  30          void Delay(unsigned int t)   // delay 40us
+  31          {
+  32   1       for(;t!=0;t--) ;
+  33   1      }
+  34          
+  35          
+  36          //写指令
+  37          void WriteCommandLCM(unsigned char ch)
+  38          {
+  39   1         RS=0;
+  40   1         RW=0;
+  41   1         E=1;
+  42   1         LCM_Data=ch;
+  43   1         Delay(1);
+  44   1         E=0;
+  45   1         Delay(100);  //delay 40us
+  46   1      }
+  47          
+  48          //写数据
+  49          void WriteDataLCM(unsigned char ch)
+  50          {  RS=1;
+  51   1         RW=0;
+  52   1         E=1;
+  53   1         LCM_Data=ch;
+  54   1         Delay(1);
+  55   1         E=0;
+C51 COMPILER V9.01   红蚠_人体红蚠_芲体                                                    11/23/2017 21:37:11 PAGE 2   
+
+  56   1         Delay(100); //delay 40us
+  57   1      }
+  58          
+  59          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  60          {                                               
+  61   1              Y&=1;                                           
+  62   1              X&=15;                                          
+  63   1              if(Y)X|=0x40;                                   
+  64   1              X|=0x80;                        
+  65   1              WriteCommandLCM(X);             
+  66   1              WriteDataLCM(DData);            
+  67   1      }                               
+  68          
+  69          /*******************************************************************/
+  70          /*  LCD初始化设定                                                  */
+  71          /*******************************************************************/
+  72          void InitLcd()
+  73          {
+  74   1       WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+  75   1       WriteCommandLCM(0x30);
+  76   1       WriteCommandLCM(0x30);
+  77   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+  78   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+  79   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+  80   1       WriteCommandLCM(0x01); //清屏
+  81   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+  82   1      }
+  83          
+  84          
+  85          
+  86          main()
+  87          {
+  88   1         uchar m;
+  89   1          
+  90   1          IRIN=1;                    //I/O口初始化
+  91   1      
+  92   1          Delay(10);                 //延时
+  93   1          InitLcd();                //初始化LCD             
+  94   1      
+  95   1              DOUT=1;
+  96   1              LED=0;
+  97   1      
+  98   1           m = 0;
+  99   1          while(cdis1[m] != '\0')
+ 100   1           {                         //显示字符
+ 101   2             WriteDataLCM(cdis1[m]);
+ 102   2             m++;
+ 103   2           }
+ 104   1      
+ 105   1          //lcd_pos(0x40);             //设置显示位置为第二行第1个字符
+ 106   1              WriteCommandLCM(0x40 | 0x80);
+ 107   1           m = 0;
+ 108   1          while(cdis2[m] != '\0')
+ 109   1           {
+ 110   2             WriteDataLCM(cdis2[m]);      //显示字符
+ 111   2             m++;
+ 112   2           }
+ 113   1         
+ 114   1      
+ 115   1              IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+ 116   1              TCON = 0x01;               //触发方式为脉冲负边沿触发
+ 117   1      
+C51 COMPILER V9.01   红蚠_人体红蚠_芲体                                                    11/23/2017 21:37:11 PAGE 3   
+
+ 118   1              while(1) 
+ 119   1              {
+ 120   2      
+ 121   2                      if(DOUT==0)
+ 122   2                  {
+ 123   3                         LED=1;          
+ 124   3                               Delay(1000);
+ 125   3                               DOUT=1;
+ 126   3                               LED=0;
+ 127   3                       }
+ 128   2                      
+ 129   2              }
+ 130   1      
+ 131   1      } //end main
+ 132          
+ 133          /**********************************************************/
+ 134          void IR_IN() interrupt 0 using 0
+ 135          {
+ 136   1        unsigned char j,k,N=0;
+ 137   1           EX0 = 0;   
+ 138   1               Delay(200);
+ 139   1               if (IRIN==1) 
+ 140   1           { EX0 =1;
+ 141   2                 return;
+ 142   2                } 
+ 143   1                                 //确认IR信号出现
+ 144   1        while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+ 145   1          {Delay(13);}
+ 146   1      
+ 147   1       for (j=0;j<4;j++)         //收集四组数据
+ 148   1       { 
+ 149   2        for (k=0;k<8;k++)        //每组数据有8位
+ 150   2        {
+ 151   3         while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+ 152   3           {Delay(13);}
+ 153   3          while (!IRIN)          //等 IR 变为高电平
+ 154   3           {Delay(13);}
+ 155   3           while (IRIN)           //计算IR高电平时长
+ 156   3            {
+ 157   4         Delay(13);
+ 158   4          N++;           
+ 159   4          if (N>=30)
+ 160   4               { EX0=1;
+ 161   5               return;}                  //0.14ms计数过长自动离开。
+ 162   4            }                        //高电平计数完毕                
+ 163   3           IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+ 164   3           if (N>=8) {IRCOM[j] = IRCOM[j] | 0x80;}  //数据最高位补“1”
+ 165   3           N=0;
+ 166   3        }//end for k
+ 167   2       }//end for j
+ 168   1         
+ 169   1         if (IRCOM[2]!=~IRCOM[3])
+ 170   1         { EX0=1;
+ 171   2           return; }
+ 172   1      
+ 173   1         IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+ 174   1         IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+ 175   1      
+ 176   1         if(IRCOM[5]>9)
+ 177   1          { IRCOM[5]=IRCOM[5]+0x37;}
+ 178   1         else
+ 179   1                IRCOM[5]=IRCOM[5]+0x30;
+C51 COMPILER V9.01   红蚠_人体红蚠_芲体                                                    11/23/2017 21:37:11 PAGE 4   
+
+ 180   1      
+ 181   1         if(IRCOM[6]>9)
+ 182   1          { IRCOM[6]=IRCOM[6]+0x37;}
+ 183   1         else
+ 184   1                IRCOM[6]=IRCOM[6]+0x30;
+ 185   1      
+ 186   1                 
+ 187   1           DisplayOneChar(10,1,IRCOM[6]);          //第一位数显示         
+ 188   1           DisplayOneChar(11,1,IRCOM[5]);        //第二位数显示
+ 189   1      
+ 190   1           EX0 = 1; 
+ 191   1      } 
+ 192          
+ 193          
+ 194          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    408    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

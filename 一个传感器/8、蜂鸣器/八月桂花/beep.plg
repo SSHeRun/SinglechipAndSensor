@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+F:\6800-em3 v30\光盘资料\步骤3 51单片机例程\3 蜂鸣器\蜂鸣器试验\八月桂花\beep.uvproj
+Project File Date:  04/19/2013
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling beep.c...
+linking...
+Program Size: data=10.0 xdata=0 code=452
+creating hex file from "beep"...
+"beep" - 0 Error(s), 0 Warning(s).

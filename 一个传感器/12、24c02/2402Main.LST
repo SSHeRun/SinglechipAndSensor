@@ -1,0 +1,166 @@
+C51 COMPILER V9.01   2402MAIN                                                              07/28/2016 10:53:31 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 2402MAIN
+OBJECT MODULE PLACED IN 2402Main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 2402Main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2           标题：                  EEPROM读写试验(按钮输入)                                                          *
+   3          ********************************************************************************
+   4                                                                                                                                                                     *
+   5          此例熟悉并掌握（存储芯片AT2402）的操作，有保存和读取操作                           *                       
+   6          了解掌握I2C总线接口的工作原理及一般编程方法。                                                              *
+   7                                                                                         *                  
+   8          跳线操作：P0（JP10）连 数码管（JP12）                                                                              *
+   9                    P1（JP8 ）连 独立按键（JP5）                                                                             *
+  10                                                                                                                                                                     *
+  11          具体操作：      第1个按钮保存      第2个按钮读取                                                               *
+  12                      第3个按钮减减      第4个按钮加数                                                           *
+  13                                                                                                                                                                     *                                                                              
+  14          ********************************************************************************/
+  15          
+  16          #include<Function.h>
+  17          #include<reg52.h>
+  18          
+  19          #define  AT24C02 0xa0  //AT24C02 地址
+  20          
+  21          //else IO
+  22          sbit    LS138A=P2^0;    //译码器端
+  23          sbit    LS138B=P2^1;
+  24          sbit    LS138C=P2^2; 
+  25          
+  26          sbit    K1 = P3^2;       //保存
+  27          sbit    K2 = P3^3;       //读取
+  28          sbit    K3 = P3^4;       //+数据
+  29          sbit    K4 = P3^5;   //-数据
+  30          
+  31          void delay(unsigned int i);
+  32          
+  33          
+  34          //此表为 LED 的字模, 共阴数码管 0-9  - 
+  35          unsigned char code Disp_Tab[] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x40}; 
+  36          
+  37          unsigned char Count1;
+  38          unsigned long D[16], LedOut[5],LedNumVal;
+  39          unsigned int idata USEC;
+  40          
+  41            
+  42          void  system_ini() 
+  43          {    
+  44   1          TMOD|= 0x11;
+  45   1          TH1 = 0xfe; //11.0592
+  46   1              TL1 = 0x33;
+  47   1              TR1  = 1; 
+  48   1          IE =0x8A;
+  49   1      
+  50   1      }
+  51          
+  52           main()
+  53           {      unsigned char i;
+  54   1              unsigned char pDat[8];
+  55   1      
+C51 COMPILER V9.01   2402MAIN                                                              07/28/2016 10:53:31 PAGE 2   
+
+  56   1         system_ini();
+  57   1         while(1)
+  58   1         {
+  59   2                       //========================IIC 读取
+  60   2              if(K2 == 0)        //第二个按钮读取数据
+  61   2              { 
+  62   3                IRcvStr(AT24C02, 0 , &pDat[0], 8); 
+  63   3                for (i=0; i<4; i++)
+  64   3                {
+  65   4                      D[14+i]=pDat[i*2+0]+pDat[i*2+1]*0x100;
+  66   4                      Count1 = D[14];
+  67   4                 }         
+  68   3               }
+  69   2      
+  70   2                 //========================IIC 保存
+  71   2                 if(K1 == 0)    //第一个按钮保存数据
+  72   2                 { 
+  73   3                    D[14]= Count1;
+  74   3                       for (i=0; i<4; i++)
+  75   3                   {
+  76   4                         pDat[i*2+0]=D[14+i];
+  77   4                         pDat[i*2+1]=D[14+i]>>8;
+  78   4                       }
+  79   3                   ISendStr(AT24C02, 0 , &pDat[0], 8); 
+  80   3             }
+  81   2      
+  82   2      
+  83   2                /********以下将2402中保存的数据送到LED数码管显示*************/
+  84   2              LedNumVal=Count1;
+  85   2                LedOut[0]=Disp_Tab[LedNumVal%10000/1000];
+  86   2            LedOut[1]=Disp_Tab[LedNumVal%1000/100];
+  87   2            LedOut[2]=Disp_Tab[LedNumVal%100/10]|0x80;
+  88   2            LedOut[3]=Disp_Tab[LedNumVal%10]; 
+  89   2                
+  90   2          for(i=0; i<4; i++) 
+  91   2                {             
+  92   3                      
+  93   3                  P0 =  LedOut[i];
+  94   3                      
+  95   3                      switch(i)                                         
+  96   3               {          
+  97   4                              case 0:LS138A=0; LS138B=0; LS138C=0; break;         
+  98   4                  case 1:LS138A=1; LS138B=0; LS138C=0; break;                 
+  99   4                  case 2:LS138A=0; LS138B=1; LS138C=0; break; 
+ 100   4                  case 3:LS138A=1; LS138B=1; LS138C=0; break; 
+ 101   4                              case 4:LS138A=0; LS138B=0; LS138C=1; break;
+ 102   4               }
+ 103   3                       
+ 104   3                      delay(100);
+ 105   3                }
+ 106   2      
+ 107   2                //  LS138A=1; LS138B=1; LS138C=1;    
+ 108   2      
+ 109   2         }
+ 110   1      }
+ 111          
+ 112          
+ 113          void delay(unsigned int i)
+ 114          {
+ 115   1          char j;
+ 116   1          for(i; i > 0; i--)
+ 117   1              for(j = 200; j > 0; j--);
+C51 COMPILER V9.01   2402MAIN                                                              07/28/2016 10:53:31 PAGE 3   
+
+ 118   1      }
+ 119          
+ 120          
+ 121          /*************************************
+ 122           [ t1 (0.5ms)中断] 中断中做 PWM 输出
+ 123            ------------1000/(0.02ms*250)=200Hz
+ 124          *************************************/
+ 125          void T1zd(void) interrupt 3   //3 为定时器1的中断号  1 定时器0的中断号 0 外部中断1 2 外部中断2  4 串口中断
+ 126          {
+ 127   1               TH1 = 0xfe; //12M      
+ 128   1               TL1 = 0x33;
+ 129   1         if(USEC++==200)
+ 130   1         {    USEC=0;
+ 131   2               
+ 132   2          if (K3) Count1++;     //改变数据
+ 133   2          if (K4&Count1!=0) Count1--;
+ 134   2        
+ 135   2          }  
+ 136   1      
+ 137   1      }
+ 138          
+ 139          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    585    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     89       9
+   IDATA SIZE       =      2    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

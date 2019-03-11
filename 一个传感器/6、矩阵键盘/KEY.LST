@@ -1,0 +1,118 @@
+C51 COMPILER V9.01   KEY                                                                   07/28/2016 11:11:24 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN KEY.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE KEY.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************
+   2          * 描述    :  该文件实现了 4 * 4 键盘的试验。通过数码管的最后一位来显示
+   3                                   当前的按键值。          
+   4          *********************************************************************/
+   5          #include<reg51.h>
+   6          #include<intrins.h>
+   7          
+   8          #define uint unsigned int
+   9          #define uchar unsigned char
+  10          
+  11          uchar code table[16] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71};
+  12          
+  13          /********************************************************************
+  14          * 名称 : Delay_1ms()
+  15          * 功能 : 延时子程序，延时时间为 1ms * x
+  16          * 输入 : x (延时一毫秒的个数)
+  17          * 输出 : 无
+  18          ***********************************************************************/
+  19          void Delay_1ms(uint i)//1ms延时
+  20          {
+  21   1              uchar x,j;
+  22   1              for(j=0;j<i;j++)
+  23   1              for(x=0;x<=148;x++);    
+  24   1      }
+  25          
+  26          /********************************************************************
+  27          * 名称 : delay()
+  28          * 功能 : 延时,延时时间大概为140US。
+  29          * 输入 : 无
+  30          * 输出 : 无
+  31          ***********************************************************************/
+  32          
+  33          void delay()
+  34          {
+  35   1              int i,j;
+  36   1              for(i=0; i<=10; i++)
+  37   1              for(j=0; j<=2; j++)
+  38   1      ;
+  39   1      }
+  40          
+  41          
+  42          /********************************************************************
+  43          * 名称 : Keyscan()
+  44          * 功能 : 实现按键的读取。下面这个子程序是按处理 矩阵键盘 的基本方法处理的。
+  45          * 输入 : 无
+  46          * 输出 : 按键值
+  47          ***********************************************************************/
+  48          uchar Keyscan(void)
+  49          {
+  50   1              uchar i,j, temp, Buffer[4] = {0xef, 0xdf, 0xbf, 0x7f};
+  51   1              for(j=0; j<4; j++)
+  52   1              {
+  53   2                      P1 = Buffer[j];
+  54   2                      /*以下三个_nop_();作用为让 P1 口的状态稳定*/
+  55   2                      delay();
+C51 COMPILER V9.01   KEY                                                                   07/28/2016 11:11:24 PAGE 2   
+
+  56   2                      temp = 0x01;                                                                                            
+             -                                                                        
+  57   2                      for(i=0; i<4; i++)
+  58   2                      {
+  59   3                              if(!(P1 & temp)) 
+  60   3                              {
+  61   4                                      return (i+j*4);
+  62   4                              }
+  63   3                              temp <<= 1;
+  64   3                      }       
+  65   2              }
+  66   1      }
+  67          
+  68          /********************************************************************
+  69          * 名称 : Main()
+  70          * 功能 : 主函数
+  71          * 输入 : 无
+  72          * 输出 : 无
+  73          ***********************************************************************/
+  74          void Main(void)
+  75          {
+  76   1              uchar Key_Value;  //读出的键值
+  77   1              while(1)
+  78   1              {
+  79   2                      P1 = 0xf0;
+  80   2                      if(P1 != 0xf0)
+  81   2                      {
+  82   3                              Delay_1ms(15);  //按键消抖
+  83   3                              if(P1 != 0xf0)
+  84   3                              {
+  85   4                                      Key_Value = Keyscan();          
+  86   4                              }
+  87   3                      }
+  88   2                      P0 = table[Key_Value];
+  89   2                      P2 = 0x07;      
+  90   2              }
+  91   1      }
+*** WARNING C291 IN LINE 66 OF KEY.C: not every exit path returns a value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    152    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

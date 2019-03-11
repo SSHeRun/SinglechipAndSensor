@@ -1,0 +1,5 @@
+"STARTUP.obj",
+"DA-AD.obj",
+"I2C.obj" 
+TO "PCFf8591" 
+RAMSIZE(256) 

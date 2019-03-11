@@ -1,0 +1,237 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\传感器实训套件\程序\20、三轴加速度\ADXL345.uvproj
+Project File Date:  07/12/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(46): error C231: 'SCL': redefinition
+MAIN.C(47): error C231: 'SDA': redefinition
+Main.c(49): warning C317: attempt to redefine macro 'SlaveAddress'
+MAIN.C(51): error C231: 'BYTE': redefinition
+MAIN.C(52): error C141: syntax error near 'WORD'
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(170): error C202: 'SDA': undefined identifier
+MAIN.C(171): error C202: 'SCL': undefined identifier
+MAIN.C(173): error C202: 'SDA': undefined identifier
+MAIN.C(175): error C202: 'SCL': undefined identifier
+MAIN.C(183): error C202: 'SDA': undefined identifier
+MAIN.C(184): error C202: 'SCL': undefined identifier
+MAIN.C(186): error C202: 'SDA': undefined identifier
+MAIN.C(196): error C202: 'SDA': undefined identifier
+MAIN.C(197): error C202: 'SCL': undefined identifier
+MAIN.C(199): error C202: 'SCL': undefined identifier
+MAIN.C(208): error C202: 'SCL': undefined identifier
+MAIN.C(210): error C202: 'SDA': undefined identifier
+MAIN.C(211): error C202: 'SCL': undefined identifier
+MAIN.C(227): error C202: 'SDA': undefined identifier
+MAIN.C(228): error C202: 'SCL': undefined identifier
+MAIN.C(230): error C202: 'SCL': undefined identifier
+MAIN.C(244): error C202: 'SDA': undefined identifier
+MAIN.C(248): error C202: 'SCL': undefined identifier
+MAIN.C(250): error C202: 'SDA': undefined identifier
+MAIN.C(251): error C202: 'SCL': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(175): error C202: 'SCL': undefined identifier
+MAIN.C(210): error C202: 'SDA': undefined identifier
+MAIN.C(227): error C202: 'SDA': undefined identifier
+MAIN.C(228): error C202: 'SCL': undefined identifier
+MAIN.C(230): error C202: 'SCL': undefined identifier
+MAIN.C(244): error C202: 'SDA': undefined identifier
+MAIN.C(248): error C202: 'SCL': undefined identifier
+MAIN.C(250): error C202: 'SDA': undefined identifier
+MAIN.C(251): error C202: 'SCL': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(175): error C202: 'SCL': undefined identifier
+MAIN.C(210): error C202: 'SDA': undefined identifier
+MAIN.C(244): error C202: 'SDA': undefined identifier
+MAIN.C(250): error C202: 'SDA': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+linking...
+Program Size: data=24.1 xdata=0 code=1792
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+Main.c(49): warning C317: attempt to redefine macro 'SlaveAddress'
+MAIN.C(51): error C231: 'BYTE': redefinition
+MAIN.C(52): error C141: syntax error near 'WORD'
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+Main.c(49): warning C317: attempt to redefine macro 'SlaveAddress'
+linking...
+Program Size: data=24.1 xdata=0 code=1792
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(278): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(288): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(291): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(305): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(308): error C202: 'SlaveAddress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(305): error C202: 'SlaveAddress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+linking...
+Program Size: data=24.1 xdata=0 code=1792
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+linking...
+Program Size: data=24.1 xdata=0 code=1792
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY?MAIN
+Program Size: data=24.1 xdata=0 code=1804
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(377): error C237: '_WriteCommandLCM': function already has a body
+MAIN.C(390): error C237: '_WriteDataLCM': function already has a body
+MAIN.C(402): error C237: 'InitLcd': function already has a body
+MAIN.C(412): error C237: '_DisplayOneChar': function already has a body
+MAIN.C(424): error C237: 'Delay5us': function already has a body
+MAIN.C(436): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(354): error C237: '_conversion1': function already has a body
+MAIN.C(403): error C237: 'InitLcd': function already has a body
+MAIN.C(425): error C237: 'Delay5us': function already has a body
+MAIN.C(437): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(56): warning C206: 'Delay': missing function-prototype
+MAIN.C(56): error C267: 'Delay': requires ANSI-style prototype
+MAIN.C(229): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(258): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(397): error C237: 'InitLcd': function already has a body
+MAIN.C(419): error C237: 'Delay5us': function already has a body
+MAIN.C(431): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(88): warning C206: 'Delay': missing function-prototype
+MAIN.C(88): error C267: 'Delay': requires ANSI-style prototype
+MAIN.C(261): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(290): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(397): error C237: 'InitLcd': function already has a body
+MAIN.C(419): error C237: 'Delay5us': function already has a body
+MAIN.C(431): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(266): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(295): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(402): error C237: 'InitLcd': function already has a body
+MAIN.C(424): error C237: 'Delay5us': function already has a body
+MAIN.C(436): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(60): error C231: 'E': redefinition
+MAIN.C(61): error C231: 'RW': redefinition
+MAIN.C(62): error C231: 'RS': redefinition
+MAIN.C(69): error C231: 'SCL': redefinition
+MAIN.C(70): error C231: 'SDA': redefinition
+MAIN.C(74): error C231: 'BYTE': redefinition
+MAIN.C(75): error C141: syntax error near 'WORD'
+MAIN.C(424): error C237: 'InitLcd': function already has a body
+MAIN.C(446): error C237: 'Delay5us': function already has a body
+MAIN.C(458): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(405): error C237: 'InitLcd': function already has a body
+MAIN.C(427): error C237: 'Delay5us': function already has a body
+MAIN.C(439): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(427): error C237: 'Delay5us': function already has a body
+MAIN.C(439): error C237: 'Delay5ms': function already has a body
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+MAIN.C(305): error C202: 'SlaveAddress': undefined identifier
+MAIN.C(308): error C202: 'SlaveAddress': undefined identifier
+Target not created
+Build target 'Target 1'
+compiling Main.c...
+linking...
+Program Size: data=24.1 xdata=0 code=1792
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DISPLAYONECHAR1?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_NMS1?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_BH1750?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_BH1750?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD1?MAIN
+Program Size: data=24.2 xdata=0 code=2274
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DISPLAYONECHAR1?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_NMS1?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_BH1750?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_BH1750?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD1?MAIN
+Program Size: data=24.2 xdata=0 code=2274
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 6 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+linking...
+Program Size: data=29.1 xdata=0 code=2646
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling Main.c...
+linking...
+Program Size: data=29.1 xdata=0 code=2646
+creating hex file from "ADXL345"...
+"ADXL345" - 0 Error(s), 0 Warning(s).

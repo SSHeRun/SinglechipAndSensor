@@ -1,0 +1,147 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/09/2016  21:38:45  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE Moto.obj TO Moto RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  Moto.obj (MOTO)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  Moto (MOTO)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0003H     UNIT         ?DT?MOTO
+            IDATA   000BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+                    000EH     07F2H                  *** GAP ***
+            CODE    0800H     0052H     UNIT         ?PR?MAIN?MOTO
+            CODE    0852H     0026H     UNIT         ?PR?TIM?MOTO
+            CODE    0878H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0884H     000AH     UNIT         ?PR?_DELAY?MOTO
+
+
+
+OVERLAY MAP OF MODULE:   Moto (MOTO)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MOTO
+
+?PR?MAIN?MOTO
+  +--> ?PR?_DELAY?MOTO
+
+
+
+SYMBOL TABLE OF MODULE:  Moto (MOTO)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MOTO
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/09/2016  21:38:45  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  C:0884H         PUBLIC        _delay
+  D:00B8H         PUBLIC        IP
+  B:00B0H.2       PUBLIC        KEY1
+  C:0800H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0852H         PUBLIC        tim
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  D:00C8H         PUBLIC        T2CON
+  D:0009H         PUBLIC        CYCLE
+  D:000AH         PUBLIC        PWM_ON
+  B:0090H.5       PUBLIC        PWM
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        cnt
+  C:0884H         LINE#         6
+  C:0884H         LINE#         7
+  C:0884H         LINE#         8
+  C:088DH         LINE#         9
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0005H         SYMBOL        PWM_Num
+  -------         ENDDO         
+  C:0800H         LINE#         11
+  C:0800H         LINE#         12
+  C:0800H         LINE#         14
+  C:0803H         LINE#         15
+  C:0806H         LINE#         16
+  C:0809H         LINE#         17
+  C:080CH         LINE#         18
+  C:080EH         LINE#         20
+  C:0811H         LINE#         21
+  C:0811H         LINE#         22
+  C:0811H         LINE#         23
+  C:0814H         LINE#         24
+  C:0814H         LINE#         25
+  C:081BH         LINE#         26
+  C:081EH         LINE#         27
+  C:081EH         LINE#         28
+  C:081FH         LINE#         29
+  C:0824H         LINE#         30
+  C:0832H         LINE#         31
+  C:083AH         LINE#         32
+  C:0842H         LINE#         33
+  C:084AH         LINE#         34
+  -------         ENDPROC       MAIN
+  -------         PROC          TIM
+  -------         DO            
+  D:0008H         SYMBOL        count
+  -------         ENDDO         
+  C:0852H         LINE#         46
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/09/2016  21:38:45  PAGE 3
+
+
+  C:0856H         LINE#         49
+  C:0859H         LINE#         50
+  C:085CH         LINE#         52
+  C:0861H         LINE#         53
+  C:0861H         LINE#         54
+  C:0863H         LINE#         55
+  C:0863H         LINE#         56
+  C:0865H         LINE#         57
+  C:086AH         LINE#         58
+  C:086AH         LINE#         59
+  C:086DH         LINE#         60
+  C:0871H         LINE#         61
+  C:0873H         LINE#         63
+  C:0873H         LINE#         65
+  -------         ENDPROC       TIM
+  -------         ENDMOD        MOTO
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0085H BYTE ( 6%) *
+******************************************************************************
+
+Program Size: data=12.0 xdata=0 code=148
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

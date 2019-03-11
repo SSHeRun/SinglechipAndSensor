@@ -1,0 +1,333 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/05/2016  17:44:26  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE ds1302.obj TO DS1032 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ds1302.obj (DS1302)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  DS1032 (DS1302)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            REG     0008H     0008H     ABSOLUTE     "REG BANK 1"
+                    0010H     0010H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?DS1302
+                    0020H.1   0000H.7                *** GAP ***
+            DATA    0021H     0011H     UNIT         ?DT?DS1302
+            IDATA   0032H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0090H     UNIT         ?PR?TIM?DS1302
+            CODE    009EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    012AH     0052H     UNIT         ?PR?SET_RTC?DS1302
+            CODE    017CH     0043H     UNIT         ?PR?_READ_DS1302?DS1302
+            CODE    01BFH     003AH     UNIT         ?PR?MAIN?DS1302
+            CODE    01F9H     0021H     UNIT         ?PR?READ_RTC?DS1302
+            CODE    021AH     0019H     UNIT         ?CO?DS1302
+            CODE    0233H     0019H     UNIT         ?C?LIB_CODE
+            CODE    024CH     0014H     UNIT         ?PR?_WRITE_DS1302?DS1302
+            CODE    0260H     0013H     UNIT         ?PR?_WRITE_DS1302_BYTE?DS1302
+            CODE    0273H     0010H     UNIT         ?PR?INITTIMER0?DS1302
+            CODE    0283H     000AH     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   DS1032 (DS1302)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?TIM?DS1302
+  +--> ?CO?DS1302
+
+*** NEW ROOT ***************************************************
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2016  17:44:26  PAGE 2
+
+
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?DS1302
+  +--> ?C_INITSEG
+
+?PR?MAIN?DS1302
+  +--> ?PR?INITTIMER0?DS1302
+  +--> ?PR?READ_RTC?DS1302
+
+?PR?READ_RTC?DS1302
+  +--> ?CO?DS1302
+  +--> ?PR?_READ_DS1302?DS1302
+
+?PR?_READ_DS1302?DS1302
+  +--> ?PR?_WRITE_DS1302_BYTE?DS1302
+
+
+
+SYMBOL TABLE OF MODULE:  DS1032 (DS1302)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DS1302
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:00A0H.1       PUBLIC        LS138B
+  B:00A0H.2       PUBLIC        LS138C
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0228H         PUBLIC        table
+  D:00A8H         PUBLIC        IE
+  C:0221H         PUBLIC        read_rtc_address
+  D:00B8H         PUBLIC        IP
+  D:0023H         PUBLIC        l_tmpdisplay
+  C:021AH         PUBLIC        write_rtc_address
+  C:01BFH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:002BH         PUBLIC        l_tmpdate
+  B:0020H.0       PUBLIC        ReadRTC_Flag
+  C:01F9H         PUBLIC        Read_RTC
+  B:00A8H.1       PUBLIC        ET0
+  C:0273H         PUBLIC        InitTIMER0
+  C:000EH         PUBLIC        tim
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  B:00B0H.4       PUBLIC        SDA
+  C:017CH         PUBLIC        _Read_Ds1302
+  B:00B0H.6       PUBLIC        SCK
+  C:0260H         PUBLIC        _Write_Ds1302_Byte
+  D:00C8H         PUBLIC        T2CON
+  C:024CH         PUBLIC        _Write_Ds1302
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2016  17:44:26  PAGE 3
+
+
+  C:012AH         PUBLIC        Set_RTC
+  B:00B0H.5       PUBLIC        RST
+  D:00D0H         PUBLIC        PSW
+  B:00A0H.0       PUBLIC        LS138A
+  -------         PROC          MAIN
+  C:01BFH         LINE#         41
+  C:01BFH         LINE#         42
+  C:01BFH         LINE#         43
+  C:01C2H         LINE#         46
+  C:01C2H         LINE#         47
+  C:01C2H         LINE#         48
+  C:01C5H         LINE#         49
+  C:01C5H         LINE#         50
+  C:01C7H         LINE#         51
+  C:01CAH         LINE#         53
+  C:01D1H         LINE#         54
+  C:01D7H         LINE#         55
+  C:01DAH         LINE#         56
+  C:01E1H         LINE#         57
+  C:01E7H         LINE#         58
+  C:01EAH         LINE#         59
+  C:01F1H         LINE#         60
+  C:01F7H         LINE#         62
+  C:01F7H         LINE#         63
+  -------         ENDPROC       MAIN
+  -------         PROC          INITTIMER0
+  C:0273H         LINE#         68
+  C:0273H         LINE#         69
+  C:0273H         LINE#         70
+  C:0276H         LINE#         71
+  C:0279H         LINE#         72
+  C:027CH         LINE#         73
+  C:027EH         LINE#         74
+  C:0280H         LINE#         75
+  C:0282H         LINE#         76
+  -------         ENDPROC       INITTIMER0
+  -------         PROC          _WRITE_DS1302_BYTE
+  D:0007H         SYMBOL        temp
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0260H         LINE#         82
+  C:0260H         LINE#         83
+  C:0260H         LINE#         85
+  C:0262H         LINE#         86
+  C:0262H         LINE#         87
+  C:0264H         LINE#         88
+  C:0268H         LINE#         89
+  C:026CH         LINE#         90
+  C:026EH         LINE#         91
+  C:0272H         LINE#         92
+  -------         ENDPROC       _WRITE_DS1302_BYTE
+  -------         PROC          _WRITE_DS1302
+  D:0007H         SYMBOL        address
+  D:0005H         SYMBOL        dat
+  C:024CH         LINE#         96
+  C:024CH         LINE#         97
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2016  17:44:26  PAGE 4
+
+
+  C:024CH         LINE#         98
+  C:024EH         LINE#         99
+  C:024FH         LINE#         100
+  C:0251H         LINE#         101
+  C:0252H         LINE#         102
+  C:0254H         LINE#         103
+  C:0255H         LINE#         104
+  C:0258H         LINE#         105
+  C:025DH         LINE#         106
+  C:025FH         LINE#         107
+  -------         ENDPROC       _WRITE_DS1302
+  -------         PROC          _READ_DS1302
+  D:0007H         SYMBOL        address
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0005H         SYMBOL        temp
+  -------         ENDDO         
+  C:017CH         LINE#         111
+  C:017CH         LINE#         112
+  C:017CH         LINE#         113
+  C:017EH         LINE#         114
+  C:0180H         LINE#         115
+  C:0181H         LINE#         116
+  C:0182H         LINE#         117
+  C:0184H         LINE#         118
+  C:0185H         LINE#         119
+  C:0186H         LINE#         120
+  C:0188H         LINE#         121
+  C:0189H         LINE#         122
+  C:018AH         LINE#         123
+  C:018DH         LINE#         124
+  C:018FH         LINE#         125
+  C:018FH         LINE#         126
+  C:0192H         LINE#         127
+  C:0195H         LINE#         128
+  C:0197H         LINE#         129
+  C:019BH         LINE#         130
+  C:019CH         LINE#         131
+  C:019DH         LINE#         132
+  C:019EH         LINE#         133
+  C:01A0H         LINE#         134
+  C:01A4H         LINE#         135
+  C:01A6H         LINE#         136
+  C:01A7H         LINE#         137
+  C:01A8H         LINE#         138
+  C:01AAH         LINE#         139
+  C:01ACH         LINE#         140
+  C:01ADH         LINE#         141
+  C:01AEH         LINE#         142
+  C:01AFH         LINE#         143
+  C:01B0H         LINE#         144
+  C:01B2H         LINE#         145
+  C:01B3H         LINE#         146
+  C:01B4H         LINE#         147
+  C:01B6H         LINE#         148
+  C:01B7H         LINE#         149
+  C:01B8H         LINE#         150
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2016  17:44:26  PAGE 5
+
+
+  C:01BAH         LINE#         151
+  C:01BBH         LINE#         152
+  C:01BCH         LINE#         153
+  C:01BEH         LINE#         154
+  -------         ENDPROC       _READ_DS1302
+  -------         PROC          READ_RTC
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0001H         SYMBOL        p
+  -------         ENDDO         
+  C:01F9H         LINE#         158
+  C:01F9H         LINE#         159
+  C:01F9H         LINE#         161
+  C:01FFH         LINE#         162
+  C:0201H         LINE#         163
+  C:0201H         LINE#         164
+  C:020EH         LINE#         165
+  C:0215H         LINE#         166
+  C:0219H         LINE#         167
+  -------         ENDPROC       READ_RTC
+  -------         PROC          SET_RTC
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0001H         SYMBOL        p
+  D:0006H         SYMBOL        tmp
+  -------         ENDDO         
+  C:012AH         LINE#         171
+  C:012AH         LINE#         172
+  C:012AH         LINE#         174
+  C:012CH         LINE#         175
+  C:0137H         LINE#         176
+  C:013EH         LINE#         177
+  C:014AH         LINE#         178
+  C:014EH         LINE#         179
+  C:0155H         LINE#         181
+  C:015BH         LINE#         182
+  C:015DH         LINE#         183
+  C:015DH         LINE#         184
+  C:016AH         LINE#         185
+  C:0171H         LINE#         186
+  C:0175H         LINE#         187
+  -------         ENDPROC       SET_RTC
+  -------         PROC          TIM
+  -------         DO            
+  D:0021H         SYMBOL        i
+  D:0022H         SYMBOL        num
+  -------         ENDDO         
+  C:000EH         LINE#         192
+  C:0019H         LINE#         197
+  C:001CH         LINE#         198
+  C:001FH         LINE#         200
+  C:002BH         LINE#         202
+  C:0051H         LINE#         203
+  C:0051H         LINE#         204
+  C:0055H         LINE#         205
+  C:005DH         LINE#         206
+  C:0061H         LINE#         207
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/05/2016  17:44:26  PAGE 6
+
+
+  C:0069H         LINE#         208
+  C:006DH         LINE#         209
+  C:0075H         LINE#         210
+  C:0079H         LINE#         211
+  C:007FH         LINE#         213
+  C:007FH         LINE#         214
+  C:0081H         LINE#         215
+  C:0086H         LINE#         216
+  C:0086H         LINE#         217
+  C:0089H         LINE#         218
+  C:008BH         LINE#         219
+  C:0090H         LINE#         220
+  C:0090H         LINE#         221
+  C:0092H         LINE#         222
+  C:0095H         LINE#         223
+  C:0095H         LINE#         224
+  C:0095H         LINE#         225
+  -------         ENDPROC       TIM
+  -------         ENDMOD        DS1302
+
+  -------         MODULE        ?C?CLDPTR
+  C:0233H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SET_RTC?DS1302
+
+Program Size: data=34.1 xdata=0 code=645
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

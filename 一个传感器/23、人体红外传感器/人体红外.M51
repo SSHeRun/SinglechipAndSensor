@@ -1,0 +1,101 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        11/27/2017  20:36:56  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+I:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE 人体红外.obj TO 人体红外
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  人体红外.obj (人体红蚠)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  人体红外 (人体红蚠)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     0041H     UNIT         ?PR?EXTERNALINTERRUPTION?人体红蚠
+            CODE    0047H     001EH     UNIT         ?PR?_DELAY?人体红蚠
+            CODE    0065H     000FH     UNIT         ?PR?MAIN?人体红蚠
+            CODE    0074H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   人体红外 (人体红蚠)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?EXTERNALINTERRUPTION?人体红蚠
+  +--> ?PR?_DELAY?人体红蚠
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?人体红蚠
+
+
+
+SYMBOL TABLE OF MODULE:  人体红外 (人体红蚠)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        人体红蚠
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:0006H         PUBLIC        externalInterruption
+  B:00A8H.7       PUBLIC        EA
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  20:36:56  PAGE 2
+
+
+  C:0047H         PUBLIC        _delay
+  C:0065H         PUBLIC        main
+  B:00A8H.0       PUBLIC        EX0
+  B:0088H.0       PUBLIC        IT0
+  B:0080H.0       PUBLIC        led1
+  -------         PROC          MAIN
+  C:0065H         LINE#         5
+  C:0065H         LINE#         6
+  C:0067H         LINE#         7
+  C:0069H         LINE#         8
+  C:006BH         LINE#         9
+  C:006DH         LINE#         10
+  C:006DH         LINE#         11
+  C:0070H         LINE#         12
+  C:0072H         LINE#         13
+  -------         ENDPROC       MAIN
+  -------         PROC          EXTERNALINTERRUPTION
+  C:0006H         LINE#         16
+  C:0023H         LINE#         18
+  C:0025H         LINE#         19
+  C:002CH         LINE#         20
+  -------         ENDPROC       EXTERNALINTERRUPTION
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        xms
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0047H         LINE#         22
+  C:0047H         LINE#         24
+  C:0050H         LINE#         25
+  C:0064H         LINE#         26
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        人体红蚠
+
+Program Size: data=9.0 xdata=0 code=128
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

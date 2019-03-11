@@ -1,0 +1,23 @@
+C51 COMPILER V9.01   ³¬É_²¨_¹_Ç¿_Èý_á                                                      11/23/2017 10:52:25 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ³¬É_²¨_¹_Ç¿_Èý_á
+OBJECT MODULE PLACED IN ³¬Éù²¨+¹âÇ¿+ÈýÖá.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE ³¬Éù²¨+¹âÇ¿+ÈýÖá.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1695    ----
+   CONSTANT SIZE    =     36    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     31    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

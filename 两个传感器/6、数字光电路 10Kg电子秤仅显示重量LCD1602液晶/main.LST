@@ -1,0 +1,677 @@
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: N:\keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include <intrins.h>
+   3          #include  <math.h>    //Keil library  
+   4          #include  <stdio.h>   //Keil library
+   5          #include <string.h>
+   6          #include "main.h"
+   7          #include "LCD1602.h"
+   8          #include "HX711.h"
+   9          #include "keyboard.h"
+  10          
+  11          #define uchar unsigned char
+  12          #define uint  unsigned int
+  13          
+  14          unsigned long HX711_Buffer = 0;
+  15          unsigned long Weight_Maopi = 0;
+  16          unsigned long Weight_Maopi_0 = 0;
+  17          long Weight_Shiwu = 0;
+  18          //键盘处理变量
+  19          unsigned char keycode;
+  20          unsigned char DotPos;                              //小数点标志及位置
+  21          
+  22          unsigned long idata price;     //单价，长整型值，单位为分   
+  23          unsigned long idata money;     //总价，长整型值，单位为分
+  24          //定义标识
+  25          volatile bit FlagTest = 0;              //定时测试标志，每0.5秒置位，测完清0
+  26          volatile bit FlagKeyPress = 0;  //有键按下标志，处理完毕清0
+  27          //校准参数
+  28          //因为不同的传感器特性曲线不是很一致，因此，每一个传感器需要矫正这里这个参数才能使测量值很准确。
+  29          //当发现测试出来的重量偏大时，增加该数值。
+  30          //如果测试出来的重量偏小时，减小改数值。
+  31          //该值可以为小数
+  32          #define GapValue 210.6
+  33          sbit LED=P1^1;
+  34          
+  35          sbit E=P2^3;
+  36          sbit RW=P2^4;
+  37          sbit RS=P2^5;
+  38          
+  39          #define LCM_Data  P0
+  40          
+  41          #define   uchar unsigned char
+  42          #define   uint unsigned int     
+  43          
+  44          sbit      SCL=P1^0;      //IIC时钟引脚定义
+  45          sbit      SDA=P1^1;      //IIC数据引脚定义
+  46          
+  47          #define   SlaveAddress   0x46 //定义器件在IIC总线中的从地址,根据ALT  ADDRESS地址引脚不同修改
+  48                                        //ALT  ADDRESS引脚接地时地址为0x46，接电源时地址为0xB8
+  49          typedef   unsigned char BYTE;
+  50          typedef   unsigned short WORD;
+  51          
+  52          BYTE    BUF[8];                         //接收数据缓存区        
+  53          uchar   ge,shi,bai,qian,wan;            //显示变量
+  54          int     dis_data;                       //变量
+  55          
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 2   
+
+  56          //延时设置
+  57          void Delay(unsigned int t)   // delay 40us
+  58          {
+  59   1       for(;t!=0;t--) ;
+  60   1      }
+  61          
+  62          //写指令
+  63          void WriteCommandLCM(unsigned char ch)
+  64          {
+  65   1         RS=0;
+  66   1         RW=0;
+  67   1         E=1;
+  68   1         LCM_Data=ch;
+  69   1         Delay(1);
+  70   1         E=0;
+  71   1         Delay(100);  //delay 40us
+  72   1      }
+  73          
+  74          //写数据
+  75          void WriteDataLCM(unsigned char ch)
+  76          {  RS=1;
+  77   1         RW=0;
+  78   1         E=1;
+  79   1         LCM_Data=ch;
+  80   1         Delay(1);
+  81   1         E=0;
+  82   1         Delay(100); //delay 40us
+  83   1      }
+  84          
+  85          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  86          {                                               
+  87   1              Y&=1;                                           
+  88   1              X&=15;                                          
+  89   1              if(Y)X|=0x40;                                   
+  90   1              X|=0x80;                        
+  91   1              WriteCommandLCM(X);             
+  92   1              WriteDataLCM(DData);            
+  93   1      }                                       
+  94          
+  95          
+  96          //*********************************************************
+  97          void conversion(uint temp_data)  //  数据转换出 个，十，百，千，万
+  98          {  
+  99   1          wan=temp_data/10000+0x30 ;
+ 100   1          temp_data=temp_data%10000;   //取余运算
+ 101   1              qian=temp_data/1000+0x30 ;
+ 102   1          temp_data=temp_data%1000;    //取余运算
+ 103   1          bai=temp_data/100+0x30   ;
+ 104   1          temp_data=temp_data%100;     //取余运算
+ 105   1          shi=temp_data/10+0x30    ;
+ 106   1          temp_data=temp_data%10;      //取余运算
+ 107   1          ge=temp_data+0x30;  
+ 108   1      }
+ 109          
+ 110          //毫秒延时**************************
+ 111          void delay_nms(unsigned int k)  
+ 112          {                                               
+ 113   1      unsigned int i,j;                               
+ 114   1      for(i=0;i<k;i++)
+ 115   1      {                       
+ 116   2      for(j=0;j<121;j++)                      
+ 117   2      {;}}                                            
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 3   
+
+ 118   1      }
+ 119          
+ 120          /**************************************
+ 121          延时5微秒(STC90C52RC@12M)
+ 122          不同的工作环境,需要调整此函数，注意时钟过快时需要修改
+ 123          当改用1T的MCU时,请调整此延时函数
+ 124          **************************************/
+ 125          void Delay5us()
+ 126          {
+ 127   1          _nop_();_nop_();_nop_();_nop_();
+ 128   1          _nop_();_nop_();_nop_();_nop_();
+ 129   1              _nop_();_nop_();_nop_();_nop_();
+ 130   1              _nop_();_nop_();_nop_();_nop_();
+ 131   1      }
+ 132          
+ 133          /**************************************
+ 134          延时5毫秒(STC90C52RC@12M)
+ 135          不同的工作环境,需要调整此函数
+ 136          当改用1T的MCU时,请调整此延时函数
+ 137          **************************************/
+ 138          void Delay5ms()
+ 139          {
+ 140   1          WORD n = 560;
+ 141   1      
+ 142   1          while (n--);
+ 143   1      }
+ 144          
+ 145          /**************************************
+ 146          起始信号
+ 147          **************************************/
+ 148          void BH1750_Start()
+ 149          {
+ 150   1          SDA = 1;                    //拉高数据线
+ 151   1          SCL = 1;                    //拉高时钟线
+ 152   1          Delay5us();                 //延时
+ 153   1          SDA = 0;                    //产生下降沿
+ 154   1          Delay5us();                 //延时
+ 155   1          SCL = 0;                    //拉低时钟线
+ 156   1      }
+ 157          
+ 158          /**************************************
+ 159          停止信号
+ 160          **************************************/
+ 161          void BH1750_Stop()
+ 162          {
+ 163   1          SDA = 0;                    //拉低数据线
+ 164   1          SCL = 1;                    //拉高时钟线
+ 165   1          Delay5us();                 //延时
+ 166   1          SDA = 1;                    //产生上升沿
+ 167   1          Delay5us();                 //延时
+ 168   1      }
+ 169          
+ 170          /**************************************
+ 171          发送应答信号
+ 172          入口参数:ack (0:ACK 1:NAK)
+ 173          **************************************/
+ 174          void BH1750_SendACK(bit ack)
+ 175          {
+ 176   1          SDA = ack;                  //写应答信号
+ 177   1          SCL = 1;                    //拉高时钟线
+ 178   1          Delay5us();                 //延时
+ 179   1          SCL = 0;                    //拉低时钟线
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 4   
+
+ 180   1          Delay5us();                 //延时
+ 181   1      }
+ 182          
+ 183          /**************************************
+ 184          接收应答信号
+ 185          **************************************/
+ 186          bit BH1750_RecvACK()
+ 187          {
+ 188   1          SCL = 1;                    //拉高时钟线
+ 189   1          Delay5us();                 //延时
+ 190   1          CY = SDA;                   //读应答信号
+ 191   1          SCL = 0;                    //拉低时钟线
+ 192   1          Delay5us();                 //延时
+ 193   1      
+ 194   1          return CY;
+ 195   1      }
+ 196          
+ 197          /**************************************
+ 198          向IIC总线发送一个字节数据
+ 199          **************************************/
+ 200          void BH1750_SendByte(BYTE dat)
+ 201          {
+ 202   1          BYTE i;
+ 203   1      
+ 204   1          for (i=0; i<8; i++)         //8位计数器
+ 205   1          {
+ 206   2              dat <<= 1;              //移出数据的最高位
+ 207   2              SDA = CY;               //送数据口
+ 208   2              SCL = 1;                //拉高时钟线
+ 209   2              Delay5us();             //延时
+ 210   2              SCL = 0;                //拉低时钟线
+ 211   2              Delay5us();             //延时
+ 212   2          }
+ 213   1          BH1750_RecvACK();
+ 214   1      }
+ 215          
+ 216          /**************************************
+ 217          从IIC总线接收一个字节数据
+ 218          **************************************/
+ 219          BYTE BH1750_RecvByte()
+ 220          {
+ 221   1          BYTE i;
+ 222   1          BYTE dat = 0;
+ 223   1      
+ 224   1          SDA = 1;                    //使能内部上拉,准备读取数据,
+ 225   1          for (i=0; i<8; i++)         //8位计数器
+ 226   1          {
+ 227   2              dat <<= 1;
+ 228   2              SCL = 1;                //拉高时钟线
+ 229   2              Delay5us();             //延时
+ 230   2              dat |= SDA;             //读数据               
+ 231   2              SCL = 0;                //拉低时钟线
+ 232   2              Delay5us();             //延时
+ 233   2          }
+ 234   1          return dat;
+ 235   1      }
+ 236          
+ 237          //*********************************
+ 238          
+ 239          void Single_Write_BH1750(uchar REG_Address)
+ 240          {
+ 241   1          BH1750_Start();                  //起始信号
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 5   
+
+ 242   1          BH1750_SendByte(SlaveAddress);   //发送设备地址+写信号
+ 243   1          BH1750_SendByte(REG_Address);    //内部寄存器地址，
+ 244   1        //  BH1750_SendByte(REG_data);       //内部寄存器数据，
+ 245   1          BH1750_Stop();                   //发送停止信号
+ 246   1      }
+ 247          
+ 248          //********单字节读取*****************************************
+ 249          /*
+ 250          uchar Single_Read_BH1750(uchar REG_Address)
+ 251          {  uchar REG_data;
+ 252              BH1750_Start();                          //起始信号
+ 253              BH1750_SendByte(SlaveAddress);           //发送设备地址+写信号
+ 254              BH1750_SendByte(REG_Address);                   //发送存储单元地址，从0开始 
+ 255              BH1750_Start();                          //起始信号
+ 256              BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 257              REG_data=BH1750_RecvByte();              //读出寄存器数据
+ 258                  BH1750_SendACK(1);   
+ 259                  BH1750_Stop();                           //停止信号
+ 260              return REG_data; 
+ 261          }
+ 262          */
+ 263          //*********************************************************
+ 264          //
+ 265          //连续读出BH1750内部数据
+ 266          //
+ 267          //*********************************************************
+ 268          void Multiple_read_BH1750(void)
+ 269          {   uchar i;    
+ 270   1          BH1750_Start();                          //起始信号
+ 271   1          BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 272   1              
+ 273   1               for (i=0; i<3; i++)                      //连续读取2个地址数据，存储中BUF
+ 274   1          {
+ 275   2              BUF[i] = BH1750_RecvByte();          //BUF[0]存储0x32地址中的数据
+ 276   2              if (i == 3)
+ 277   2              {
+ 278   3      
+ 279   3                 BH1750_SendACK(1);                //最后一个数据需要回NOACK
+ 280   3              }
+ 281   2              else
+ 282   2              {               
+ 283   3                BH1750_SendACK(0);                //回应ACK
+ 284   3             }
+ 285   2         }
+ 286   1      
+ 287   1          BH1750_Stop();                          //停止信号
+ 288   1          Delay5ms();
+ 289   1      }
+ 290          
+ 291          
+ 292          //初始化BH1750，根据需要请参考pdf进行修改****
+ 293          void Init_BH1750()
+ 294          {
+ 295   1         Single_Write_BH1750(0x01);  
+ 296   1      
+ 297   1      }
+ 298          
+ 299          
+ 300          
+ 301          //LCD初始化
+ 302          void InitLcd()
+ 303          {WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 6   
+
+ 304   1       WriteCommandLCM(0x30);
+ 305   1       WriteCommandLCM(0x30);
+ 306   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+ 307   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+ 308   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+ 309   1       WriteCommandLCM(0x01); //清屏
+ 310   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+ 311   1      }
+ 312          
+ 313          volatile bit ClearWeighFlag = 0; //传感器调零标志位，清除0漂
+ 314          
+ 315          //显示单价，单位为元，四位整数，两位小数
+ 316          void Display_Price()
+ 317          {
+ 318   1                  LCD1602_write_com(0x8c);
+ 319   1                              LCD1602_write_data(price/100 + 0x30);
+ 320   1                              LCD1602_write_data(price%100/10 + 0x30);
+ 321   1                              LCD1602_write_data('.');
+ 322   1                              LCD1602_write_data(price%10 + 0x30);
+ 323   1      }
+ 324          
+ 325          //显示重量，单位kg，两位整数，三位小数
+ 326          void Display_Weight()
+ 327          {
+ 328   1                  LCD1602_write_com(0x83);
+ 329   1                              LCD1602_write_data(Weight_Shiwu/1000 + 0x30);
+ 330   1                              LCD1602_write_data('.');
+ 331   1                              LCD1602_write_data(Weight_Shiwu%1000/100 + 0x30);
+ 332   1                              LCD1602_write_data(Weight_Shiwu%100/10 + 0x30);
+ 333   1                              LCD1602_write_data(Weight_Shiwu%10 + 0x30);
+ 334   1      }
+ 335          
+ 336          //显示总价，单位为元，四位整数，两位小数
+ 337          void Display_Money()
+ 338          {
+ 339   1        // unsigned int i,j;
+ 340   1      
+ 341   1         if (money>9999)      //超出显示量程
+ 342   1         {
+ 343   2           LCD1602_write_com(0x80+0x40+6);
+ 344   2           LCD1602_write_word("---.-");
+ 345   2            return;       
+ 346   2         }   
+ 347   1         
+ 348   1         if (money>=1000)
+ 349   1         {
+ 350   2             LCD1602_write_com(0x80+0x40+6);
+ 351   2                 LCD1602_write_data(money/1000 + 0x30);
+ 352   2                 LCD1602_write_data(money%1000/100 + 0x30);
+ 353   2                 LCD1602_write_data(money%100/10 + 0x30);
+ 354   2                 LCD1602_write_data('.');
+ 355   2                 LCD1602_write_data(money%10 + 0x30);
+ 356   2         }
+ 357   1         else if (money>=100)
+ 358   1         {
+ 359   2             LCD1602_write_com(0x80+0x40+6);
+ 360   2                 LCD1602_write_data(0x20);
+ 361   2                 LCD1602_write_data(money%1000/100 + 0x30);
+ 362   2                 LCD1602_write_data(money%100/10 + 0x30);
+ 363   2                 LCD1602_write_data('.');
+ 364   2                 LCD1602_write_data(money%10 + 0x30);
+ 365   2         }
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 7   
+
+ 366   1          else if(money>=10)
+ 367   1         {
+ 368   2             LCD1602_write_com(0x80+0x40+6);
+ 369   2                LCD1602_write_data(0x20);
+ 370   2                  LCD1602_write_com(0x80+0x40+7);
+ 371   2                 LCD1602_write_data(0x20);
+ 372   2                 LCD1602_write_data(money%100/10 + 0x30);
+ 373   2                 LCD1602_write_data('.');
+ 374   2                 LCD1602_write_data(money%10+ 0x30);
+ 375   2         }   
+ 376   1         else 
+ 377   1           {
+ 378   2             LCD1602_write_com(0x80+0x40+6);
+ 379   2                 LCD1602_write_data(0x20);
+ 380   2                 LCD1602_write_com(0x80+0x40+7);
+ 381   2                 LCD1602_write_data(0x20);
+ 382   2                 LCD1602_write_com(0x80+0x40+8);
+ 383   2                 LCD1602_write_data(0 + 0x30);
+ 384   2                 LCD1602_write_data('.');
+ 385   2                 LCD1602_write_data(money%10 + 0x30);
+ 386   2         }         
+ 387   1      }
+ 388          
+ 389          //数据初始化
+ 390          void Data_Init()
+ 391          {
+ 392   1         price = 0;
+ 393   1         DotPos = 0;
+ 394   1      }
+ 395          //定时器0初始化
+ 396          void Timer0_Init()
+ 397          {
+ 398   1              ET0 = 1;        //允许定时器0中断
+ 399   1              TMOD = 1;       //定时器工作方式选择
+ 400   1              TL0 = 0x06;     
+ 401   1              TH0 = 0xf8;     //定时器赋予初值
+ 402   1              TR0 = 1;        //启动定时器
+ 403   1      }
+ 404          
+ 405          //定时器0中断
+ 406          void Timer0_ISR (void) interrupt 1 using 0
+ 407          {
+ 408   1      uchar Counter;
+ 409   1              TL0 = 0x06;
+ 410   1              TH0 = 0xf8;     //定时器赋予初值
+ 411   1      
+ 412   1              //每0.5秒钟刷新重量
+ 413   1          Counter ++;
+ 414   1          if (Counter >= 200)
+ 415   1          {
+ 416   2             FlagTest = 1;
+ 417   2                 Counter = 0;
+ 418   2          }
+ 419   1      }
+ 420          
+ 421          
+ 422          //按键响应程序，参数是键值
+ 423          //返回键值：
+ 424          //         7          8    9      10(清0)
+ 425          //         4          5    6      11(删除)
+ 426          //         1          2    3      12(未定义)
+ 427          //         14(未定义) 0    15(.)  13(确定价格)
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 8   
+
+ 428          
+ 429          void KeyPress(uchar keycode)
+ 430          {
+ 431   1         switch (keycode)
+ 432   1         {
+ 433   2            case 0:
+ 434   2            case 1:
+ 435   2            case 2:
+ 436   2            case 3:
+ 437   2            case 4:
+ 438   2            case 5:
+ 439   2            case 6:
+ 440   2            case 7:
+ 441   2            case 8:
+ 442   2            case 9:
+ 443   2                   //目前在设置整数位，要注意price是整型，存储单位为分
+ 444   2                   if (DotPos == 0)
+ 445   2                       {  
+ 446   3                          //最多只能设置到千位
+ 447   3                              if (price<100)
+ 448   3                              {
+ 449   4                             price=price*10+keycode*10;
+ 450   4                              }
+ 451   3                       }
+ 452   2                       //目前在设置小数位
+ 453   2                       else if (DotPos==1)  //小数点后第一位
+ 454   2                       {
+ 455   3                          price=price+keycode;
+ 456   3                              DotPos=2;
+ 457   3                       }
+ 458   2                       Display_Price();
+ 459   2                   break;
+ 460   2            case 10:   //清零键
+ 461   2                   Get_Maopi();
+ 462   2                       Display_Price();
+ 463   2      //               FlagSetPrice = 0;
+ 464   2                       DotPos = 0;
+ 465   2                       break;
+ 466   2                case 11:      //删除键，按一次删除最右一个数字
+ 467   2                          price=0;
+ 468   2                              DotPos=0;
+ 469   2                       Display_Price();
+ 470   2               break;
+ 471   2                       ////////////////////////////////////
+ 472   2                case 12:
+ 473   2                       break;
+ 474   2      
+ 475   2      
+ 476   2                       //////////////////////////////////////
+ 477   2      //      case 13:   //确认键
+ 478   2      //           FlagSetPrice = 1;
+ 479   2      //               DotPos=0;
+ 480   2      //               break;
+ 481   2                case 15:   //小数点按下 
+ 482   2                              DotPos = 1;      //小数点后第一位
+ 483   2                   break;
+ 484   2      
+ 485   2         }
+ 486   1      }
+ 487          //****************************************************
+ 488          //主函数
+ 489          //****************************************************
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 9   
+
+ 490          void main()
+ 491          {
+ 492   1      /*
+ 493   1              */
+ 494   1              float temp1;
+ 495   1         delay_nms(100);          //延时100ms 
+ 496   1         InitLcd();           //初始化LCD
+ 497   1         Init_BH1750();       //初始化BH1750   
+ 498   1       
+ 499   1        while(1)              //循环
+ 500   1        { 
+ 501   2      
+ 502   2          Single_Write_BH1750(0x01);   // power on
+ 503   2          Single_Write_BH1750(0x10);   // H- resolution mode
+ 504   2      
+ 505   2           delay_nms(180);              //延时180ms
+ 506   2      
+ 507   2           Multiple_read_BH1750();       //连续读出数据，存储在BUF中
+ 508   2      
+ 509   2          dis_data=BUF[0];
+ 510   2          dis_data=(dis_data<<8)+BUF[1];//合成数据，即光照数据
+ 511   2          
+ 512   2          temp1=(float)dis_data/1.2;
+ 513   2      
+ 514   2          conversion(temp1);         //计算数据和显示
+ 515   2              DisplayOneChar(0,0,'L'); 
+ 516   2              DisplayOneChar(1,0,'i'); 
+ 517   2              DisplayOneChar(2,0,'g'); 
+ 518   2              DisplayOneChar(3,0,'h'); 
+ 519   2              DisplayOneChar(4,0,'t'); 
+ 520   2          DisplayOneChar(5,0,':'); 
+ 521   2      
+ 522   2          DisplayOneChar(7,0,wan); //显示数据
+ 523   2          DisplayOneChar(8,0,qian);  
+ 524   2          DisplayOneChar(9,0,bai); 
+ 525   2          DisplayOneChar(10,0,shi); 
+ 526   2              DisplayOneChar(11,0,ge); 
+ 527   2      
+ 528   2              DisplayOneChar(13,0,'L'); ////显示数单位
+ 529   2              DisplayOneChar(14,0,'X');  
+ 530   2                  
+ 531   2      
+ 532   2              if(bai >= '2')  {
+ 533   3      
+ 534   3                      Init_LCD1602();                                                                 //初始化LCD1602
+ 535   3         EA = 0;
+ 536   3         Data_Init();
+ 537   3         Timer0_Init();
+ 538   3         //初中始化完成，开断
+ 539   3         EA = 1;
+ 540   3              
+ 541   3      //      Get_Maopi();
+ 542   3              LCD1602_write_com(0x80);                                                //指针设置
+ 543   3         LCD1602_write_word(" Welcome To Use ");      //  
+ 544   3         LCD1602_write_com(0x80+0x40);                                                //指针设置
+ 545   3         LCD1602_write_word("Wlectronic Scale");
+ 546   3      //   Delay_ms(2000);
+ 547   3         Get_Maopi();
+ 548   3         LCD1602_write_com(0x80);                                             //指针设置
+ 549   3         LCD1602_write_word("WE:0.000 PR:00.0");
+ 550   3         LCD1602_write_com(0x80+0x40);                                //指针设置
+ 551   3         LCD1602_write_word("MONEY:  0.00    ");
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 10  
+
+ 552   3         Display_Price();
+ 553   3      //      Get_Maopi();                            //称毛皮重量
+ 554   3      
+ 555   3              while(1)
+ 556   3              {
+ 557   4      //每0.5秒称重一次
+ 558   4                if (FlagTest==1)
+ 559   4                {
+ 560   5                              Get_Weight();
+ 561   5                              FlagTest = 0;
+ 562   5              }                       
+ 563   4                      
+ 564   4                keycode = Getkeyboard();
+ 565   4                //有效键值0-15
+ 566   4                if (keycode<16/*&&(FlagKeyPress==0)*/)
+ 567   4                {
+ 568   5                   
+ 569   5                       KeyPress(keycode);
+ 570   5                       
+ 571   5                       Buzzer=0;
+ 572   5                       Delay_ms(50);
+ 573   5                       Buzzer=1;
+ 574   5              //       FlagKeyPress = 1;
+ 575   5                       Delay_ms(200);
+ 576   5                }
+ 577   4              }
+ 578   3              }
+ 579   2        }
+ 580   1      }
+ 581          
+ 582          
+ 583          
+ 584          //****************************************************
+ 585          //称重
+ 586          //****************************************************
+ 587          void Get_Weight()
+ 588          {
+ 589   1              Weight_Shiwu = HX711_Read();
+ 590   1              Weight_Shiwu = Weight_Shiwu - Weight_Maopi;             //获取净重
+ 591   1              
+ 592   1              Weight_Shiwu = (unsigned int)((float)Weight_Shiwu/GapValue);    //计算实物的实际重量                                                                                                                            
+ 593   1              if(Weight_Shiwu > 10000)                //超重报警
+ 594   1              {
+ 595   2                      Buzzer = 0;     
+ 596   2                      LED=0;
+ 597   2                      LCD1602_write_com(0x83);
+ 598   2                 LCD1602_write_word("-.---");
+ 599   2              }
+ 600   1              else
+ 601   1              {
+ 602   2                      if(Weight_Shiwu==0)
+ 603   2                      LED=1;
+ 604   2                      else if(Weight_Shiwu>0)
+ 605   2                      LED=0; 
+ 606   2                      Buzzer = 1;
+ 607   2                      Display_Weight();
+ 608   2                      money = Weight_Shiwu*price/1000;  //money单位为分
+ 609   2                     //显示总金额
+ 610   2                     Display_Money();
+ 611   2              }
+ 612   1      }
+ 613          
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 00:30:48 PAGE 11  
+
+ 614          //****************************************************
+ 615          //获取毛皮重量
+ 616          //****************************************************
+ 617          void Get_Maopi()
+ 618          {
+ 619   1      mm:     Weight_Maopi_0 = HX711_Read();
+ 620   1              Delay_ms(2000);
+ 621   1              Weight_Maopi = HX711_Read();
+ 622   1              if(Weight_Maopi/GapValue!=Weight_Maopi_0/GapValue)
+ 623   1              goto mm;
+ 624   1      } 
+ 625          
+ 626          //****************************************************
+ 627          //MS延时函数(12M晶振下测试)
+ 628          //****************************************************
+ 629          void Delay_ms(unsigned int n)
+ 630          {
+ 631   1              unsigned int  i,j;
+ 632   1              for(i=0;i<n;i++)
+ 633   1                      for(j=0;j<123;j++);
+ 634   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1927    ----
+   CONSTANT SIZE    =     80    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     33       6
+   IDATA SIZE       =      8    ----
+   BIT SIZE         =      3       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

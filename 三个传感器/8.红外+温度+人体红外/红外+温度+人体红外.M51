@@ -1,0 +1,438 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        11/23/2017  19:55:14  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+I:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE 红外+温度+人体红外.obj TO 红外+温度+人体红外
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  红外+温度+人体红外.obj (红蚠_蝊度_人体红蚠)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  红外+温度+人体红外 (红蚠_蝊度_人体红蚠)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0009H     UNIT         ?DT?红蚠_蝊度_人体红蚠
+            DATA    0011H     0003H     UNIT         _DATA_GROUP_
+            IDATA   0014H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+            CODE    0006H     00D3H     UNIT         ?PR?IR_IN?红蚠_蝊度_人体红蚠
+            CODE    00D9H     00BDH     UNIT         ?PR?MAIN?红蚠_蝊度_人体红蚠
+            CODE    0196H     0055H     UNIT         ?C?LIB_CODE
+            CODE    01EBH     002AH     UNIT         ?CO?红蚠_蝊度_人体红蚠
+            CODE    0215H     0028H     UNIT         ?PR?INITLCD?红蚠_蝊度_人体红蚠
+            CODE    023DH     0025H     UNIT         ?PR?READ_BYTE?红蚠_蝊度_人体红蚠
+            CODE    0262H     0023H     UNIT         ?PR?_WRITE_BYTE?红蚠_蝊度_人体红蚠
+            CODE    0285H     001DH     UNIT         ?PR?DELAY_1?红蚠_蝊度_人体红蚠
+            CODE    02A2H     001DH     UNIT         ?PR?RESET?红蚠_蝊度_人体红蚠
+            CODE    02BFH     001BH     UNIT         ?PR?_DISPLAYONECHAR?红蚠_蝊度_人体红蚠
+            CODE    02DAH     0016H     UNIT         ?PR?_DELAY?红蚠_蝊度_人体红蚠
+            CODE    02F0H     0016H     UNIT         ?PR?_DELAY_1MS?红蚠_蝊度_人体红蚠
+            CODE    0306H     0016H     UNIT         ?PR?_WRITECOMMANDLCM?红蚠_蝊度_人体红蚠
+            CODE    031CH     0016H     UNIT         ?PR?_WRITEDATALCM?红蚠_蝊度_人体红蚠
+            CODE    0332H     0011H     UNIT         ?PR?_WRITE_BIT?红蚠_蝊度_人体红蚠
+            CODE    0343H     0010H     UNIT         ?PR?READ_BIT?红蚠_蝊度_人体红蚠
+            CODE    0353H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   红外+温度+人体红外 (红蚠_蝊度_人体红蚠)
+
+
+SEGMENT                                           DATA_GROUP 
+  +--> CALLED SEGMENT                           START    LENGTH
+---------------------------------------------------------------
+?PR?IR_IN?红蚠_蝊度_人体红蚠                    0011H    0003H
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+  +--> ?PR?_DISPLAYONECHAR?红蚠_蝊度_人体红蚠
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 2
+
+
+?PR?_DISPLAYONECHAR?红蚠_蝊度_人体红蚠          -----    -----
+  +--> ?PR?_WRITECOMMANDLCM?红蚠_蝊度_人体红蚠
+  +--> ?PR?_WRITEDATALCM?红蚠_蝊度_人体红蚠
+
+?PR?_WRITECOMMANDLCM?红蚠_蝊度_人体红蚠         -----    -----
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+
+?PR?_WRITEDATALCM?红蚠_蝊度_人体红蚠            -----    -----
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                                   -----    -----
+  +--> ?PR?MAIN?红蚠_蝊度_人体红蚠
+
+?PR?MAIN?红蚠_蝊度_人体红蚠                     -----    -----
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+  +--> ?PR?INITLCD?红蚠_蝊度_人体红蚠
+  +--> ?CO?红蚠_蝊度_人体红蚠
+  +--> ?PR?_WRITEDATALCM?红蚠_蝊度_人体红蚠
+  +--> ?PR?_WRITECOMMANDLCM?红蚠_蝊度_人体红蚠
+  +--> ?PR?RESET?红蚠_蝊度_人体红蚠
+  +--> ?PR?_WRITE_BYTE?红蚠_蝊度_人体红蚠
+  +--> ?PR?READ_BYTE?红蚠_蝊度_人体红蚠
+  +--> ?PR?_DELAY_1MS?红蚠_蝊度_人体红蚠
+
+?PR?INITLCD?红蚠_蝊度_人体红蚠                  -----    -----
+  +--> ?PR?_WRITECOMMANDLCM?红蚠_蝊度_人体红蚠
+
+?PR?RESET?红蚠_蝊度_人体红蚠                    -----    -----
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+
+?PR?_WRITE_BYTE?红蚠_蝊度_人体红蚠              -----    -----
+  +--> ?PR?_WRITE_BIT?红蚠_蝊度_人体红蚠
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+
+?PR?_WRITE_BIT?红蚠_蝊度_人体红蚠               -----    -----
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+
+?PR?READ_BYTE?红蚠_蝊度_人体红蚠                -----    -----
+  +--> ?PR?READ_BIT?红蚠_蝊度_人体红蚠
+  +--> ?PR?_DELAY?红蚠_蝊度_人体红蚠
+
+
+
+SYMBOL TABLE OF MODULE:  红外+温度+人体红外 (红蚠_蝊度_人体红蚠)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        红蚠_蝊度_人体红蚠
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:02BFH         PUBLIC        _DisplayOneChar
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 3
+
+
+  C:02A2H         PUBLIC        Reset
+  C:01EBH         PUBLIC        table
+  D:00A8H         PUBLIC        IE
+  C:02DEH         PUBLIC        _delay
+  C:0006H         PUBLIC        IR_IN
+  B:00B0H.5       PUBLIC        DQ
+  D:00B8H         PUBLIC        IP
+  C:0285H         PUBLIC        delay_1
+  B:00A0H.5       PUBLIC        RS
+  C:00D9H         PUBLIC        main
+  B:00A0H.4       PUBLIC        RW
+  C:0215H         PUBLIC        InitLcd
+  C:0306H         PUBLIC        _WriteCommandLCM
+  B:00B0H.2       PUBLIC        IRIN
+  D:0098H         PUBLIC        SCON
+  C:023DH         PUBLIC        read_byte
+  D:0088H         PUBLIC        TCON
+  D:0008H         PUBLIC        TMPH
+  D:0009H         PUBLIC        TMPL
+  C:0343H         PUBLIC        read_bit
+  B:00A0H.3       PUBLIC        E
+  C:0262H         PUBLIC        _write_byte
+  B:00A8H.0       PUBLIC        EX0
+  C:0332H         PUBLIC        _write_bit
+  C:01F5H         PUBLIC        cdis1
+  C:0205H         PUBLIC        cdis2
+  C:02F0H         PUBLIC        _Delay_1ms
+  D:00C8H         PUBLIC        T2CON
+  C:031CH         PUBLIC        _WriteDataLCM
+  D:00D0H         PUBLIC        PSW
+  D:000AH         PUBLIC        IRCOM
+  -------         PROC          DELAY_1
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0285H         LINE#         39
+  C:0285H         LINE#         40
+  C:0285H         LINE#         42
+  C:0288H         LINE#         43
+  C:02A1H         LINE#         45
+  -------         ENDPROC       DELAY_1
+  C:02DAH         SYMBOL        L?0080
+  -------         PROC          L?0079
+  -------         ENDPROC       L?0079
+  C:02DAH         SYMBOL        L?0080
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        N
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:02DEH         LINE#         53
+  C:02DEH         LINE#         54
+  C:02DEH         LINE#         56
+  C:02EFH         LINE#         58
+  -------         ENDPROC       _DELAY
+  -------         PROC          _DELAY_1MS
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 4
+
+
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0004H         SYMBOL        x
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+  C:02F0H         LINE#         66
+  C:02F0H         LINE#         67
+  C:02F0H         LINE#         69
+  C:02F9H         LINE#         70
+  C:0305H         LINE#         71
+  -------         ENDPROC       _DELAY_1MS
+  -------         PROC          RESET
+  -------         DO            
+  D:0003H         SYMBOL        deceive_ready
+  -------         ENDDO         
+  C:02A2H         LINE#         78
+  C:02A2H         LINE#         79
+  C:02A2H         LINE#         81
+  C:02A4H         LINE#         82
+  C:02ABH         LINE#         83
+  C:02ADH         LINE#         84
+  C:02B2H         LINE#         85
+  C:02B7H         LINE#         86
+  C:02BCH         LINE#         87
+  C:02BEH         LINE#         88
+  -------         ENDPROC       RESET
+  -------         PROC          READ_BIT
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:0343H         LINE#         96
+  C:0343H         LINE#         97
+  C:0343H         LINE#         99
+  C:0345H         LINE#         100
+  C:0347H         LINE#         101
+  C:034DH         LINE#         102
+  C:0352H         LINE#         103
+  -------         ENDPROC       READ_BIT
+  -------         PROC          _WRITE_BIT
+  D:0007H         SYMBOL        bitval
+  C:0332H         LINE#         111
+  C:0332H         LINE#         112
+  C:0332H         LINE#         113
+  C:0337H         LINE#         114
+  C:0339H         LINE#         115
+  C:0340H         LINE#         116
+  C:0342H         LINE#         117
+  -------         ENDPROC       _WRITE_BIT
+  -------         PROC          READ_BYTE
+  -------         DO            
+  D:0002H         SYMBOL        i
+  D:0001H         SYMBOL        m
+  D:0003H         SYMBOL        receive_data
+  -------         ENDDO         
+  C:023DH         LINE#         125
+  C:023DH         LINE#         126
+  C:023DH         LINE#         128
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 5
+
+
+  C:023FH         LINE#         129
+  C:0241H         LINE#         130
+  C:0242H         LINE#         131
+  C:0242H         LINE#         132
+  C:0248H         LINE#         133
+  C:0248H         LINE#         134
+  C:0254H         LINE#         135
+  C:0254H         LINE#         136
+  C:025BH         LINE#         137
+  C:025FH         LINE#         138
+  C:0261H         LINE#         139
+  -------         ENDPROC       READ_BYTE
+  -------         PROC          _WRITE_BYTE
+  D:0001H         SYMBOL        val
+  -------         DO            
+  D:0003H         SYMBOL        i
+  D:0002H         SYMBOL        temp
+  -------         ENDDO         
+  C:0262H         LINE#         147
+  C:0264H         LINE#         148
+  C:0264H         LINE#         150
+  C:0266H         LINE#         151
+  C:0266H         LINE#         152
+  C:0271H         LINE#         153
+  C:0274H         LINE#         154
+  C:0279H         LINE#         155
+  C:0280H         LINE#         156
+  C:0284H         LINE#         157
+  -------         ENDPROC       _WRITE_BYTE
+  -------         PROC          _WRITECOMMANDLCM
+  D:0007H         SYMBOL        ch
+  C:0306H         LINE#         160
+  C:0306H         LINE#         161
+  C:0306H         LINE#         162
+  C:0308H         LINE#         163
+  C:030AH         LINE#         164
+  C:030CH         LINE#         165
+  C:030EH         LINE#         166
+  C:0315H         LINE#         167
+  C:0317H         LINE#         168
+  -------         ENDPROC       _WRITECOMMANDLCM
+  -------         PROC          _WRITEDATALCM
+  D:0007H         SYMBOL        ch
+  C:031CH         LINE#         172
+  C:031CH         LINE#         173
+  C:031EH         LINE#         174
+  C:0320H         LINE#         175
+  C:0322H         LINE#         176
+  C:0324H         LINE#         177
+  C:032BH         LINE#         178
+  C:032DH         LINE#         179
+  -------         ENDPROC       _WRITEDATALCM
+  -------         PROC          _DISPLAYONECHAR
+  D:0006H         SYMBOL        X
+  D:0005H         SYMBOL        Y
+  D:0003H         SYMBOL        DData
+  C:02BFH         LINE#         182
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 6
+
+
+  C:02C1H         LINE#         183
+  C:02C1H         LINE#         184
+  C:02C4H         LINE#         185
+  C:02C7H         LINE#         186
+  C:02CDH         LINE#         187
+  C:02D0H         LINE#         188
+  C:02D5H         LINE#         189
+  -------         ENDPROC       _DISPLAYONECHAR
+  -------         PROC          INITLCD
+  C:0215H         LINE#         195
+  C:0215H         LINE#         196
+  C:0215H         LINE#         197
+  C:021AH         LINE#         198
+  C:021FH         LINE#         199
+  C:0224H         LINE#         200
+  C:0229H         LINE#         201
+  C:022EH         LINE#         202
+  C:0233H         LINE#         203
+  C:0238H         LINE#         204
+  -------         ENDPROC       INITLCD
+  -------         PROC          MAIN
+  -------         DO            
+  D:0002H         SYMBOL        temp
+  D:0003H         SYMBOL        m
+  -------         ENDDO         
+  C:00D9H         LINE#         213
+  C:00D9H         LINE#         214
+  C:00D9H         LINE#         219
+  C:00DCH         LINE#         220
+  C:00DEH         LINE#         222
+  C:00E4H         LINE#         223
+  C:00E7H         LINE#         225
+  C:00E9H         LINE#         226
+  C:00F1H         LINE#         227
+  C:00F1H         LINE#         228
+  C:00F4H         LINE#         229
+  C:00F5H         LINE#         230
+  C:00F7H         LINE#         233
+  C:00FCH         LINE#         234
+  C:00FEH         LINE#         235
+  C:0106H         LINE#         236
+  C:0106H         LINE#         237
+  C:0109H         LINE#         238
+  C:010AH         LINE#         239
+  C:010CH         LINE#         242
+  C:010FH         LINE#         243
+  C:0112H         LINE#         245
+  C:0112H         LINE#         246
+  C:0112H         LINE#         247
+  C:0115H         LINE#         248
+  C:011AH         LINE#         249
+  C:011FH         LINE#         250
+  C:0122H         LINE#         251
+  C:0127H         LINE#         252
+  C:012CH         LINE#         253
+  C:0131H         LINE#         254
+  C:0136H         LINE#         255
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 7
+
+
+  C:014BH         LINE#         256
+  C:0166H         LINE#         257
+  C:0169H         LINE#         258
+  C:0170H         LINE#         259
+  C:0189H         LINE#         260
+  C:018CH         LINE#         261
+  C:0193H         LINE#         262
+  -------         ENDPROC       MAIN
+  -------         PROC          IR_IN
+  -------         DO            
+  D:0011H         SYMBOL        j
+  D:0012H         SYMBOL        k
+  D:0013H         SYMBOL        N
+  -------         ENDDO         
+  C:0006H         LINE#         267
+  C:000DH         LINE#         269
+  C:0010H         LINE#         270
+  C:0012H         LINE#         271
+  C:0019H         LINE#         272
+  C:001CH         LINE#         273
+  C:0021H         LINE#         275
+  C:0021H         LINE#         277
+  C:0024H         LINE#         278
+  C:0029H         LINE#         280
+  C:002CH         LINE#         281
+  C:002CH         LINE#         282
+  C:002FH         LINE#         283
+  C:002FH         LINE#         284
+  C:0032H         LINE#         285
+  C:0037H         LINE#         286
+  C:003AH         LINE#         287
+  C:003FH         LINE#         288
+  C:0042H         LINE#         289
+  C:0042H         LINE#         290
+  C:0045H         LINE#         291
+  C:0047H         LINE#         292
+  C:004EH         LINE#         293
+  C:0053H         LINE#         294
+  C:0053H         LINE#         295
+  C:0053H         LINE#         296
+  C:0061H         LINE#         297
+  C:0071H         LINE#         298
+  C:0074H         LINE#         299
+  C:007DH         LINE#         300
+  C:0086H         LINE#         302
+  C:008DH         LINE#         303
+  C:0091H         LINE#         304
+  C:0091H         LINE#         306
+  C:0097H         LINE#         307
+  C:009EH         LINE#         309
+  C:00A5H         LINE#         310
+  C:00A9H         LINE#         312
+  C:00AFH         LINE#         314
+  C:00B6H         LINE#         315
+  C:00BAH         LINE#         317
+  C:00C0H         LINE#         320
+  C:00C9H         LINE#         321
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/23/2017  19:55:14  PAGE 8
+
+
+  C:00D2H         LINE#         323
+  C:00D4H         LINE#         324
+  -------         ENDPROC       IR_IN
+  -------         ENDMOD        红蚠_蝊度_人体红蚠
+
+  -------         MODULE        ?C?UIDIV
+  C:0196H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?红蚠_蝊度_人体红蚠
+
+Program Size: data=21.0 xdata=0 code=863
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\stone\Desktop\485£®PC-¥”’æ£©\rs485.uvproj
+Project File Date:  07/13/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling rs485.c...
+linking...
+Program Size: data=44.2 xdata=40 code=1016
+creating hex file from "rs485"...
+"rs485" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling rs485.c...
+linking...
+Program Size: data=44.2 xdata=40 code=1016
+creating hex file from "rs485"...
+"rs485" - 0 Error(s), 0 Warning(s).

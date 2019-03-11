@@ -1,0 +1,135 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/23/2016  17:07:43  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 7seg.obj TO 7SEG RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  7seg.obj (7SEG)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  7SEG (7SEG)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0018H     UNIT         _DATA_GROUP_
+            DATA    0020H     0001H     UNIT         ?DT?7SEG
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     01AEH     UNIT         ?PR?MAIN?7SEG
+            CODE    01B1H     0055H     UNIT         ?C?LIB_CODE
+            CODE    0206H     001EH     UNIT         ?PR?_DELAY?7SEG
+            CODE    0224H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0230H     000BH     UNIT         ?CO?7SEG
+
+
+
+OVERLAY MAP OF MODULE:   7SEG (7SEG)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?7SEG
+
+?PR?MAIN?7SEG                  0008H    0018H
+  +--> ?CO?7SEG
+  +--> ?PR?_DELAY?7SEG
+
+
+
+SYMBOL TABLE OF MODULE:  7SEG (7SEG)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        7SEG
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:00A0H.1       PUBLIC        LS138B
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/23/2016  17:07:43  PAGE 2
+
+
+  B:00A0H.2       PUBLIC        LS138C
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:0230H         PUBLIC        Disp_Tab
+  C:0206H         PUBLIC        _delay
+  C:0003H         PUBLIC        main
+  D:0020H         PUBLIC        DelayCNT
+  B:00A0H.0       PUBLIC        LS138A
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:000AH         SYMBOL        LedNumVal
+  D:000CH         SYMBOL        LedOut
+  -------         ENDDO         
+  C:0003H         LINE#         19
+  C:0003H         LINE#         20
+  C:0003H         LINE#         24
+  C:0006H         LINE#         26
+  C:0006H         LINE#         27
+  C:0006H         LINE#         28
+  C:0011H         LINE#         29
+  C:0011H         LINE#         30
+  C:0014H         LINE#         31
+  C:001CH         LINE#         32
+  C:001CH         LINE#         34
+  C:0045H         LINE#         35
+  C:0072H         LINE#         36
+  C:009BH         LINE#         37
+  C:00B7H         LINE#         39
+  C:00E0H         LINE#         40
+  C:00E4H         LINE#         41
+  C:010DH         LINE#         42
+  C:0129H         LINE#         45
+  C:013CH         LINE#         46
+  C:013CH         LINE#         47
+  C:0147H         LINE#         49
+  C:0171H         LINE#         50
+  C:0171H         LINE#         51
+  C:0175H         LINE#         52
+  C:017DH         LINE#         53
+  C:0181H         LINE#         54
+  C:0189H         LINE#         55
+  C:018DH         LINE#         56
+  C:0195H         LINE#         57
+  C:0199H         LINE#         58
+  C:019FH         LINE#         60
+  C:019FH         LINE#         62
+  C:01A6H         LINE#         63
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+  C:0206H         LINE#         72
+  C:0206H         LINE#         73
+  C:0206H         LINE#         75
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/23/2016  17:07:43  PAGE 3
+
+
+  C:020FH         LINE#         76
+  C:0223H         LINE#         77
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        7SEG
+
+  -------         MODULE        ?C?UIDIV
+  C:01B1H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=34.0 xdata=0 code=571
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

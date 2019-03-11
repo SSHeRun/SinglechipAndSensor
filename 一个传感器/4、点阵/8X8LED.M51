@@ -1,0 +1,105 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/23/2016  17:44:08  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 8X8LED.obj TO 8X8LED RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  8X8LED.obj (8X8LED)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  8X8LED (8X8LED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         _DATA_GROUP_
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?PR?MAIN?8X8LED
+            CODE    008FH     001EH     UNIT         ?PR?_DELAY?8X8LED
+            CODE    00ADH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   8X8LED (8X8LED)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?8X8LED
+
+?PR?MAIN?8X8LED                0008H    0004H
+  +--> ?PR?_DELAY?8X8LED
+
+
+
+SYMBOL TABLE OF MODULE:  8X8LED (8X8LED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        8X8LED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:00A0H.1       PUBLIC        LS138B
+  B:00A0H.2       PUBLIC        LS138C
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:008FH         PUBLIC        _delay
+  C:0003H         PUBLIC        main
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/23/2016  17:44:08  PAGE 2
+
+
+  B:00A0H.0       PUBLIC        LS138A
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:000AH         SYMBOL        j
+  -------         ENDDO         
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         22
+  C:0008H         LINE#         23
+  C:0008H         LINE#         24
+  C:0032H         LINE#         25
+  C:0032H         LINE#         26
+  C:0038H         LINE#         27
+  C:0043H         LINE#         28
+  C:0049H         LINE#         29
+  C:0051H         LINE#         30
+  C:0059H         LINE#         31
+  C:0064H         LINE#         32
+  C:0068H         LINE#         33
+  C:0071H         LINE#         34
+  C:0071H         LINE#         35
+  C:0078H         LINE#         36
+  -------         ENDPROC       MAIN
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+  C:008FH         LINE#         65
+  C:008FH         LINE#         66
+  C:008FH         LINE#         68
+  C:0098H         LINE#         69
+  C:00ACH         LINE#         70
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        8X8LED
+
+Program Size: data=13.0 xdata=0 code=185
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

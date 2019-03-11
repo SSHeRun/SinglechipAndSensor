@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"RALAY.obj" 
+TO "RALAY" 
+RAMSIZE(256) 

@@ -1,0 +1,207 @@
+C51 COMPILER V9.01   IRLCD                                                                 08/05/2016 18:00:43 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE IRLCD
+OBJECT MODULE PLACED IN IRLCD.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE IRLCD.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************************
+   2          *          lcd1602显示 遥控键值读取器                                          *
+   3          *         lcd1602显示 遥控器接p3.2                                             *
+   4          ********************************************************************************/
+   5          
+   6          #include <reg51.h>
+   7          #include <intrins.h>
+   8          
+   9          #define uchar unsigned char
+  10          #define uint  unsigned int
+  11          
+  12          
+  13          sbit IRIN = P3^2;         //红外接收器数据线
+  14          
+  15          uchar IRCOM[7];
+  16          
+  17          sbit E=P2^3;
+  18          sbit RW=P2^4;
+  19          sbit RS=P2^5;
+  20          
+  21          #define LCM_Data  P0
+  22          
+  23          uchar code  cdis1[ ] = {"  Red Control  "};
+  24          uchar code  cdis2[ ] = {"  IR-CODE:--H  "};
+  25          
+  26          
+  27          //延时设置
+  28          void Delay(unsigned int t)   // delay 40us
+  29          {
+  30   1       for(;t!=0;t--) ;
+  31   1      }
+  32          
+  33          
+  34          //写指令
+  35          void WriteCommandLCM(unsigned char ch)
+  36          {
+  37   1         RS=0;
+  38   1         RW=0;
+  39   1         E=1;
+  40   1         LCM_Data=ch;
+  41   1         Delay(1);
+  42   1         E=0;
+  43   1         Delay(100);  //delay 40us
+  44   1      }
+  45          
+  46          //写数据
+  47          void WriteDataLCM(unsigned char ch)
+  48          {  RS=1;
+  49   1         RW=0;
+  50   1         E=1;
+  51   1         LCM_Data=ch;
+  52   1         Delay(1);
+  53   1         E=0;
+  54   1         Delay(100); //delay 40us
+  55   1      }
+C51 COMPILER V9.01   IRLCD                                                                 08/05/2016 18:00:43 PAGE 2   
+
+  56          
+  57          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  58          {                                               
+  59   1              Y&=1;                                           
+  60   1              X&=15;                                          
+  61   1              if(Y)X|=0x40;                                   
+  62   1              X|=0x80;                        
+  63   1              WriteCommandLCM(X);             
+  64   1              WriteDataLCM(DData);            
+  65   1      }                               
+  66          
+  67          /*******************************************************************/
+  68          /*  LCD初始化设定                                                  */
+  69          /*******************************************************************/
+  70          void InitLcd()
+  71          {
+  72   1       WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+  73   1       WriteCommandLCM(0x30);
+  74   1       WriteCommandLCM(0x30);
+  75   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+  76   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+  77   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+  78   1       WriteCommandLCM(0x01); //清屏
+  79   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+  80   1      }
+  81          
+  82          
+  83          
+  84          main()
+  85          {
+  86   1         uchar m;
+  87   1          
+  88   1          IRIN=1;                    //I/O口初始化
+  89   1      
+  90   1          Delay(10);                 //延时
+  91   1          InitLcd();                //初始化LCD             
+  92   1      
+  93   1           m = 0;
+  94   1          while(cdis1[m] != '\0')
+  95   1           {                         //显示字符
+  96   2             WriteDataLCM(cdis1[m]);
+  97   2             m++;
+  98   2           }
+  99   1      
+ 100   1          //lcd_pos(0x40);             //设置显示位置为第二行第1个字符
+ 101   1              WriteCommandLCM(0x40 | 0x80);
+ 102   1           m = 0;
+ 103   1          while(cdis2[m] != '\0')
+ 104   1           {
+ 105   2             WriteDataLCM(cdis2[m]);      //显示字符
+ 106   2             m++;
+ 107   2           }
+ 108   1         
+ 109   1      
+ 110   1              IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+ 111   1              TCON = 0x01;               //触发方式为脉冲负边沿触发
+ 112   1      
+ 113   1         while(1)     ;
+ 114   1      
+ 115   1      } //end main
+ 116          
+ 117          /**********************************************************/
+C51 COMPILER V9.01   IRLCD                                                                 08/05/2016 18:00:43 PAGE 3   
+
+ 118          void IR_IN() interrupt 0 using 0
+ 119          {
+ 120   1        unsigned char j,k,N=0;
+ 121   1           EX0 = 0;   
+ 122   1               Delay(200);
+ 123   1               if (IRIN==1) 
+ 124   1           { EX0 =1;
+ 125   2                 return;
+ 126   2                } 
+ 127   1                                 //确认IR信号出现
+ 128   1        while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+ 129   1          {Delay(13);}
+ 130   1      
+ 131   1       for (j=0;j<4;j++)         //收集四组数据
+ 132   1       { 
+ 133   2        for (k=0;k<8;k++)        //每组数据有8位
+ 134   2        {
+ 135   3         while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+ 136   3           {Delay(13);}
+ 137   3          while (!IRIN)          //等 IR 变为高电平
+ 138   3           {Delay(13);}
+ 139   3           while (IRIN)           //计算IR高电平时长
+ 140   3            {
+ 141   4         Delay(13);
+ 142   4          N++;           
+ 143   4          if (N>=30)
+ 144   4               { EX0=1;
+ 145   5               return;}                  //0.14ms计数过长自动离开。
+ 146   4            }                        //高电平计数完毕                
+ 147   3           IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+ 148   3           if (N>=8) {IRCOM[j] = IRCOM[j] | 0x80;}  //数据最高位补“1”
+ 149   3           N=0;
+ 150   3        }//end for k
+ 151   2       }//end for j
+ 152   1         
+ 153   1         if (IRCOM[2]!=~IRCOM[3])
+ 154   1         { EX0=1;
+ 155   2           return; }
+ 156   1      
+ 157   1         IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+ 158   1         IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+ 159   1      
+ 160   1         if(IRCOM[5]>9)
+ 161   1          { IRCOM[5]=IRCOM[5]+0x37;}
+ 162   1         else
+ 163   1                IRCOM[5]=IRCOM[5]+0x30;
+ 164   1      
+ 165   1         if(IRCOM[6]>9)
+ 166   1          { IRCOM[6]=IRCOM[6]+0x37;}
+ 167   1         else
+ 168   1                IRCOM[6]=IRCOM[6]+0x30;
+ 169   1      
+ 170   1                 
+ 171   1           DisplayOneChar(10,1,IRCOM[6]);          //第一位数显示         
+ 172   1           DisplayOneChar(11,1,IRCOM[5]);        //第二位数显示
+ 173   1      
+ 174   1           EX0 = 1; 
+ 175   1      } 
+ 176          
+ 177          
+ 178          
+
+C51 COMPILER V9.01   IRLCD                                                                 08/05/2016 18:00:43 PAGE 4   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    388    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

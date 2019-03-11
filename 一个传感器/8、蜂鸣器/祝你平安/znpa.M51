@@ -1,0 +1,119 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/10/2009  23:45:31  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE znpa.obj TO znpa RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  znpa.obj (ZNPA)
+
+
+LINK MAP OF MODULE:  znpa (ZNPA)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0156H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  znpa (ZNPA)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ZNPA
+  D:00F0H         SYMBOL        B
+  C:007DH         SYMBOL        DAT
+  C:0072H         SYMBOL        DEL
+  C:0073H         SYMBOL        DEL3
+  C:0075H         SYMBOL        DEL4
+  C:0065H         SYMBOL        END0
+  D:00A8H         SYMBOL        IE
+  C:0023H         SYMBOL        MUSIC0
+  C:002DH         SYMBOL        MUSIC1
+  C:0041H         SYMBOL        MUSIC2
+  C:0054H         SYMBOL        MUSIC3
+  C:0059H         SYMBOL        MUSIC4
+  C:0038H         SYMBOL        MUSIC5
+  C:0068H         SYMBOL        MUSIC6
+  D:0090H         SYMBOL        P1
+  D:0081H         SYMBOL        SP
+  C:0014H         SYMBOL        START
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         3
+  C:000BH         LINE#         5
+  C:000DH         LINE#         6
+  C:0010H         LINE#         7
+  C:0013H         LINE#         8
+  C:0014H         LINE#         10
+  C:0017H         LINE#         11
+  C:001AH         LINE#         12
+  C:001DH         LINE#         13
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/10/2009  23:45:31  PAGE 2
+
+
+  C:0020H         LINE#         14
+  C:0023H         LINE#         16
+  C:0024H         LINE#         17
+  C:0027H         LINE#         18
+  C:002AH         LINE#         19
+  C:002DH         LINE#         21
+  C:002EH         LINE#         22
+  C:002FH         LINE#         23
+  C:0030H         LINE#         24
+  C:0032H         LINE#         25
+  C:0035H         LINE#         26
+  C:0038H         LINE#         28
+  C:0039H         LINE#         29
+  C:003AH         LINE#         30
+  C:003BH         LINE#         31
+  C:003DH         LINE#         32
+  C:003EH         LINE#         33
+  C:003FH         LINE#         34
+  C:0041H         LINE#         36
+  C:0042H         LINE#         37
+  C:0044H         LINE#         38
+  C:0045H         LINE#         39
+  C:0046H         LINE#         40
+  C:0049H         LINE#         41
+  C:004AH         LINE#         42
+  C:004DH         LINE#         44
+  C:0050H         LINE#         45
+  C:0051H         LINE#         47
+  C:0054H         LINE#         49
+  C:0055H         LINE#         50
+  C:0057H         LINE#         51
+  C:0059H         LINE#         53
+  C:005AH         LINE#         54
+  C:005CH         LINE#         55
+  C:005FH         LINE#         56
+  C:0061H         LINE#         57
+  C:0062H         LINE#         58
+  C:0065H         LINE#         60
+  C:0066H         LINE#         61
+  C:0068H         LINE#         63
+  C:006AH         LINE#         64
+  C:006DH         LINE#         65
+  C:006FH         LINE#         66
+  C:0072H         LINE#         68
+  C:0073H         LINE#         70
+  C:0075H         LINE#         72
+  C:0076H         LINE#         73
+  C:0078H         LINE#         74
+  C:0079H         LINE#         75
+  C:007BH         LINE#         76
+  C:007CH         LINE#         77
+  -------         ENDMOD        ZNPA
+
+Program Size: data=8.0 xdata=0 code=342
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

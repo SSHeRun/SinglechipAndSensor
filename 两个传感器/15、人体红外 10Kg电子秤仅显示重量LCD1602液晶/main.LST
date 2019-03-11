@@ -1,0 +1,363 @@
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 20:41:30 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: N:\keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include <intrins.h>
+   3          #include <string.h>
+   4          #include "main.h"
+   5          #include "LCD1602.h"
+   6          #include "HX711.h"
+   7          #include "keyboard.h"
+   8          
+   9          #define uchar unsigned char
+  10          #define uint  unsigned int
+  11          
+  12          sbit led1=P1^5;
+  13          
+  14          unsigned long HX711_Buffer = 0;
+  15          unsigned long Weight_Maopi = 0;
+  16          unsigned long Weight_Maopi_0 = 0;
+  17          long Weight_Shiwu = 0;
+  18          //键盘处理变量
+  19          unsigned char keycode;
+  20          unsigned char DotPos;                              //小数点标志及位置
+  21          
+  22          unsigned long idata price;     //单价，长整型值，单位为分   
+  23          unsigned long idata money;     //总价，长整型值，单位为分
+  24          //定义标识
+  25          volatile bit FlagTest = 0;              //定时测试标志，每0.5秒置位，测完清0
+  26          volatile bit FlagKeyPress = 0;  //有键按下标志，处理完毕清0
+  27          //校准参数
+  28          //因为不同的传感器特性曲线不是很一致，因此，每一个传感器需要矫正这里这个参数才能使测量值很准确。
+  29          //当发现测试出来的重量偏大时，增加该数值。
+  30          //如果测试出来的重量偏小时，减小改数值。
+  31          //该值可以为小数
+  32          #define GapValue 210.6
+  33          sbit LED=P1^1;
+  34          
+  35          void delay3(uint xms){
+  36   1          uint i,j;
+  37   1          for(i=xms;i>0;i--)
+  38   1              for(j=110;j>0;j--);
+  39   1      }
+  40          void externalInterruption() interrupt 0
+  41          {
+  42   1                led1 = ~led1;
+  43   1                      delay3(50);
+  44   1      }
+  45          
+  46          
+  47          volatile bit ClearWeighFlag = 0; //传感器调零标志位，清除0漂
+  48          
+  49          //显示单价，单位为元，四位整数，两位小数
+  50          void Display_Price()
+  51          {
+  52   1                  LCD1602_write_com(0x8c);
+  53   1                              LCD1602_write_data(price/100 + 0x30);
+  54   1                              LCD1602_write_data(price%100/10 + 0x30);
+  55   1                              LCD1602_write_data('.');
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 20:41:30 PAGE 2   
+
+  56   1                              LCD1602_write_data(price%10 + 0x30);
+  57   1      }
+  58          
+  59          //显示重量，单位kg，两位整数，三位小数
+  60          void Display_Weight()
+  61          {
+  62   1                  LCD1602_write_com(0x83);
+  63   1                              LCD1602_write_data(Weight_Shiwu/1000 + 0x30);
+  64   1                              LCD1602_write_data('.');
+  65   1                              LCD1602_write_data(Weight_Shiwu%1000/100 + 0x30);
+  66   1                              LCD1602_write_data(Weight_Shiwu%100/10 + 0x30);
+  67   1                              LCD1602_write_data(Weight_Shiwu%10 + 0x30);
+  68   1      }
+  69          
+  70          //显示总价，单位为元，四位整数，两位小数
+  71          void Display_Money()
+  72          {
+  73   1        // unsigned int i,j;
+  74   1      
+  75   1         if (money>9999)      //超出显示量程
+  76   1         {
+  77   2           LCD1602_write_com(0x80+0x40+6);
+  78   2           LCD1602_write_word("---.-");
+  79   2            return;       
+  80   2         }   
+  81   1         
+  82   1         if (money>=1000)
+  83   1         {
+  84   2             LCD1602_write_com(0x80+0x40+6);
+  85   2                 LCD1602_write_data(money/1000 + 0x30);
+  86   2                 LCD1602_write_data(money%1000/100 + 0x30);
+  87   2                 LCD1602_write_data(money%100/10 + 0x30);
+  88   2                 LCD1602_write_data('.');
+  89   2                 LCD1602_write_data(money%10 + 0x30);
+  90   2         }
+  91   1         else if (money>=100)
+  92   1         {
+  93   2             LCD1602_write_com(0x80+0x40+6);
+  94   2                 LCD1602_write_data(0x20);
+  95   2                 LCD1602_write_data(money%1000/100 + 0x30);
+  96   2                 LCD1602_write_data(money%100/10 + 0x30);
+  97   2                 LCD1602_write_data('.');
+  98   2                 LCD1602_write_data(money%10 + 0x30);
+  99   2         }
+ 100   1          else if(money>=10)
+ 101   1         {
+ 102   2             LCD1602_write_com(0x80+0x40+6);
+ 103   2                LCD1602_write_data(0x20);
+ 104   2                  LCD1602_write_com(0x80+0x40+7);
+ 105   2                 LCD1602_write_data(0x20);
+ 106   2                 LCD1602_write_data(money%100/10 + 0x30);
+ 107   2                 LCD1602_write_data('.');
+ 108   2                 LCD1602_write_data(money%10+ 0x30);
+ 109   2         }   
+ 110   1         else 
+ 111   1           {
+ 112   2             LCD1602_write_com(0x80+0x40+6);
+ 113   2                 LCD1602_write_data(0x20);
+ 114   2                 LCD1602_write_com(0x80+0x40+7);
+ 115   2                 LCD1602_write_data(0x20);
+ 116   2                 LCD1602_write_com(0x80+0x40+8);
+ 117   2                 LCD1602_write_data(0 + 0x30);
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 20:41:30 PAGE 3   
+
+ 118   2                 LCD1602_write_data('.');
+ 119   2                 LCD1602_write_data(money%10 + 0x30);
+ 120   2         }         
+ 121   1      }
+ 122          
+ 123          //数据初始化
+ 124          void Data_Init()
+ 125          {
+ 126   1         price = 0;
+ 127   1         DotPos = 0;
+ 128   1      }
+ 129          //定时器0初始化
+ 130          void Timer0_Init()
+ 131          {
+ 132   1              ET0 = 1;        //允许定时器0中断
+ 133   1              TMOD = 1;       //定时器工作方式选择
+ 134   1              TL0 = 0x06;     
+ 135   1              TH0 = 0xf8;     //定时器赋予初值
+ 136   1              TR0 = 1;        //启动定时器
+ 137   1      }
+ 138          
+ 139          //定时器0中断
+ 140          void Timer0_ISR (void) interrupt 1 using 0
+ 141          {
+ 142   1      uchar Counter;
+ 143   1              TL0 = 0x06;
+ 144   1              TH0 = 0xf8;     //定时器赋予初值
+ 145   1      
+ 146   1              //每0.5秒钟刷新重量
+ 147   1          Counter ++;
+ 148   1          if (Counter >= 200)
+ 149   1          {
+ 150   2             FlagTest = 1;
+ 151   2                 Counter = 0;
+ 152   2          }
+ 153   1      }
+ 154          
+ 155          
+ 156          //按键响应程序，参数是键值
+ 157          //返回键值：
+ 158          //         7          8    9      10(清0)
+ 159          //         4          5    6      11(删除)
+ 160          //         1          2    3      12(未定义)
+ 161          //         14(未定义) 0    15(.)  13(确定价格)
+ 162          
+ 163          void KeyPress(uchar keycode)
+ 164          {
+ 165   1         switch (keycode)
+ 166   1         {
+ 167   2            case 0:
+ 168   2            case 1:
+ 169   2            case 2:
+ 170   2            case 3:
+ 171   2            case 4:
+ 172   2            case 5:
+ 173   2            case 6:
+ 174   2            case 7:
+ 175   2            case 8:
+ 176   2            case 9:
+ 177   2                   //目前在设置整数位，要注意price是整型，存储单位为分
+ 178   2                   if (DotPos == 0)
+ 179   2                       {  
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 20:41:30 PAGE 4   
+
+ 180   3                          //最多只能设置到千位
+ 181   3                              if (price<100)
+ 182   3                              {
+ 183   4                             price=price*10+keycode*10;
+ 184   4                              }
+ 185   3                       }
+ 186   2                       //目前在设置小数位
+ 187   2                       else if (DotPos==1)  //小数点后第一位
+ 188   2                       {
+ 189   3                          price=price+keycode;
+ 190   3                              DotPos=2;
+ 191   3                       }
+ 192   2                       Display_Price();
+ 193   2                   break;
+ 194   2            case 10:   //清零键
+ 195   2                   Get_Maopi();
+ 196   2                       Display_Price();
+ 197   2      //               FlagSetPrice = 0;
+ 198   2                       DotPos = 0;
+ 199   2                       break;
+ 200   2                case 11:      //删除键，按一次删除最右一个数字
+ 201   2                          price=0;
+ 202   2                              DotPos=0;
+ 203   2                       Display_Price();
+ 204   2               break;
+ 205   2                       ////////////////////////////////////
+ 206   2                case 12:
+ 207   2                       break;
+ 208   2      
+ 209   2      
+ 210   2                       //////////////////////////////////////
+ 211   2      //      case 13:   //确认键
+ 212   2      //           FlagSetPrice = 1;
+ 213   2      //               DotPos=0;
+ 214   2      //               break;
+ 215   2                case 15:   //小数点按下 
+ 216   2                              DotPos = 1;      //小数点后第一位
+ 217   2                   break;
+ 218   2      
+ 219   2         }
+ 220   1      }
+ 221          //****************************************************
+ 222          //主函数
+ 223          //****************************************************
+ 224          void main()
+ 225          {
+ 226   1              Init_LCD1602();                                                                 //初始化LCD1602
+ 227   1         EA = 0;
+ 228   1         Data_Init();
+ 229   1         Timer0_Init();
+ 230   1         //初中始化完成，开断
+ 231   1         EA = 1;
+ 232   1      
+ 233   1          led1=0; //μ?√?
+ 234   1               IT0=0;//μ?μá?Ω”––?      
+ 235   1               EX0=1;
+ 236   1              
+ 237   1      //      Get_Maopi();
+ 238   1              LCD1602_write_com(0x80);                                                //指针设置
+ 239   1         LCD1602_write_word(" Welcome To Use ");      //  
+ 240   1         LCD1602_write_com(0x80+0x40);                                                //指针设置
+ 241   1         LCD1602_write_word("Wlectronic Scale");
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 20:41:30 PAGE 5   
+
+ 242   1      //   Delay_ms(2000);
+ 243   1         Get_Maopi();
+ 244   1         LCD1602_write_com(0x80);                                             //指针设置
+ 245   1         LCD1602_write_word("WE:0.000 PR:00.0");
+ 246   1         LCD1602_write_com(0x80+0x40);                                //指针设置
+ 247   1         LCD1602_write_word("MONEY:  0.00    ");
+ 248   1         Display_Price();
+ 249   1      //      Get_Maopi();                            //称毛皮重量
+ 250   1      
+ 251   1              while(1)
+ 252   1              {
+ 253   2      //每0.5秒称重一次
+ 254   2                if (FlagTest==1)
+ 255   2                {
+ 256   3                              Get_Weight();
+ 257   3                              FlagTest = 0;
+ 258   3                                      if(led1==1)
+ 259   3                              led1=0;
+ 260   3              }                                               
+ 261   2      
+ 262   2                keycode = Getkeyboard();
+ 263   2                //有效键值0-15
+ 264   2                if (keycode<16/*&&(FlagKeyPress==0)*/)
+ 265   2                {
+ 266   3                   
+ 267   3                       KeyPress(keycode);
+ 268   3                       
+ 269   3                       Buzzer=0;
+ 270   3                       Delay_ms(50);
+ 271   3                       Buzzer=1;
+ 272   3              //       FlagKeyPress = 1;
+ 273   3                       Delay_ms(200);
+ 274   3                }
+ 275   2              }
+ 276   1      }
+ 277          
+ 278          
+ 279          
+ 280          //****************************************************
+ 281          //称重
+ 282          //****************************************************
+ 283          void Get_Weight()
+ 284          {
+ 285   1              Weight_Shiwu = HX711_Read();
+ 286   1              Weight_Shiwu = Weight_Shiwu - Weight_Maopi;             //获取净重
+ 287   1              
+ 288   1              Weight_Shiwu = (unsigned int)((float)Weight_Shiwu/GapValue);    //计算实物的实际重量                                                                                                                            
+ 289   1              if(Weight_Shiwu > 10000)                //超重报警
+ 290   1              {
+ 291   2                      Buzzer = 0;     
+ 292   2                      LED=0;
+ 293   2                      LCD1602_write_com(0x83);
+ 294   2                 LCD1602_write_word("-.---");
+ 295   2              }
+ 296   1              else
+ 297   1              {
+ 298   2                      if(Weight_Shiwu==0)
+ 299   2                      LED=1;
+ 300   2                      else if(Weight_Shiwu>0)
+ 301   2                      LED=0; 
+ 302   2                      Buzzer = 1;
+ 303   2                      Display_Weight();
+C51 COMPILER V9.01   MAIN                                                                  11/23/2017 20:41:30 PAGE 6   
+
+ 304   2                      money = Weight_Shiwu*price/1000;  //money单位为分
+ 305   2                     //显示总金额
+ 306   2                     Display_Money();
+ 307   2              }
+ 308   1      }
+ 309          
+ 310          //****************************************************
+ 311          //获取毛皮重量
+ 312          //****************************************************
+ 313          void Get_Maopi()
+ 314          {
+ 315   1      mm:     Weight_Maopi_0 = HX711_Read();
+ 316   1              Delay_ms(200);
+ 317   1              Weight_Maopi = HX711_Read();
+ 318   1              if(Weight_Maopi/GapValue!=Weight_Maopi_0/GapValue)
+ 319   1              goto mm;
+ 320   1      } 
+ 321          
+ 322          //****************************************************
+ 323          //MS延时函数(12M晶振下测试)
+ 324          //****************************************************
+ 325          void Delay_ms(unsigned int n)
+ 326          {
+ 327   1              unsigned int  i,j;
+ 328   1              for(i=0;i<n;i++)
+ 329   1                      for(j=0;j<123;j++);
+ 330   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1314    ----
+   CONSTANT SIZE    =     80    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     18       2
+   IDATA SIZE       =      8    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

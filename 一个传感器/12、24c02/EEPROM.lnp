@@ -1,0 +1,6 @@
+"STARTUP.obj",
+"2402Main.obj",
+"2402.obj",
+"I2C.obj" 
+TO "EEPROM" 
+RAMSIZE(256) 

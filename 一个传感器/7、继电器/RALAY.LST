@@ -1,0 +1,47 @@
+C51 COMPILER V9.01   RALAY                                                                 07/09/2016 21:52:59 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE RALAY
+OBJECT MODULE PLACED IN RALAY.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE RALAY.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /******************************************************************/
+   2          /*            继电器实验                                                                                      *
+   3          /*                                                                                                                *
+   4          /*  连接方法：P2.7接JP5的K1（按钮接口)   
+   5                        P1.4接J2                                    *
+   6          /*      按下P2.7 继电器P1.4动作                                                               *
+   7          /******************************************************************/
+   8          #include <reg51.h>                 //51的端口和各特殊寄存器定义在此文件中
+   9          
+  10          sbit RELAY = P1^4;                  //定义继电器对应单片机管脚
+  11          sbit K1    = P2^7;                  //定义按钮对应单片机管脚
+  12          
+  13          
+  14          /*********************************************************
+  15          主函数                                                                                                   *
+  16          **********************************************************/
+  17          main()
+  18          {
+  19   1        if (!K1) RELAY = 0;    //按钮按下 开启继电器
+  20   1        else  RELAY = 1;               //按钮松开 关闭继电器
+  21   1                
+  22   1      
+  23   1      }
+*** WARNING C290 IN LINE 23 OF RALAY.C: missing return value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      9    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

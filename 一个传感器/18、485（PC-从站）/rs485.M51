@@ -1,0 +1,352 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/10/2016  16:12:08  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE rs485.obj TO rs485 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  rs485.obj (RS485)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LMUL)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?SLDIV)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ULSHR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  rs485 (RS485)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0005H     UNIT         ?DT?RS485
+                    000DH     0013H                  *** GAP ***
+            BIT     0020H.0   0000H.2   UNIT         ?BI?RS485
+                    0020H.2   0000H.6                *** GAP ***
+            DATA    0021H     001EH     UNIT         _DATA_GROUP_
+            IDATA   003FH     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+            XDATA   0000H     0028H     INPAGE       ?PD?RS485
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0015H     UNIT         ?PR?MAIN?RS485
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     015BH     UNIT         ?C?LIB_CODE
+            CODE    0181H     008CH     UNIT         ?C_C51STARTUP
+            CODE    020DH     0079H     UNIT         ?PR?_CONFIGTIMER0?RS485
+            CODE    0286H     0044H     UNIT         ?C?LDIV
+            CODE    02CAH     0032H     UNIT         ?PR?INTERRUPTUART?RS485
+            CODE    02FCH     002CH     UNIT         ?PR?_UARTRXMONITOR?RS485
+            CODE    0328H     002AH     UNIT         ?PR?_CONFIGUART?RS485
+            CODE    0352H     0027H     UNIT         ?PR?_UARTREAD?RS485
+            CODE    0379H     0023H     UNIT         ?PR?_UARTWRITE?RS485
+            CODE    039CH     001BH     UNIT         ?PR?INTERRUPTTIMER0?RS485
+            CODE    03B7H     001AH     UNIT         ?PR?UARTDRIVER?RS485
+            CODE    03D1H     0014H     UNIT         ?C_INITSEG
+            CODE    03E5H     000BH     UNIT         ?PR?_DELAYX10US?RS485
+
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/10/2016  16:12:08  PAGE 2
+
+
+
+OVERLAY MAP OF MODULE:   rs485 (RS485)
+
+
+SEGMENT                             DATA_GROUP 
+  +--> CALLED SEGMENT             START    LENGTH
+-------------------------------------------------
+?PR?INTERRUPTTIMER0?RS485         -----    -----
+  +--> ?PR?_UARTRXMONITOR?RS485
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                     -----    -----
+  +--> ?PR?MAIN?RS485
+  +--> ?C_INITSEG
+
+?PR?MAIN?RS485                    -----    -----
+  +--> ?PR?_CONFIGTIMER0?RS485
+  +--> ?PR?_CONFIGUART?RS485
+  +--> ?PR?UARTDRIVER?RS485
+
+?PR?_CONFIGTIMER0?RS485           0021H    0004H
+
+?PR?UARTDRIVER?RS485              0021H    001EH
+  +--> ?PR?_UARTREAD?RS485
+  +--> ?PR?_UARTWRITE?RS485
+
+?PR?_UARTWRITE?RS485              -----    -----
+  +--> ?PR?_DELAYX10US?RS485
+
+
+
+SYMBOL TABLE OF MODULE:  rs485 (RS485)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        RS485
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  B:0020H.0       PUBLIC        cmdArrived
+  B:0090H.7       PUBLIC        RS485_DIR
+  C:039CH         PUBLIC        InterruptTimer0
+  D:00A8H         PUBLIC        IE
+  C:020DH         PUBLIC        _ConfigTimer0
+  C:03B7H         PUBLIC        UartDriver
+  C:02CAH         PUBLIC        InterruptUART
+  C:03E5H         PUBLIC        _DelayX10us
+  C:0328H         PUBLIC        _ConfigUART
+  B:00A8H.4       PUBLIC        ES
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  C:0352H         PUBLIC        _UartRead
+  B:0098H.1       PUBLIC        TI
+  D:000AH         PUBLIC        T0RH
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/10/2016  16:12:08  PAGE 3
+
+
+  D:000BH         PUBLIC        T0RL
+  C:000EH         PUBLIC        main
+  C:0379H         PUBLIC        _UartWrite
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  B:00A8H.1       PUBLIC        ET0
+  B:00A8H.3       PUBLIC        ET1
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  B:0020H.1       PUBLIC        flagOnceTxd
+  B:0088H.4       PUBLIC        TR0
+  C:02FCH         PUBLIC        _UartRxMonitor
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  X:0000H         PUBLIC        bufRxd
+  D:000CH         PUBLIC        cntRxd
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _CONFIGUART
+  D:0006H         SYMBOL        baud
+  C:0328H         LINE#         26
+  C:0328H         LINE#         27
+  C:0328H         LINE#         28
+  C:032AH         LINE#         29
+  C:032DH         LINE#         30
+  C:0330H         LINE#         31
+  C:0333H         LINE#         32
+  C:0348H         LINE#         33
+  C:034BH         LINE#         34
+  C:034DH         LINE#         35
+  C:034FH         LINE#         36
+  C:0351H         LINE#         37
+  -------         ENDPROC       _CONFIGUART
+  -------         PROC          _UARTREAD
+  D:0001H         SYMBOL        buf
+  D:0005H         SYMBOL        len
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:0352H         LINE#         39
+  C:0352H         LINE#         40
+  C:0352H         LINE#         42
+  C:0358H         LINE#         43
+  C:0358H         LINE#         44
+  C:035AH         LINE#         45
+  C:035AH         LINE#         46
+  C:0361H         LINE#         47
+  C:0361H         LINE#         48
+  C:0369H         LINE#         49
+  C:0370H         LINE#         50
+  C:0373H         LINE#         51
+  C:0376H         LINE#         53
+  C:0378H         LINE#         54
+  -------         ENDPROC       _UARTREAD
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/10/2016  16:12:08  PAGE 4
+
+
+  -------         PROC          _DELAYX10US
+  D:0007H         SYMBOL        t
+  C:03E5H         LINE#         56
+  C:03E5H         LINE#         57
+  C:03E5H         LINE#         58
+  C:03E5H         LINE#         59
+  C:03E6H         LINE#         60
+  C:03E7H         LINE#         61
+  C:03E8H         LINE#         62
+  C:03E9H         LINE#         63
+  C:03EAH         LINE#         64
+  C:03EBH         LINE#         65
+  C:03ECH         LINE#         66
+  C:03EDH         LINE#         67
+  C:03EFH         LINE#         68
+  -------         ENDPROC       _DELAYX10US
+  -------         PROC          _UARTWRITE
+  D:0001H         SYMBOL        buf
+  D:0005H         SYMBOL        len
+  C:0379H         LINE#         70
+  C:0379H         LINE#         71
+  C:0379H         LINE#         72
+  C:037BH         LINE#         73
+  C:0381H         LINE#         74
+  C:0381H         LINE#         75
+  C:0383H         LINE#         76
+  C:0388H         LINE#         77
+  C:038FH         LINE#         78
+  C:0394H         LINE#         80
+  C:0399H         LINE#         81
+  C:039BH         LINE#         82
+  -------         ENDPROC       _UARTWRITE
+  -------         PROC          UARTDRIVER
+  -------         DO            
+  D:0005H         SYMBOL        len
+  D:0021H         SYMBOL        buf
+  -------         ENDDO         
+  C:03B7H         LINE#         86
+  C:03B7H         LINE#         87
+  C:03B7H         LINE#         90
+  C:03BAH         LINE#         91
+  C:03BAH         LINE#         92
+  C:03BCH         LINE#         93
+  C:03C9H         LINE#         96
+  C:03D0H         LINE#         97
+  C:03D0H         LINE#         98
+  -------         ENDPROC       UARTDRIVER
+  -------         PROC          _UARTRXMONITOR
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0008H         SYMBOL        cntbkp
+  D:0009H         SYMBOL        idletmr
+  -------         ENDDO         
+  C:02FCH         LINE#         102
+  C:02FCH         LINE#         103
+  C:02FCH         LINE#         106
+  C:0303H         LINE#         107
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/10/2016  16:12:08  PAGE 5
+
+
+  C:0303H         LINE#         108
+  C:0309H         LINE#         109
+  C:0309H         LINE#         110
+  C:030CH         LINE#         111
+  C:030FH         LINE#         112
+  C:0310H         LINE#         114
+  C:0310H         LINE#         115
+  C:0317H         LINE#         116
+  C:0317H         LINE#         117
+  C:031CH         LINE#         118
+  C:0321H         LINE#         119
+  C:0321H         LINE#         120
+  C:0323H         LINE#         121
+  C:0323H         LINE#         122
+  C:0323H         LINE#         123
+  C:0323H         LINE#         124
+  C:0324H         LINE#         126
+  C:0324H         LINE#         127
+  C:0327H         LINE#         128
+  C:0327H         LINE#         129
+  -------         ENDPROC       _UARTRXMONITOR
+  -------         PROC          INTERRUPTUART
+  C:02CAH         LINE#         131
+  C:02D5H         LINE#         133
+  C:02D8H         LINE#         134
+  C:02D8H         LINE#         135
+  C:02DAH         LINE#         136
+  C:02E1H         LINE#         137
+  C:02E1H         LINE#         138
+  C:02ECH         LINE#         139
+  C:02ECH         LINE#         140
+  C:02ECH         LINE#         141
+  C:02EFH         LINE#         142
+  C:02EFH         LINE#         143
+  C:02F1H         LINE#         144
+  C:02F3H         LINE#         145
+  C:02F3H         LINE#         147
+  -------         ENDPROC       INTERRUPTUART
+  -------         PROC          MAIN
+  C:000EH         LINE#         161
+  C:000EH         LINE#         162
+  C:000EH         LINE#         163
+  C:0010H         LINE#         164
+  C:0017H         LINE#         165
+  C:001EH         LINE#         166
+  C:001EH         LINE#         167
+  C:001EH         LINE#         168
+  C:0021H         LINE#         169
+  -------         ENDPROC       MAIN
+  -------         PROC          _CONFIGTIMER0
+  D:0002H         SYMBOL        ms
+  -------         DO            
+  D:0021H         SYMBOL        tmp
+  -------         ENDDO         
+  C:020DH         LINE#         174
+  C:020DH         LINE#         175
+  C:020DH         LINE#         178
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/10/2016  16:12:08  PAGE 6
+
+
+  C:0219H         LINE#         179
+  C:0239H         LINE#         180
+  C:024FH         LINE#         181
+  C:0264H         LINE#         183
+  C:0272H         LINE#         184
+  C:0275H         LINE#         185
+  C:0278H         LINE#         186
+  C:027BH         LINE#         187
+  C:027EH         LINE#         188
+  C:0281H         LINE#         189
+  C:0283H         LINE#         190
+  C:0285H         LINE#         191
+  -------         ENDPROC       _CONFIGTIMER0
+  -------         PROC          INTERRUPTTIMER0
+  C:039CH         LINE#         193
+  C:03A5H         LINE#         195
+  C:03A8H         LINE#         196
+  C:03ABH         LINE#         197
+  C:03B0H         LINE#         198
+  -------         ENDPROC       INTERRUPTTIMER0
+  -------         ENDMOD        RS485
+
+  -------         MODULE        ?C?CLDPTR
+  C:0026H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:003FH         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?LMUL
+  C:0051H         PUBLIC        ?C?LMUL
+  -------         ENDMOD        ?C?LMUL
+
+  -------         MODULE        ?C?ULDIV
+  C:00DCH         PUBLIC        ?C?ULDIV
+  -------         ENDMOD        ?C?ULDIV
+
+  -------         MODULE        ?C?SLDIV
+  C:0286H         PUBLIC        ?C?SLDIV
+  -------         ENDMOD        ?C?SLDIV
+
+  -------         MODULE        ?C?ULSHR
+  C:016EH         PUBLIC        ?C?ULSHR
+  -------         ENDMOD        ?C?ULSHR
+
+Program Size: data=44.2 xdata=40 code=1000
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

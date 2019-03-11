@@ -1,0 +1,486 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        11/24/2017  16:05:08  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+I:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE 超声波+三轴+温度.obj TO 超声波+三轴+温度
+
+
+MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  超声波+三轴+温度.obj (超蒧波_三_醎蝊度)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FPMUL)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FPDIV)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FCAST)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (PRINTF)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FPGETOPN)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FPROUND)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FPCONVERT)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FPADD)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51FPS.LIB (?C?FTNPWR)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?LNEG)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CCASE)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (PUTCHAR)
+  I:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  超声波+三轴+温度 (超蒧波_三_醎蝊度)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000AH     UNIT         ?DT?超蒧波_三_醎蝊度
+                    0012H     000EH                  *** GAP ***
+            BIT     0020H.0   0001H.1   UNIT         _BIT_GROUP_
+            BIT     0021H.1   0000H.1   UNIT         ?BI?超蒧波_三_醎蝊度
+                    0021H.2   0000H.6                *** GAP ***
+            DATA    0022H     001CH     UNIT         _DATA_GROUP_
+            IDATA   003EH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     UNIT         ?PR?ZD0?超蒧波_三_醎蝊度
+                    0006H     0005H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     05B9H     UNIT         ?C?LIB_CODE
+            CODE    05C7H     046FH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    0A36H     00B8H     UNIT         ?PR?MAIN?超蒧波_三_醎蝊度
+            CODE    0AEEH     008CH     UNIT         ?C_C51STARTUP
+            CODE    0B7AH     005CH     UNIT         ?PR?CONUT?超蒧波_三_醎蝊度
+            CODE    0BD6H     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0BFDH     0025H     UNIT         ?PR?READ_BYTE?超蒧波_三_醎蝊度
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 2
+
+
+            CODE    0C22H     0023H     UNIT         ?PR?_WRITE_BYTE?超蒧波_三_醎蝊度
+            CODE    0C45H     001DH     UNIT         ?PR?DELAY_1?超蒧波_三_醎蝊度
+            CODE    0C62H     001DH     UNIT         ?PR?RESET?超蒧波_三_醎蝊度
+            CODE    0C7FH     001AH     UNIT         ?PR?_DELAYMS?超蒧波_三_醎蝊度
+            CODE    0C99H     001AH     UNIT         ?PR?STARTMODULE?超蒧波_三_醎蝊度
+            CODE    0CB3H     0017H     UNIT         ?CO?超蒧波_三_醎蝊度
+            CODE    0CCAH     0016H     UNIT         ?PR?_DELAY_1MS?超蒧波_三_醎蝊度
+            CODE    0CE0H     0012H     UNIT         ?PR?_DELAY?超蒧波_三_醎蝊度
+            CODE    0CF2H     0011H     UNIT         ?PR?_WRITE_BIT?超蒧波_三_醎蝊度
+            CODE    0D03H     0011H     UNIT         ?C_INITSEG
+            CODE    0D14H     0010H     UNIT         ?PR?READ_BIT?超蒧波_三_醎蝊度
+
+
+
+OVERLAY MAP OF MODULE:   超声波+三轴+温度 (超蒧波_三_醎蝊度)
+
+
+SEGMENT                                     BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT                    START    LENGTH     START    LENGTH
+----------------------------------------------------------------------------
+?C_C51STARTUP                            -----    -----      -----    -----
+  +--> ?PR?MAIN?超蒧波_三_醎蝊度
+  +--> ?C_INITSEG
+
+?PR?MAIN?超蒧波_三_醎蝊度                -----    -----      -----    -----
+  +--> ?PR?RESET?超蒧波_三_醎蝊度
+  +--> ?PR?_WRITE_BYTE?超蒧波_三_醎蝊度
+  +--> ?PR?READ_BYTE?超蒧波_三_醎蝊度
+  +--> ?CO?超蒧波_三_醎蝊度
+  +--> ?PR?_DELAY_1MS?超蒧波_三_醎蝊度
+  +--> ?PR?STARTMODULE?超蒧波_三_醎蝊度
+  +--> ?PR?CONUT?超蒧波_三_醎蝊度
+  +--> ?PR?_DELAYMS?超蒧波_三_醎蝊度
+
+?PR?RESET?超蒧波_三_醎蝊度               -----    -----      -----    -----
+  +--> ?PR?_DELAY?超蒧波_三_醎蝊度
+
+?PR?_WRITE_BYTE?超蒧波_三_醎蝊度         -----    -----      -----    -----
+  +--> ?PR?_WRITE_BIT?超蒧波_三_醎蝊度
+  +--> ?PR?_DELAY?超蒧波_三_醎蝊度
+
+?PR?_WRITE_BIT?超蒧波_三_醎蝊度          -----    -----      -----    -----
+  +--> ?PR?_DELAY?超蒧波_三_醎蝊度
+
+?PR?READ_BYTE?超蒧波_三_醎蝊度           -----    -----      -----    -----
+  +--> ?PR?READ_BIT?超蒧波_三_醎蝊度
+  +--> ?PR?_DELAY?超蒧波_三_醎蝊度
+
+?PR?CONUT?超蒧波_三_醎蝊度               -----    -----      -----    -----
+  +--> ?CO?超蒧波_三_醎蝊度
+  +--> ?PR?PRINTF?PRINTF
+
+?PR?PRINTF?PRINTF                        0020H.0  0001H.1    0022H    001CH
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 3
+
+
+SYMBOL TABLE OF MODULE:  超声波+三轴+温度 (超蒧波_三_醎蝊度)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        超蒧波_三_醎蝊度
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:0C62H         PUBLIC        Reset
+  B:00A8H.7       PUBLIC        EA
+  C:0CC0H         PUBLIC        table
+  C:0B7AH         PUBLIC        Conut
+  D:00A8H         PUBLIC        IE
+  C:0003H         PUBLIC        zd0
+  C:0CE0H         PUBLIC        _delay
+  B:00B0H.5       PUBLIC        DQ
+  D:00B8H         PUBLIC        IP
+  B:0021H.1       PUBLIC        flag
+  B:0098H.1       PUBLIC        TI
+  C:0C45H         PUBLIC        delay_1
+  D:0008H         PUBLIC        timer
+  C:0A36H         PUBLIC        main
+  B:0090H.2       PUBLIC        RX
+  B:0090H.3       PUBLIC        TX
+  D:000AH         PUBLIC        time
+  D:0098H         PUBLIC        SCON
+  C:0BFDH         PUBLIC        read_byte
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:000CH         PUBLIC        TMPH
+  D:000DH         PUBLIC        TMPL
+  C:0D14H         PUBLIC        read_bit
+  C:0C22H         PUBLIC        _write_byte
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  C:0CF2H         PUBLIC        _write_bit
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  D:000EH         PUBLIC        S
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  C:0CCAH         PUBLIC        _Delay_1ms
+  D:00C8H         PUBLIC        T2CON
+  C:0C7FH         PUBLIC        _delayms
+  D:00D0H         PUBLIC        PSW
+  C:0C99H         PUBLIC        StartModule
+  -------         PROC          CONUT
+  C:0B7AH         LINE#         27
+  C:0B7AH         LINE#         28
+  C:0B7AH         LINE#         29
+  C:0B8AH         LINE#         30
+  C:0B8DH         LINE#         31
+  C:0B8FH         LINE#         32
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 4
+
+
+  C:0BB3H         LINE#         33
+  C:0BB6H         LINE#         34
+  C:0BB6H         LINE#         35
+  C:0BB8H         LINE#         36
+  C:0BC1H         LINE#         37
+  C:0BC1H         LINE#         39
+  -------         ENDPROC       CONUT
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        ms
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+  C:0C7FH         LINE#         42
+  C:0C7FH         LINE#         43
+  C:0C7FH         LINE#         44
+  C:0C81H         LINE#         45
+  C:0C85H         LINE#         46
+  C:0C85H         LINE#         47
+  C:0C89H         LINE#         48
+  C:0C89H         LINE#         49
+  C:0C8BH         LINE#         50
+  C:0C91H         LINE#         52
+  C:0C98H         LINE#         53
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          ZD0
+  C:0003H         LINE#         55
+  C:0003H         LINE#         57
+  C:0005H         LINE#         58
+  -------         ENDPROC       ZD0
+  -------         PROC          STARTMODULE
+  C:0C99H         LINE#         60
+  C:0C99H         LINE#         61
+  C:0C99H         LINE#         62
+  C:0C9BH         LINE#         63
+  C:0C9CH         LINE#         64
+  C:0C9DH         LINE#         65
+  C:0C9EH         LINE#         66
+  C:0C9FH         LINE#         67
+  C:0CA0H         LINE#         68
+  C:0CA1H         LINE#         69
+  C:0CA2H         LINE#         70
+  C:0CA3H         LINE#         71
+  C:0CA4H         LINE#         72
+  C:0CA5H         LINE#         73
+  C:0CA6H         LINE#         74
+  C:0CA7H         LINE#         75
+  C:0CA8H         LINE#         76
+  C:0CA9H         LINE#         77
+  C:0CAAH         LINE#         78
+  C:0CABH         LINE#         79
+  C:0CACH         LINE#         80
+  C:0CADH         LINE#         81
+  C:0CAEH         LINE#         82
+  C:0CAFH         LINE#         83
+  C:0CB0H         LINE#         84
+  C:0CB2H         LINE#         85
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 5
+
+
+  -------         ENDPROC       STARTMODULE
+  -------         PROC          DELAY_1
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:0C45H         LINE#         95
+  C:0C45H         LINE#         96
+  C:0C45H         LINE#         98
+  C:0C48H         LINE#         99
+  C:0C61H         LINE#         101
+  -------         ENDPROC       DELAY_1
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        N
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0CE0H         LINE#         109
+  C:0CE0H         LINE#         110
+  C:0CE0H         LINE#         112
+  C:0CF1H         LINE#         114
+  -------         ENDPROC       _DELAY
+  -------         PROC          _DELAY_1MS
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0004H         SYMBOL        x
+  D:0005H         SYMBOL        j
+  -------         ENDDO         
+  C:0CCAH         LINE#         122
+  C:0CCAH         LINE#         123
+  C:0CCAH         LINE#         125
+  C:0CD3H         LINE#         126
+  C:0CDFH         LINE#         127
+  -------         ENDPROC       _DELAY_1MS
+  -------         PROC          RESET
+  -------         DO            
+  D:0003H         SYMBOL        deceive_ready
+  -------         ENDDO         
+  C:0C62H         LINE#         134
+  C:0C62H         LINE#         135
+  C:0C62H         LINE#         137
+  C:0C64H         LINE#         138
+  C:0C6BH         LINE#         139
+  C:0C6DH         LINE#         140
+  C:0C72H         LINE#         141
+  C:0C77H         LINE#         142
+  C:0C7CH         LINE#         143
+  C:0C7EH         LINE#         144
+  -------         ENDPROC       RESET
+  -------         PROC          READ_BIT
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:0D14H         LINE#         152
+  C:0D14H         LINE#         153
+  C:0D14H         LINE#         155
+  C:0D16H         LINE#         156
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 6
+
+
+  C:0D18H         LINE#         157
+  C:0D1EH         LINE#         158
+  C:0D23H         LINE#         159
+  -------         ENDPROC       READ_BIT
+  -------         PROC          _WRITE_BIT
+  D:0007H         SYMBOL        bitval
+  C:0CF2H         LINE#         167
+  C:0CF2H         LINE#         168
+  C:0CF2H         LINE#         169
+  C:0CF7H         LINE#         170
+  C:0CF9H         LINE#         171
+  C:0D00H         LINE#         172
+  C:0D02H         LINE#         173
+  -------         ENDPROC       _WRITE_BIT
+  -------         PROC          READ_BYTE
+  -------         DO            
+  D:0002H         SYMBOL        i
+  D:0001H         SYMBOL        m
+  D:0003H         SYMBOL        receive_data
+  -------         ENDDO         
+  C:0BFDH         LINE#         181
+  C:0BFDH         LINE#         182
+  C:0BFDH         LINE#         184
+  C:0BFFH         LINE#         185
+  C:0C01H         LINE#         186
+  C:0C02H         LINE#         187
+  C:0C02H         LINE#         188
+  C:0C08H         LINE#         189
+  C:0C08H         LINE#         190
+  C:0C14H         LINE#         191
+  C:0C14H         LINE#         192
+  C:0C1BH         LINE#         193
+  C:0C1FH         LINE#         194
+  C:0C21H         LINE#         195
+  -------         ENDPROC       READ_BYTE
+  -------         PROC          _WRITE_BYTE
+  D:0001H         SYMBOL        val
+  -------         DO            
+  D:0003H         SYMBOL        i
+  D:0002H         SYMBOL        temp
+  -------         ENDDO         
+  C:0C22H         LINE#         203
+  C:0C24H         LINE#         204
+  C:0C24H         LINE#         206
+  C:0C26H         LINE#         207
+  C:0C26H         LINE#         208
+  C:0C31H         LINE#         209
+  C:0C34H         LINE#         210
+  C:0C39H         LINE#         211
+  C:0C40H         LINE#         212
+  C:0C44H         LINE#         213
+  -------         ENDPROC       _WRITE_BYTE
+  -------         PROC          MAIN
+  -------         DO            
+  D:0002H         SYMBOL        temp
+  -------         ENDDO         
+  C:0A36H         LINE#         222
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 7
+
+
+  C:0A36H         LINE#         223
+  C:0A36H         LINE#         226
+  C:0A39H         LINE#         228
+  C:0A3CH         LINE#         229
+  C:0A3FH         LINE#         230
+  C:0A42H         LINE#         231
+  C:0A45H         LINE#         232
+  C:0A47H         LINE#         233
+  C:0A49H         LINE#         234
+  C:0A4BH         LINE#         235
+  C:0A4DH         LINE#         236
+  C:0A4FH         LINE#         237
+  C:0A51H         LINE#         239
+  C:0A53H         LINE#         241
+  C:0A53H         LINE#         242
+  C:0A53H         LINE#         243
+  C:0A56H         LINE#         244
+  C:0A5BH         LINE#         245
+  C:0A60H         LINE#         246
+  C:0A63H         LINE#         247
+  C:0A68H         LINE#         248
+  C:0A6DH         LINE#         249
+  C:0A72H         LINE#         250
+  C:0A77H         LINE#         251
+  C:0A8CH         LINE#         252
+  C:0AA7H         LINE#         253
+  C:0AAAH         LINE#         254
+  C:0AB1H         LINE#         255
+  C:0ACAH         LINE#         256
+  C:0ACDH         LINE#         257
+  C:0AD4H         LINE#         259
+  C:0AD7H         LINE#         260
+  C:0ADAH         LINE#         261
+  C:0ADCH         LINE#         262
+  C:0ADFH         LINE#         263
+  C:0AE1H         LINE#         264
+  C:0AE4H         LINE#         265
+  C:0AEBH         LINE#         266
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        超蒧波_三_醎蝊度
+
+  -------         MODULE        ?C?FPMUL
+  C:000EH         PUBLIC        ?C?FPMUL
+  -------         ENDMOD        ?C?FPMUL
+
+  -------         MODULE        ?C?FPDIV
+  C:0117H         PUBLIC        ?C?FPDIV
+  -------         ENDMOD        ?C?FPDIV
+
+  -------         MODULE        ?C?FCAST
+  C:01BEH         PUBLIC        ?C?FCASTC
+  C:01B9H         PUBLIC        ?C?FCASTI
+  C:01B4H         PUBLIC        ?C?FCASTL
+  -------         ENDMOD        ?C?FCAST
+
+  -------         MODULE        PRINTF
+  D:0022H         PUBLIC        ?_PRINTF?BYTE
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 8
+
+
+  D:0022H         PUBLIC        ?_SPRINTF?BYTE
+  C:0629H         PUBLIC        _PRINTF
+  C:0623H         PUBLIC        _SPRINTF
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        ?C?FPROUND
+  C:023CH         PUBLIC        ?C?FPROUND
+  -------         ENDMOD        ?C?FPROUND
+
+  -------         MODULE        ?C?FPCONVERT
+  C:026BH         PUBLIC        ?C?FPCONVERT
+  -------         ENDMOD        ?C?FPCONVERT
+
+  -------         MODULE        ?C?FPADD
+  C:0375H         PUBLIC        ?C?FPADD
+  C:0371H         PUBLIC        ?C?FPSUB
+  -------         ENDMOD        ?C?FPADD
+
+  -------         MODULE        ?C?FTNPWR
+  C:0496H         PUBLIC        ?C?FTNPWR
+  -------         ENDMOD        ?C?FTNPWR
+
+  -------         MODULE        ?C?CLDPTR
+  C:04D6H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:04EFH         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:051CH         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?UIDIV
+  C:052EH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+  -------         MODULE        ?C?LNEG
+  C:0583H         PUBLIC        ?C?LNEG
+  -------         ENDMOD        ?C?LNEG
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:0591H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:05A1H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:0BD6H         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?超蒧波_三_醎蝊度
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/24/2017  16:05:08  PAGE 9
+
+
+Program Size: data=48.2 xdata=0 code=3359
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

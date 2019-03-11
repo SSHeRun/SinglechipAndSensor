@@ -1,0 +1,371 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\传感器实训套件\程序\16、红外遥控LCD\IRlcd.uvproj
+Project File Date:  07/05/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+Program Size: data=32.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=32.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+compiling IRLCD.C...
+IRLCD.C(163): error C237: '_WriteCommandLCM': function already has a body
+IRLCD.C(176): error C237: '_WriteDataLCM': function already has a body
+IRLCD.C(188): error C237: 'InitLcd': function already has a body
+IRLCD.C(198): error C237: '_DisplayOneChar': function already has a body
+IRLCD.C - 4 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+IRLCD.C(64): warning C206: 'WriteCommandLCM': missing function-prototype
+IRLCD.C(64): error C267: 'WriteCommandLCM': requires ANSI-style prototype
+Target not created
+compiling IRLCD.C...
+IRLCD.C(64): warning C206: 'WriteCommandLCM': missing function-prototype
+IRLCD.C(64): error C267: 'WriteCommandLCM': requires ANSI-style prototype
+IRLCD.C - 1 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling IRLCD.C...
+IRLCD.C(92): warning C206: 'InitLcd': missing function-prototype
+IRLCD.C(97): warning C206: 'WriteDataLCM': missing function-prototype
+IRLCD.C(97): error C267: 'WriteDataLCM': requires ANSI-style prototype
+Target not created
+compiling IRLCD.C...
+IRLCD.C(92): warning C206: 'InitLcd': missing function-prototype
+IRLCD.C(97): warning C206: 'WriteDataLCM': missing function-prototype
+IRLCD.C(97): error C267: 'WriteDataLCM': requires ANSI-style prototype
+IRLCD.C - 1 Error(s), 2 Warning(s).
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=17.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+Program Size: data=17.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+Program Size: data=17.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=17.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+Program Size: data=32.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=32.0 xdata=0 code=438
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+Build target 'Target 1'
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+Program Size: data=32.0 xdata=0 code=649
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+Program Size: data=32.0 xdata=0 code=649
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"IRLCD.obj" 
+TO "IRlcd" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?IRLCD
+    MODULE:  IRLCD.obj (IRLCD)
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+Program Size: data=32.0 xdata=0 code=649
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+Program Size: data=32.0 xdata=0 code=649
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY1?IRLCD
+Program Size: data=32.0 xdata=0 code=681
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY1?IRLCD
+Program Size: data=32.0 xdata=0 code=681
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITECOMMANDLCM?IRLCD
+Program Size: data=32.0 xdata=0 code=702
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION1?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DISPLAYONECHAR?IRLCD
+Program Size: data=32.0 xdata=0 code=787
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 3 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SINGLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_X?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Y?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Z?IRLCD
+Program Size: data=32.1 xdata=0 code=1893
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SINGLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_X?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Y?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Z?IRLCD
+Program Size: data=32.1 xdata=0 code=1893
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SINGLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_X?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Y?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Z?IRLCD
+Program Size: data=32.1 xdata=0 code=1893
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SINGLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_ADXL345?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_X?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Y?IRLCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DISPLAY_Z?IRLCD
+Program Size: data=32.1 xdata=0 code=1893
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+Program Size: data=33.1 xdata=0 code=2250
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=33.1 xdata=0 code=2250
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).
+compiling IRLCD.C...
+IRLCD.C - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling IRLCD.C...
+linking...
+Program Size: data=33.1 xdata=0 code=2250
+creating hex file from "IRlcd"...
+"IRlcd" - 0 Error(s), 0 Warning(s).

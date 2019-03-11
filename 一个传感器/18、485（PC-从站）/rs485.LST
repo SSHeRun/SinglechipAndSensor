@@ -1,0 +1,229 @@
+C51 COMPILER V9.01   RS485                                                                 08/10/2016 16:12:08 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE RS485
+OBJECT MODULE PLACED IN rs485.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE rs485.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1           /*******************************************************************************************************
+   2          *  ±êÌâ:                  RS485´®¿ÚÍ¨ÐÅÊÔÑé(½ÓÊÜÓë·¢ËÍ)                                                 *
+   3          *                                                                                                       *
+   4          *  1.Í¨¹ý±¾Àý³ÌÁË½â´®¿ÚµÄ»ù±¾Ô­Àí¼°Ê¹ÓÃ ,Àí½â²¢ÕÆÎÕ¶Ô´®¿Ú½øÐÐ³õÊ¼»¯                                     *
+   5          *                                                                                                       *
+   6          *  2.ÇëÊ¹ÓÃ´®¿Úµ÷ÊÔÖúÊÖ£¨Baud 9600¡¢Êý¾ÝÎ»8¡¢Í£Ö¹Î»1¡¢Ð§ÑéÎ»ÎÞ£©×öÎªÉÏÎ»»ú(·¢ËÍ)Êý¾ÝºÍ(½ÓÊÜ)Êý¾Ý£¬      *
+   7          *    ÇëÔÚ×Ö·û´®ÊäÈë¿òÖÐÊäÈë×Ö·ûºÍÊý×Ö(HEX),°´·¢ËÍ°´Å¥¡£¹Û¿´½ÓÊÜ´°ÏÔÊ¾Çé¿ö.Ò²¿ÉÒÔÓÃ×Ô¶¯Ñ­»··¢ËÍ¡£        *
+   8          *                                                                                                       *
+   9          *  3.ÊÔÑéRS485ÐèÒªÓÃRS232×ª485µÄ×ª»»Í·¡£¿ª°åA¶Ô485×ª»»Í·A  B¶ÔÓ¦485×ª»»Í·B.½Ó·¨´ó¼Ò¿ÉÒÔ²Î¿¼Ô­ÀíÍ¼¡£     *
+  10          ********************************************************************************************************/
+  11          
+  12          #include <reg52.h>
+  13          #include <intrins.h>
+  14           
+  15          sbit RS485_DIR = P1^7;  //RS485·½ÏòÑ¡ÔñÒý½Å
+  16          
+  17          bit flagOnceTxd = 0;  //µ¥´Î·¢ËÍÍê³É±êÖ¾£¬¼´·¢ËÍÍêÒ»¸ö×Ö½Ú
+  18           
+  19          bit cmdArrived = 0;   //ÃüÁîµ½´ï±êÖ¾£¬¼´½ÓÊÕµ½ÉÏÎ»»úÏÂ·¢µÄÃüÁî
+  20          
+  21          unsigned char cntRxd = 0;
+  22          
+  23          unsigned char pdata bufRxd[40]; //´®¿Ú½ÓÊÕ»º³åÇø
+  24          
+  25            
+  26          void ConfigUART(unsigned int baud)  //´®¿ÚÅäÖÃº¯Êý£¬baudÎª²¨ÌØÂÊ
+  27          {
+  28   1          RS485_DIR = 0; //RS485ÉèÖÃÎª½ÓÊÕ·½Ïò
+  29   1          SCON = 0x50;   //ÅäÖÃ´®¿ÚÎªÄ£Ê½1
+  30   1          TMOD &= 0x0F;  //ÇåÁãT1µÄ¿ØÖÆÎ»
+  31   1          TMOD |= 0x20;  //ÅäÖÃT1ÎªÄ£Ê½2
+  32   1          TH1 = 256 - (11059200/12/32) / baud;  //¼ÆËãT1ÖØÔØÖµ
+  33   1          TL1 = TH1;     //³õÖµµÈÓÚÖØÔØÖµ
+  34   1          ET1 = 0;       //½ûÖ¹T1ÖÐ¶Ï
+  35   1          ES  = 1;       //Ê¹ÄÜ´®¿ÚÖÐ¶Ï
+  36   1          TR1 = 1;       //Æô¶¯T1
+  37   1      }
+  38          
+  39          unsigned char UartRead(unsigned char *buf, unsigned char len) //´®¿ÚÊý¾Ý¶ÁÈ¡º¯Êý£¬Êý¾Ý½ÓÊÕÖ¸Õëbuf£¬¶ÁÈ¡Êý¾
+             -Ý³¤¶Èlen£¬·µ»ØÖµÎªÊµ¼Ê¶ÁÈ¡µ½µÄÊý¾Ý³¤¶È
+  40          {
+  41   1          unsigned char i;
+  42   1          if (len > cntRxd) //¶ÁÈ¡³¤¶È´óÓÚ½ÓÊÕµ½µÄÊý¾Ý³¤¶ÈÊ±£¬
+  43   1          {
+  44   2              len = cntRxd; //¶ÁÈ¡³¤¶ÈÉèÖÃÎªÊµ¼Ê½ÓÊÕµ½µÄÊý¾Ý³¤¶È
+  45   2          }
+  46   1           for (i=0; i<len; i++) //¿½±´½ÓÊÕµ½µÄÊý¾Ý
+  47   1           {
+  48   2              *buf = bufRxd[ i];
+  49   2              buf++;
+  50   2          }
+  51   1          cntRxd = 0;  //ÇåÁã½ÓÊÕ¼ÆÊýÆ÷
+  52   1          
+  53   1          return len;  //·µ»ØÊµ¼Ê¶ÁÈ¡³¤¶È
+  54   1      }
+C51 COMPILER V9.01   RS485                                                                 08/10/2016 16:12:08 PAGE 2   
+
+  55          
+  56          void DelayX10us(unsigned char t)  //Èí¼þÑÓÊ±º¯Êý£¬ÑÓÊ±Ê±¼ä(t*10)us
+  57          {
+  58   1          do {
+  59   2              _nop_();
+  60   2              _nop_();
+  61   2              _nop_();
+  62   2              _nop_();
+  63   2              _nop_();
+  64   2              _nop_();
+  65   2              _nop_();
+  66   2              _nop_();
+  67   2              } while (--t);
+  68   1       }
+  69          
+  70          void UartWrite(unsigned char *buf, unsigned char len) //´®¿ÚÊý¾ÝÐ´Èëº¯Êý£¬¼´´®¿Ú·¢ËÍº¯Êý£¬´ý·¢ËÍÊý¾ÝÖ¸Õëbu
+             -f£¬Êý¾Ý³¤¶Èlen
+  71           {
+  72   1          RS485_DIR = 1;  //RS485ÉèÖÃÎª·¢ËÍ
+  73   1           while (len--)   //·¢ËÍÊý¾Ý
+  74   1           {
+  75   2              flagOnceTxd = 0;
+  76   2              SBUF = *buf;
+  77   2              buf++;
+  78   2              while (!flagOnceTxd);
+  79   2          }
+  80   1          DelayX10us(5);  //µÈ´ý×îºóµÄÍ£Ö¹Î»Íê³É£¬ÑÓÊ±Ê±¼äÓÉ²¨ÌØÂÊ¾ö¶¨
+  81   1          RS485_DIR = 0;  //RS485ÉèÖÃÎª½ÓÊÕ
+  82   1      }
+  83          
+  84          
+  85          
+  86          void UartDriver() //´®¿ÚÇý¶¯º¯Êý£¬¼ì²â½ÓÊÕµ½µÄÃüÁî²¢Ö´ÐÐÏàÓ¦¶¯×÷
+  87          {
+  88   1          unsigned char len;
+  89   1          unsigned char buf[30];
+  90   1          if (cmdArrived) //ÓÐÃüÁîµ½´ïÊ±£¬¶ÁÈ¡´¦Àí¸ÃÃüÁî
+  91   1          {
+  92   2              cmdArrived = 0;
+  93   2              len = UartRead(buf, sizeof(buf)-2); //½«½ÓÊÕµ½µÄÃüÁî¶ÁÈ¡µ½»º³åÇøÖÐ
+  94   2             // buf[len++] = '\r';   //ÔÚ½ÓÊÕµ½µÄÊý¾ÝÖ¡ºóÌí¼Ó»»³µ»»ÐÐ·ûºó·¢»Ø
+  95   2              //buf[len++] = '\n';
+  96   2              UartWrite(buf, len);
+  97   2           }
+  98   1      }
+  99          
+ 100          
+ 101          
+ 102          void UartRxMonitor(unsigned char ms)  //´®¿Ú½ÓÊÕ¼à¿Øº¯Êý
+ 103          {
+ 104   1          static unsigned char cntbkp = 0;
+ 105   1          static unsigned char idletmr = 0;
+ 106   1          if (cntRxd > 0)  //½ÓÊÕ¼ÆÊýÆ÷´óÓÚÁãÊ±£¬¼à¿Ø×ÜÏß¿ÕÏÐÊ±¼ä
+ 107   1          {
+ 108   2              if (cntbkp != cntRxd)  //½ÓÊÕ¼ÆÊýÆ÷¸Ä±ä£¬¼´¸Õ½ÓÊÕµ½Êý¾ÝÊ±£¬ÇåÁã¿ÕÏÐ¼ÆÊ±
+ 109   2              {
+ 110   3                  cntbkp = cntRxd;
+ 111   3                   idletmr = 0;
+ 112   3              }
+ 113   2              else
+ 114   2              {
+ 115   3                  if (idletmr < 30)  //½ÓÊÕ¼ÆÊýÆ÷Î´¸Ä±ä£¬¼´×ÜÏß¿ÕÏÐÊ±£¬ÀÛ»ý¿ÕÏÐÊ±¼ä
+C51 COMPILER V9.01   RS485                                                                 08/10/2016 16:12:08 PAGE 3   
+
+ 116   3                  {
+ 117   4                      idletmr += ms;
+ 118   4                      if (idletmr >= 30)  //¿ÕÏÐÊ±¼ä³¬¹ý30ms¼´ÈÏÎªÒ»Ö¡ÃüÁî½ÓÊÕÍê±Ï
+ 119   4                      {
+ 120   5                          cmdArrived = 1; //ÉèÖÃÃüÁîµ½´ï±êÖ¾
+ 121   5                       }
+ 122   4                  }
+ 123   3              }
+ 124   2          }
+ 125   1          else
+ 126   1          {
+ 127   2              cntbkp = 0;
+ 128   2          }
+ 129   1      }
+ 130          
+ 131          void InterruptUART() interrupt 4  //UARTÖÐ¶Ï·þÎñº¯Êý
+ 132          {
+ 133   1          if (RI)  //½ÓÊÕµ½×Ö½Ú
+ 134   1          {
+ 135   2              RI = 0;   //ÊÖ¶¯ÇåÁã½ÓÊÕÖÐ¶Ï±êÖ¾Î»
+ 136   2              if (cntRxd < sizeof(bufRxd)) //½ÓÊÕ»º³åÇøÉÐÎ´ÓÃÍêÊ±£¬
+ 137   2                {
+ 138   3                     bufRxd[cntRxd++] = SBUF; //±£´æ½ÓÊÕ×Ö½Ú£¬²¢µÝÔö¼ÆÊýÆ÷
+ 139   3               }
+ 140   2          }
+ 141   1          if (TI)  //×Ö½Ú·¢ËÍÍê±Ï
+ 142   1          {
+ 143   2                      TI = 0;   //ÊÖ¶¯ÇåÁã·¢ËÍÖÐ¶Ï±êÖ¾Î»
+ 144   2              flagOnceTxd = 1;  //ÉèÖÃµ¥´Î·¢ËÍÍê³É±êÖ¾
+ 145   2          }
+ 146   1      
+ 147   1      }
+ 148          
+ 149          /***********************main.cÎÄ¼þ³ÌÐòÔ´´úÂë*************************/
+ 150          
+ 151          #include <reg52.h>
+ 152          
+ 153          unsigned char T0RH = 0;  //T0ÖØÔØÖµµÄ¸ß×Ö½Ú
+ 154          unsigned char T0RL = 0;  //T0ÖØÔØÖµµÄµÍ×Ö½Ú
+ 155          
+ 156          void ConfigTimer0(unsigned int ms);
+ 157          extern void ConfigUART(unsigned int baud);
+ 158          extern void UartRxMonitor(unsigned char ms);
+ 159          extern void UartDriver();
+ 160          
+ 161          void main ()
+ 162          {
+ 163   1          EA = 1;           //¿ª×ÜÖÐ¶Ï
+ 164   1          ConfigTimer0(1);  //ÅäÖÃT0¶¨Ê±1ms
+ 165   1          ConfigUART(9600); //ÅäÖÃ²¨ÌØÂÊÎª9600
+ 166   1          while(1)
+ 167   1          {
+ 168   2              UartDriver();
+ 169   2          }
+ 170   1      }
+ 171          
+ 172          
+ 173          
+ 174          void ConfigTimer0(unsigned int ms)  //T0ÅäÖÃº¯Êý
+ 175          {
+ 176   1          unsigned long tmp;
+ 177   1      
+C51 COMPILER V9.01   RS485                                                                 08/10/2016 16:12:08 PAGE 4   
+
+ 178   1          tmp = 11059200 / 12;      //¶¨Ê±Æ÷¼ÆÊýÆµÂÊ
+ 179   1          tmp = (tmp * ms) / 1000;  //¼ÆËãËùÐèµÄ¼ÆÊýÖµ
+ 180   1          tmp = 65536 - tmp;        //¼ÆËã¶¨Ê±Æ÷ÖØÔØÖµ
+ 181   1          tmp = tmp + 34;           //ÐÞÕýÖÐ¶ÏÏìÓ¦ÑÓÊ±Ôì³ÉµÄÎó²î
+ 182   1      
+ 183   1          T0RH = (unsigned char)(tmp >> 8);  //¶¨Ê±Æ÷ÖØÔØÖµ²ð·ÖÎª¸ßµÍ×Ö½Ú
+ 184   1          T0RL = (unsigned char)tmp;
+ 185   1          TMOD &= 0xF0;   //ÇåÁãT0µÄ¿ØÖÆÎ»
+ 186   1          TMOD |= 0x01;   //ÅäÖÃT0ÎªÄ£Ê½1
+ 187   1          TH0 = T0RH;     //¼ÓÔØT0ÖØÔØÖµ
+ 188   1          TL0 = T0RL;
+ 189   1          ET0 = 1;        //Ê¹ÄÜT0ÖÐ¶Ï
+ 190   1          TR0 = 1;        //Æô¶¯T0
+ 191   1      }
+ 192          
+ 193          void InterruptTimer0() interrupt 1  //T0ÖÐ¶Ï·þÎñº¯Êý
+ 194          {
+ 195   1          TH0 = T0RH;  //¶¨Ê±Æ÷ÖØÐÂ¼ÓÔØÖØÔØÖµ
+ 196   1          TL0 = T0RL;
+ 197   1          UartRxMonitor(1);  //´®¿Ú½ÓÊÕ¼à¿Ø
+ 198   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    416    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =     40    ----
+   DATA SIZE        =      5      34
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

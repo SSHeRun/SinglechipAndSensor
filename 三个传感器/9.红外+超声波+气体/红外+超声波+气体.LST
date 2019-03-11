@@ -1,0 +1,295 @@
+C51 COMPILER V9.01   红蚠_超蒧波_芲体                                                      11/24/2017 11:36:29 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 红蚠_超蒧波_芲体
+OBJECT MODULE PLACED IN 红外+超声波+气体.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE 红外+超声波+气体.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************************
+   2          *          lcd1602显示 遥控键值读取器                                          *
+   3          *         lcd1602显示 遥控器接p3.2                                             *
+   4          ********************************************************************************/
+   5          
+   6          #include <reg51.h>
+   7          #include <intrins.h>
+   8          #include   <STDIO.H>
+   9          
+  10          #define uchar unsigned char
+  11          #define uint  unsigned int
+  12          sbit RX=P1^1;
+  13          sbit  TX=P1^2;
+  14          sbit LED=P1^0;   
+  15          sbit DOUT=P2^0;  
+  16          
+  17          sbit IRIN = P3^2;         //红外接收器数据线
+  18          
+  19          uchar IRCOM[7];
+  20          
+  21          sbit E=P2^3;
+  22          sbit RW=P2^4;
+  23          sbit RS=P2^5;
+  24          
+  25          #define LCM_Data  P0
+  26          
+  27          uchar code  cdis1[ ] = {"  Red Control  "};
+  28          uchar code  cdis2[ ] = {"  IR-CODE:--H  "};
+  29          
+  30          unsigned int  time=0;
+  31          unsigned int  timer=0;
+  32          float         S=0;
+  33          bit           flag =0;
+  34          
+  35          //延时设置
+  36          void Delay(unsigned int t)   // delay 40us
+  37          {
+  38   1       for(;t!=0;t--) ;
+  39   1      }
+  40          
+  41          
+  42          //写指令
+  43          void WriteCommandLCM(unsigned char ch)
+  44          {
+  45   1         RS=0;
+  46   1         RW=0;
+  47   1         E=1;
+  48   1         LCM_Data=ch;
+  49   1         Delay(1);
+  50   1         E=0;
+  51   1         Delay(100);  //delay 40us
+  52   1      }
+  53          
+  54          //写数据
+  55          void WriteDataLCM(unsigned char ch)
+C51 COMPILER V9.01   红蚠_超蒧波_芲体                                                      11/24/2017 11:36:29 PAGE 2   
+
+  56          {  RS=1;
+  57   1         RW=0;
+  58   1         E=1;
+  59   1         LCM_Data=ch;
+  60   1         Delay(1);
+  61   1         E=0;
+  62   1         Delay(100); //delay 40us
+  63   1      }
+  64          
+  65          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  66          {                                               
+  67   1              Y&=1;                                           
+  68   1              X&=15;                                          
+  69   1              if(Y)X|=0x40;                                   
+  70   1              X|=0x80;                        
+  71   1              WriteCommandLCM(X);             
+  72   1              WriteDataLCM(DData);            
+  73   1      }                               
+  74          
+  75          /*******************************************************************/
+  76          /*  LCD初始化设定                                                  */
+  77          /*******************************************************************/
+  78          void InitLcd()
+  79          {
+  80   1       WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+  81   1       WriteCommandLCM(0x30);
+  82   1       WriteCommandLCM(0x30);
+  83   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+  84   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+  85   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+  86   1       WriteCommandLCM(0x01); //清屏
+  87   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+  88   1      }
+  89          
+  90          /********************************************************/
+  91          void Conut(void)
+  92          {
+  93   1       time=TH0*256+TL0;
+  94   1       TH0=0;
+  95   1       TL0=0;
+  96   1       S=(time*1.87)/100;     //算出来是CM
+  97   1       if(flag==1)                //超出测量
+  98   1       {
+  99   2        flag=0;
+ 100   2        printf("-----\n"); 
+ 101   2       }
+ 102   1      
+ 103   1        printf("S=%f\n",S); 
+ 104   1      }
+ 105          /********************************************************/
+ 106          void zd0() interrupt 1           //T0中断用来计数器溢出,超过测距范围
+ 107          {
+ 108   1        flag=1;                                                        //中断溢出标志
+ 109   1      }
+ 110          /********************************************************/
+ 111          void  StartModule()                      //T1中断用来扫描数码管和计800MS启动模块
+ 112          {
+ 113   1              TX=1;                                    //800MS  启动一次模块
+ 114   1              _nop_(); 
+ 115   1              _nop_(); 
+ 116   1              _nop_(); 
+ 117   1              _nop_(); 
+C51 COMPILER V9.01   红蚠_超蒧波_芲体                                                      11/24/2017 11:36:29 PAGE 3   
+
+ 118   1              _nop_(); 
+ 119   1              _nop_(); 
+ 120   1              _nop_(); 
+ 121   1              _nop_(); 
+ 122   1              _nop_(); 
+ 123   1              _nop_(); 
+ 124   1              _nop_(); 
+ 125   1              _nop_(); 
+ 126   1              _nop_(); 
+ 127   1              _nop_(); 
+ 128   1              _nop_(); 
+ 129   1              _nop_(); 
+ 130   1              _nop_();
+ 131   1              _nop_(); 
+ 132   1              _nop_(); 
+ 133   1              _nop_(); 
+ 134   1              _nop_();
+ 135   1              TX=0;
+ 136   1      }
+ 137          /********************************************************/
+ 138          
+ 139          main()
+ 140          {
+ 141   1          uchar m;
+ 142   1              
+ 143   1              DOUT=1;
+ 144   1              LED=0; 
+ 145   1          IRIN=1;                    //I/O口初始化
+ 146   1      
+ 147   1          Delay(10);                 //延时
+ 148   1          InitLcd();                //初始化LCD             
+ 149   1      
+ 150   1           m = 0;
+ 151   1          while(cdis1[m] != '\0')
+ 152   1           {                         //显示字符
+ 153   2             WriteDataLCM(cdis1[m]);
+ 154   2             m++;
+ 155   2           }
+ 156   1      
+ 157   1          //lcd_pos(0x40);             //设置显示位置为第二行第1个字符
+ 158   1              WriteCommandLCM(0x40 | 0x80);
+ 159   1           m = 0;
+ 160   1          while(cdis2[m] != '\0')
+ 161   1           {
+ 162   2             WriteDataLCM(cdis2[m]);      //显示字符
+ 163   2             m++;
+ 164   2           }
+ 165   1         
+ 166   1              TMOD=0x21;                 //设T0为方式1，GATE=1；
+ 167   1              SCON=0x50;
+ 168   1              TH1=0xFD;
+ 169   1              TL1=0xFD;
+ 170   1              TH0=0;
+ 171   1              TL0=0; 
+ 172   1              TR0=1;  
+ 173   1              ET0=1;             //允许T0中断
+ 174   1              TR1=1;                     //开启定时器
+ 175   1              TI=1;
+ 176   1      
+ 177   1              EA=1;                      //开启总中断
+ 178   1              EX0=1;
+ 179   1              //IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+C51 COMPILER V9.01   红蚠_超蒧波_芲体                                                      11/24/2017 11:36:29 PAGE 4   
+
+ 180   1              //TCON = 0x01;               //触发方式为脉冲负边沿触发
+ 181   1      
+ 182   1         while(1)
+ 183   1              {
+ 184   2               StartModule();
+ 185   2               while(!RX);            //当RX为零时等待
+ 186   2               TR0=1;                     //开启计数
+ 187   2               while(RX);                     //当RX为1计数并等待
+ 188   2               TR0=0;                         //关闭计数
+ 189   2           Conut();                   //计算
+ 190   2               Delay(100000);
+ 191   2               
+ 192   2               if(DOUT==0)
+ 193   2               {
+ 194   3                      LED=1;     
+ 195   3                      Delay(10000);
+ 196   3                      DOUT=1;
+ 197   3                      LED=0;
+ 198   3              }               
+ 199   2              }
+ 200   1      
+ 201   1      } //end main
+ 202          
+ 203          /**********************************************************/
+ 204          void IR_IN() interrupt 0 using 0
+ 205          {
+ 206   1        unsigned char j,k,N=0;
+ 207   1           EX0 = 0;   
+ 208   1               Delay(200);
+ 209   1               if (IRIN==1) 
+ 210   1           { EX0 =1;
+ 211   2                 return;
+ 212   2                } 
+ 213   1                                 //确认IR信号出现
+ 214   1        while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+ 215   1          {Delay(13);}
+ 216   1      
+ 217   1       for (j=0;j<4;j++)         //收集四组数据
+ 218   1       { 
+ 219   2        for (k=0;k<8;k++)        //每组数据有8位
+ 220   2        {
+ 221   3         while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+ 222   3           {Delay(13);}
+ 223   3          while (!IRIN)          //等 IR 变为高电平
+ 224   3           {Delay(13);}
+ 225   3           while (IRIN)           //计算IR高电平时长
+ 226   3            {
+ 227   4         Delay(13);
+ 228   4          N++;           
+ 229   4          if (N>=30)
+ 230   4               { EX0=1;
+ 231   5               return;}                  //0.14ms计数过长自动离开。
+ 232   4            }                        //高电平计数完毕                
+ 233   3           IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+ 234   3           if (N>=8) {IRCOM[j] = IRCOM[j] | 0x80;}  //数据最高位补“1”
+ 235   3           N=0;
+ 236   3        }//end for k
+ 237   2       }//end for j
+ 238   1         
+ 239   1         if (IRCOM[2]!=~IRCOM[3])
+ 240   1         { EX0=1;
+ 241   2           return; }
+C51 COMPILER V9.01   红蚠_超蒧波_芲体                                                      11/24/2017 11:36:29 PAGE 5   
+
+ 242   1      
+ 243   1         IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+ 244   1         IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+ 245   1      
+ 246   1         if(IRCOM[5]>9)
+ 247   1          { IRCOM[5]=IRCOM[5]+0x37;}
+ 248   1         else
+ 249   1                IRCOM[5]=IRCOM[5]+0x30;
+ 250   1      
+ 251   1         if(IRCOM[6]>9)
+ 252   1          { IRCOM[6]=IRCOM[6]+0x37;}
+ 253   1         else
+ 254   1                IRCOM[6]=IRCOM[6]+0x30;
+ 255   1      
+ 256   1                 
+ 257   1           DisplayOneChar(10,1,IRCOM[6]);          //第一位数显示         
+ 258   1           DisplayOneChar(11,1,IRCOM[5]);        //第二位数显示
+ 259   1      
+ 260   1           EX0 = 1; 
+ 261   1      } 
+ 262          
+ 263          
+ 264          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    575    ----
+   CONSTANT SIZE    =     45    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     15       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

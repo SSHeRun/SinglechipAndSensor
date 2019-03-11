@@ -1,0 +1,349 @@
+C51 COMPILER V9.01   超蒧波_筥强_人体红蚠                                                  11/23/2017 09:52:03 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 超蒧波_筥强_人体红蚠
+OBJECT MODULE PLACED IN 超声波+光强+人体红外.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE 超声波+光强+人体红外.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include  <math.h>    //Keil library  
+   3          #include  <stdio.h>   //Keil library    
+   4          #include  <INTRINS.H>
+   5          #include   <STDIO.H>
+   6          
+   7          sbit E=P2^3;
+   8          sbit RW=P2^4;
+   9          sbit RS=P2^5;
+  10          
+  11          #define LCM_Data  P0
+  12          
+  13          #define   uchar unsigned char
+  14          #define   uint unsigned int     
+  15          
+  16          sbit      SCL=P1^3;      //IIC时钟引脚定义
+  17          sbit      SDA=P1^4;      //IIC数据引脚定义
+  18          
+  19          #define   SlaveAddress   0x46 //定义器件在IIC总线中的从地址,根据ALT  ADDRESS地址引脚不同修改
+  20                                        //ALT  ADDRESS引脚接地时地址为0x46，接电源时地址为0xB8
+  21          typedef   unsigned char BYTE;
+  22          typedef   unsigned short WORD;
+  23          
+  24          BYTE    BUF[8];                         //接收数据缓存区        
+  25          uchar   ge,shi,bai,qian,wan;            //显示变量
+  26          int     dis_data;                       //变量
+  27          
+  28          sbit  RX=P1^1;
+  29          sbit  TX=P1^2;
+  30          unsigned int  time=0;
+  31          unsigned int  timer=0;
+  32          float         S=0;
+  33          bit           flag =0;
+  34          
+  35          
+  36          //*********************************************************
+  37          void conversion(uint temp_data)  //  数据转换出 个，十，百，千，万
+  38          {  
+  39   1          wan=temp_data/10000+0x30 ;
+  40   1          temp_data=temp_data%10000;   //取余运算
+  41   1              qian=temp_data/1000+0x30 ;
+  42   1          temp_data=temp_data%1000;    //取余运算
+  43   1          bai=temp_data/100+0x30   ;
+  44   1          temp_data=temp_data%100;     //取余运算
+  45   1          shi=temp_data/10+0x30    ;
+  46   1          temp_data=temp_data%10;      //取余运算
+  47   1          ge=temp_data+0x30;  
+  48   1      }
+  49          
+  50          //毫秒延时**************************
+  51          void delay_nms(unsigned int k)  
+  52          {                                               
+  53   1      unsigned int i,j;                               
+  54   1      for(i=0;i<k;i++)
+  55   1      {                       
+C51 COMPILER V9.01   超蒧波_筥强_人体红蚠                                                  11/23/2017 09:52:03 PAGE 2   
+
+  56   2      for(j=0;j<121;j++)                      
+  57   2      {;}}                                            
+  58   1      }
+  59          
+  60          /**************************************
+  61          延时5微秒(STC90C52RC@12M)
+  62          不同的工作环境,需要调整此函数，注意时钟过快时需要修改
+  63          当改用1T的MCU时,请调整此延时函数
+  64          **************************************/
+  65          void Delay5us()
+  66          {
+  67   1          _nop_();_nop_();_nop_();_nop_();
+  68   1          _nop_();_nop_();_nop_();_nop_();
+  69   1              _nop_();_nop_();_nop_();_nop_();
+  70   1              _nop_();_nop_();_nop_();_nop_();
+  71   1      }
+  72          
+  73          /**************************************
+  74          延时5毫秒(STC90C52RC@12M)
+  75          不同的工作环境,需要调整此函数
+  76          当改用1T的MCU时,请调整此延时函数
+  77          **************************************/
+  78          void Delay5ms()
+  79          {
+  80   1          WORD n = 560;
+  81   1      
+  82   1          while (n--);
+  83   1      }
+  84          
+  85          /**************************************
+  86          起始信号
+  87          **************************************/
+  88          void BH1750_Start()
+  89          {
+  90   1          SDA = 1;                    //拉高数据线
+  91   1          SCL = 1;                    //拉高时钟线
+  92   1          Delay5us();                 //延时
+  93   1          SDA = 0;                    //产生下降沿
+  94   1          Delay5us();                 //延时
+  95   1          SCL = 0;                    //拉低时钟线
+  96   1      }
+  97          
+  98          /**************************************
+  99          停止信号
+ 100          **************************************/
+ 101          void BH1750_Stop()
+ 102          {
+ 103   1          SDA = 0;                    //拉低数据线
+ 104   1          SCL = 1;                    //拉高时钟线
+ 105   1          Delay5us();                 //延时
+ 106   1          SDA = 1;                    //产生上升沿
+ 107   1          Delay5us();                 //延时
+ 108   1      }
+ 109          
+ 110          /**************************************
+ 111          发送应答信号
+ 112          入口参数:ack (0:ACK 1:NAK)
+ 113          **************************************/
+ 114          void BH1750_SendACK(bit ack)
+ 115          {
+ 116   1          SDA = ack;                  //写应答信号
+ 117   1          SCL = 1;                    //拉高时钟线
+C51 COMPILER V9.01   超蒧波_筥强_人体红蚠                                                  11/23/2017 09:52:03 PAGE 3   
+
+ 118   1          Delay5us();                 //延时
+ 119   1          SCL = 0;                    //拉低时钟线
+ 120   1          Delay5us();                 //延时
+ 121   1      }
+ 122          
+ 123          /**************************************
+ 124          接收应答信号
+ 125          **************************************/
+ 126          bit BH1750_RecvACK()
+ 127          {
+ 128   1          SCL = 1;                    //拉高时钟线
+ 129   1          Delay5us();                 //延时
+ 130   1          CY = SDA;                   //读应答信号
+ 131   1          SCL = 0;                    //拉低时钟线
+ 132   1          Delay5us();                 //延时
+ 133   1      
+ 134   1          return CY;
+ 135   1      }
+ 136          
+ 137          /**************************************
+ 138          向IIC总线发送一个字节数据
+ 139          **************************************/
+ 140          void BH1750_SendByte(BYTE dat)
+ 141          {
+ 142   1          BYTE i;
+ 143   1      
+ 144   1          for (i=0; i<8; i++)         //8位计数器
+ 145   1          {
+ 146   2              dat <<= 1;              //移出数据的最高位
+ 147   2              SDA = CY;               //送数据口
+ 148   2              SCL = 1;                //拉高时钟线
+ 149   2              Delay5us();             //延时
+ 150   2              SCL = 0;                //拉低时钟线
+ 151   2              Delay5us();             //延时
+ 152   2          }
+ 153   1          BH1750_RecvACK();
+ 154   1      }
+ 155          
+ 156          /**************************************
+ 157          从IIC总线接收一个字节数据
+ 158          **************************************/
+ 159          BYTE BH1750_RecvByte()
+ 160          {
+ 161   1          BYTE i;
+ 162   1          BYTE dat = 0;
+ 163   1      
+ 164   1          SDA = 1;                    //使能内部上拉,准备读取数据,
+ 165   1          for (i=0; i<8; i++)         //8位计数器
+ 166   1          {
+ 167   2              dat <<= 1;
+ 168   2              SCL = 1;                //拉高时钟线
+ 169   2              Delay5us();             //延时
+ 170   2              dat |= SDA;             //读数据               
+ 171   2              SCL = 0;                //拉低时钟线
+ 172   2              Delay5us();             //延时
+ 173   2          }
+ 174   1          return dat;
+ 175   1      }
+ 176          
+ 177          //*********************************
+ 178          
+ 179          void Single_Write_BH1750(uchar REG_Address)
+C51 COMPILER V9.01   超蒧波_筥强_人体红蚠                                                  11/23/2017 09:52:03 PAGE 4   
+
+ 180          {
+ 181   1          BH1750_Start();                  //起始信号
+ 182   1          BH1750_SendByte(SlaveAddress);   //发送设备地址+写信号
+ 183   1          BH1750_SendByte(REG_Address);    //内部寄存器地址，
+ 184   1        //  BH1750_SendByte(REG_data);       //内部寄存器数据，
+ 185   1          BH1750_Stop();                   //发送停止信号
+ 186   1      }
+ 187          
+ 188          //*********************************************************
+ 189          //
+ 190          //连续读出BH1750内部数据
+ 191          //
+ 192          //*********************************************************
+ 193          void Multiple_read_BH1750(void)
+ 194          {   uchar i;    
+ 195   1          BH1750_Start();                          //起始信号
+ 196   1          BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 197   1              
+ 198   1               for (i=0; i<3; i++)                      //连续读取2个地址数据，存储中BUF
+ 199   1          {
+ 200   2              BUF[i] = BH1750_RecvByte();          //BUF[0]存储0x32地址中的数据
+ 201   2              if (i == 3)
+ 202   2              {
+ 203   3      
+ 204   3                 BH1750_SendACK(1);                //最后一个数据需要回NOACK
+ 205   3              }
+ 206   2              else
+ 207   2              {               
+ 208   3                BH1750_SendACK(0);                //回应ACK
+ 209   3             }
+ 210   2         }
+ 211   1      
+ 212   1          BH1750_Stop();                          //停止信号
+ 213   1          Delay5ms();
+ 214   1      }
+ 215          
+ 216          
+ 217          //初始化BH1750，根据需要请参考pdf进行修改****
+ 218          void Init_BH1750()
+ 219          {
+ 220   1         Single_Write_BH1750(0x01);  
+ 221   1      
+ 222   1      }
+ 223          
+ 224          /********************************************************/
+ 225          void Conut(void)
+ 226          {
+ 227   1       time=TH0*256+TL0;
+ 228   1       TH0=0;
+ 229   1       TL0=0;
+ 230   1       S=(time*1.87)/100;     //算出来是CM
+ 231   1       if(flag==1)                //超出测量
+ 232   1       {
+ 233   2        flag=0;
+ 234   2        printf("-----\n"); 
+ 235   2       }
+ 236   1      
+ 237   1        printf("S=%f\n",S); 
+ 238   1      }
+ 239          /********************************************************/
+ 240          void zd0() interrupt 1           //T0中断用来计数器溢出,超过测距范围
+ 241          {
+C51 COMPILER V9.01   超蒧波_筥强_人体红蚠                                                  11/23/2017 09:52:03 PAGE 5   
+
+ 242   1        flag=1;                                                        //中断溢出标志
+ 243   1      }
+ 244          /********************************************************/
+ 245          void  StartModule()                      //T1中断用来扫描数码管和计800MS启动模块
+ 246          {
+ 247   1              TX=1;                                    //800MS  启动一次模块
+ 248   1              _nop_(); 
+ 249   1              _nop_(); 
+ 250   1              _nop_(); 
+ 251   1              _nop_(); 
+ 252   1              _nop_(); 
+ 253   1              _nop_(); 
+ 254   1              _nop_(); 
+ 255   1              _nop_(); 
+ 256   1              _nop_(); 
+ 257   1              _nop_(); 
+ 258   1              _nop_(); 
+ 259   1              _nop_(); 
+ 260   1              _nop_(); 
+ 261   1              _nop_(); 
+ 262   1              _nop_(); 
+ 263   1              _nop_(); 
+ 264   1              _nop_();
+ 265   1              _nop_(); 
+ 266   1              _nop_(); 
+ 267   1              _nop_(); 
+ 268   1              _nop_();
+ 269   1              TX=0;
+ 270   1      }
+ 271          //=============================================
+ 272          main()
+ 273          {
+ 274   1              float temp;
+ 275   1      
+ 276   1              TMOD=0x21;                 //设T0为方式1，GATE=1；
+ 277   1              SCON=0x50;
+ 278   1              TH1=0xFD;
+ 279   1              TL1=0xFD;
+ 280   1              TH0=0;
+ 281   1              TL0=0; 
+ 282   1              TR0=1;  
+ 283   1              ET0=1;             //允许T0中断
+ 284   1              TR1=1;                     //开启定时器
+ 285   1              TI=1;
+ 286   1      
+ 287   1              EA=1;                      //开启总中断
+ 288   1        
+ 289   1         Init_BH1750();       //初始化BH1750
+ 290   1       
+ 291   1        while(1)              //循环
+ 292   1        { 
+ 293   2      
+ 294   2          Single_Write_BH1750(0x01);   // power on
+ 295   2          Single_Write_BH1750(0x10);   // H- resolution mode
+ 296   2      
+ 297   2           delay_nms(180);              //延时180ms
+ 298   2      
+ 299   2           Multiple_read_BH1750();       //连续读出数据，存储在BUF中
+ 300   2      
+ 301   2          dis_data=BUF[0];
+ 302   2          dis_data=(dis_data<<8)+BUF[1];//合成数据，即光照数据
+ 303   2          
+C51 COMPILER V9.01   超蒧波_筥强_人体红蚠                                                  11/23/2017 09:52:03 PAGE 6   
+
+ 304   2          temp=(float)dis_data/1.2;
+ 305   2      
+ 306   2          conversion(temp);         //计算数据和显示
+ 307   2              printf("Light: %c%c%c%c%c     ",wan,qian,bai,shi,ge);
+ 308   2              StartModule();
+ 309   2               while(!RX);            //当RX为零时等待
+ 310   2               TR0=1;                     //开启计数
+ 311   2               while(RX);                     //当RX为1计数并等待
+ 312   2               TR0=0;                         //关闭计数
+ 313   2           Conut();                   //计算
+ 314   2               delay_nms(100);                //100MS        
+ 315   2        }
+ 316   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    626    ----
+   CONSTANT SIZE    =     36    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     23    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

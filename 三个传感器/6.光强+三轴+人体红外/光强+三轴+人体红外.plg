@@ -1,0 +1,23 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+I:\WorkSpace\Keil\6.光强+三轴+人体红外\光强+三轴+人体红外.uvproj
+Project File Date:  11/23/2017
+
+<h2>Output:</h2>
+compiling 光强+三轴+人体红外.c...
+光强+三轴+人体红外.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 光强+三轴+人体红外.c...
+linking...
+Program Size: data=69.2 xdata=0 code=4429
+creating hex file from "光强+三轴+人体红外"...
+"光强+三轴+人体红外" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 光强+三轴+人体红外.c...
+linking...
+Program Size: data=69.2 xdata=0 code=4429
+creating hex file from "光强+三轴+人体红外"...
+"光强+三轴+人体红外" - 0 Error(s), 0 Warning(s).

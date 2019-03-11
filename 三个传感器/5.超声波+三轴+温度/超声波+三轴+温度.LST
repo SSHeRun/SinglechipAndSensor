@@ -1,0 +1,23 @@
+C51 COMPILER V9.01   超蒧波_三_醎蝊度                                                      11/24/2017 16:05:08 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 超蒧波_三_醎蝊度
+OBJECT MODULE PLACED IN 超声波+三轴+温度.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE 超声波+三轴+温度.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    534    ----
+   CONSTANT SIZE    =     23    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

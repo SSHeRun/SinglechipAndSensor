@@ -1,0 +1,511 @@
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 红蚠_超蒧波_筥强
+OBJECT MODULE PLACED IN 红外+超声波+光强.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE 红外+超声波+光强.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <AT89X51.H>
+   2          #include <math.h>    //Keil library  
+   3          #include <stdio.h>   //Keil library     
+   4          #include <INTRINS.H>
+   5          
+   6          #define uchar unsigned char
+   7          #define uint  unsigned int
+   8          
+   9          //红外
+  10          sbit IRIN = P3^2;         //红外接收器数据线
+  11          
+  12          uchar IRCOM[7];
+  13          
+  14          sbit E=P2^3;
+  15          sbit RW=P2^4;
+  16          sbit RS=P2^5;
+  17          
+  18          #define LCM_Data  P0
+  19          
+  20          uchar code  cdis1[ ] = {"  Red Control  "};
+  21          uchar code  cdis2[ ] = {"  IR-CODE:--H  "};
+  22          
+  23          //测距
+  24          #define  RX  P1_1
+  25          #define  TX  P1_2
+  26            
+  27          unsigned int  time=0;
+  28          unsigned int  timer=0;
+  29          float         S=0;
+  30          bit           flag =0;
+  31          
+  32          //光强
+  33          sbit      SCL=P1^3;      //IIC时钟引脚定义
+  34          sbit      SDA=P1^4;      //IIC数据引脚定义
+  35          
+  36          #define   SlaveAddress   0x46 //定义器件在IIC总线中的从地址,根据ALT  ADDRESS地址引脚不同修改
+  37                                        //ALT  ADDRESS引脚接地时地址为0x46，接电源时地址为0xB8
+  38          typedef   unsigned char BYTE;
+  39          typedef   unsigned short WORD;
+  40          
+  41          BYTE    BUF[8];                         //接收数据缓存区        
+  42          uchar   ge,shi,bai,qian,wan;            //显示变量
+  43          int     dis_data;                       //变量
+  44          
+  45          //延时设置
+  46          void Delay(unsigned int t)   // delay 40us
+  47          {
+  48   1       for(;t!=0;t--) ;
+  49   1      }
+  50          
+  51          
+  52          //写指令
+  53          void WriteCommandLCM(unsigned char ch)
+  54          {
+  55   1         RS=0;
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 2   
+
+  56   1         RW=0;
+  57   1         E=1;
+  58   1         LCM_Data=ch;
+  59   1         Delay(1);
+  60   1         E=0;
+  61   1         Delay(100);  //delay 40us
+  62   1      }
+  63          
+  64          //写数据
+  65          void WriteDataLCM(unsigned char ch)
+  66          {  RS=1;
+  67   1         RW=0;
+  68   1         E=1;
+  69   1         LCM_Data=ch;
+  70   1         Delay(1);
+  71   1         E=0;
+  72   1         Delay(100); //delay 40us
+  73   1      }
+  74          
+  75          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  76          {                                               
+  77   1              Y&=1;                                           
+  78   1              X&=15;                                          
+  79   1              if(Y)X|=0x40;                                   
+  80   1              X|=0x80;                        
+  81   1              WriteCommandLCM(X);             
+  82   1              WriteDataLCM(DData);            
+  83   1      }                               
+  84          
+  85          /*******************************************************************/
+  86          /*  LCD初始化设定                                                  */
+  87          /*******************************************************************/
+  88          void InitLcd()
+  89          {
+  90   1       WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+  91   1       WriteCommandLCM(0x30);
+  92   1       WriteCommandLCM(0x30);
+  93   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+  94   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+  95   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+  96   1       WriteCommandLCM(0x01); //清屏
+  97   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+  98   1      }
+  99          
+ 100          //测距
+ 101          /********************************************************/
+ 102          void Conut(void)
+ 103          {
+ 104   1       time=TH0*256+TL0;
+ 105   1       TH0=0;
+ 106   1       TL0=0;
+ 107   1       S=(time*1.87)/100;     //算出来是CM
+ 108   1       if(flag==1)                //超出测量
+ 109   1       {
+ 110   2        flag=0;
+ 111   2        printf("-----\n"); 
+ 112   2       }
+ 113   1      
+ 114   1        printf("S=%f\n",S); 
+ 115   1      }
+ 116          
+ 117          /********************************************************/
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 3   
+
+ 118          void zd0() interrupt 1           //T0中断用来计数器溢出,超过测距范围
+ 119          {
+ 120   1        flag=1;                                                        //中断溢出标志
+ 121   1      }
+ 122          /********************************************************/
+ 123          void  StartModule()                      //T1中断用来扫描数码管和计800MS启动模块
+ 124          {
+ 125   1              TX=1;                                    //800MS  启动一次模块
+ 126   1              _nop_(); 
+ 127   1              _nop_(); 
+ 128   1              _nop_(); 
+ 129   1              _nop_(); 
+ 130   1              _nop_(); 
+ 131   1              _nop_(); 
+ 132   1              _nop_(); 
+ 133   1              _nop_(); 
+ 134   1              _nop_(); 
+ 135   1              _nop_(); 
+ 136   1              _nop_(); 
+ 137   1              _nop_(); 
+ 138   1              _nop_(); 
+ 139   1              _nop_(); 
+ 140   1              _nop_(); 
+ 141   1              _nop_(); 
+ 142   1              _nop_();
+ 143   1              _nop_(); 
+ 144   1              _nop_(); 
+ 145   1              _nop_(); 
+ 146   1              _nop_();
+ 147   1              TX=0;
+ 148   1      }
+ 149          
+ 150          //光强
+ 151          //*********************************************************
+ 152          void conversion(uint temp_data)  //  数据转换出 个，十，百，千，万
+ 153          {  
+ 154   1          wan=temp_data/10000+0x30 ;
+ 155   1          temp_data=temp_data%10000;   //取余运算
+ 156   1              qian=temp_data/1000+0x30 ;
+ 157   1          temp_data=temp_data%1000;    //取余运算
+ 158   1          bai=temp_data/100+0x30   ;
+ 159   1          temp_data=temp_data%100;     //取余运算
+ 160   1          shi=temp_data/10+0x30    ;
+ 161   1          temp_data=temp_data%10;      //取余运算
+ 162   1          ge=temp_data+0x30;  
+ 163   1      }
+ 164          
+ 165          //毫秒延时**************************
+ 166          void delay_nms(unsigned int k)  
+ 167          {                                               
+ 168   1      unsigned int i,j;                               
+ 169   1      for(i=0;i<k;i++)
+ 170   1      {                       
+ 171   2      for(j=0;j<121;j++)                      
+ 172   2      {;}}                                            
+ 173   1      }
+ 174          
+ 175          /**************************************
+ 176          延时5微秒(STC90C52RC@12M)
+ 177          不同的工作环境,需要调整此函数，注意时钟过快时需要修改
+ 178          当改用1T的MCU时,请调整此延时函数
+ 179          **************************************/
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 4   
+
+ 180          void Delay5us()
+ 181          {
+ 182   1          _nop_();_nop_();_nop_();_nop_();
+ 183   1          _nop_();_nop_();_nop_();_nop_();
+ 184   1              _nop_();_nop_();_nop_();_nop_();
+ 185   1              _nop_();_nop_();_nop_();_nop_();
+ 186   1      }
+ 187          
+ 188          /**************************************
+ 189          延时5毫秒(STC90C52RC@12M)
+ 190          不同的工作环境,需要调整此函数
+ 191          当改用1T的MCU时,请调整此延时函数
+ 192          **************************************/
+ 193          void Delay5ms()
+ 194          {
+ 195   1          WORD n = 560;
+ 196   1      
+ 197   1          while (n--);
+ 198   1      }
+ 199          
+ 200          /**************************************
+ 201          起始信号
+ 202          **************************************/
+ 203          void BH1750_Start()
+ 204          {
+ 205   1          SDA = 1;                    //拉高数据线
+ 206   1          SCL = 1;                    //拉高时钟线
+ 207   1          Delay5us();                 //延时
+ 208   1          SDA = 0;                    //产生下降沿
+ 209   1          Delay5us();                 //延时
+ 210   1          SCL = 0;                    //拉低时钟线
+ 211   1      }
+ 212          
+ 213          /**************************************
+ 214          停止信号
+ 215          **************************************/
+ 216          void BH1750_Stop()
+ 217          {
+ 218   1          SDA = 0;                    //拉低数据线
+ 219   1          SCL = 1;                    //拉高时钟线
+ 220   1          Delay5us();                 //延时
+ 221   1          SDA = 1;                    //产生上升沿
+ 222   1          Delay5us();                 //延时
+ 223   1      }
+ 224          
+ 225          /**************************************
+ 226          发送应答信号
+ 227          入口参数:ack (0:ACK 1:NAK)
+ 228          **************************************/
+ 229          void BH1750_SendACK(bit ack)
+ 230          {
+ 231   1          SDA = ack;                  //写应答信号
+ 232   1          SCL = 1;                    //拉高时钟线
+ 233   1          Delay5us();                 //延时
+ 234   1          SCL = 0;                    //拉低时钟线
+ 235   1          Delay5us();                 //延时
+ 236   1      }
+ 237          
+ 238          /**************************************
+ 239          接收应答信号
+ 240          **************************************/
+ 241          bit BH1750_RecvACK()
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 5   
+
+ 242          {
+ 243   1          SCL = 1;                    //拉高时钟线
+ 244   1          Delay5us();                 //延时
+ 245   1          CY = SDA;                   //读应答信号
+ 246   1          SCL = 0;                    //拉低时钟线
+ 247   1          Delay5us();                 //延时
+ 248   1      
+ 249   1          return CY;
+ 250   1      }
+ 251          
+ 252          /**************************************
+ 253          向IIC总线发送一个字节数据
+ 254          **************************************/
+ 255          void BH1750_SendByte(BYTE dat)
+ 256          {
+ 257   1          BYTE i;
+ 258   1      
+ 259   1          for (i=0; i<8; i++)         //8位计数器
+ 260   1          {
+ 261   2              dat <<= 1;              //移出数据的最高位
+ 262   2              SDA = CY;               //送数据口
+ 263   2              SCL = 1;                //拉高时钟线
+ 264   2              Delay5us();             //延时
+ 265   2              SCL = 0;                //拉低时钟线
+ 266   2              Delay5us();             //延时
+ 267   2          }
+ 268   1          BH1750_RecvACK();
+ 269   1      }
+ 270          
+ 271          /**************************************
+ 272          从IIC总线接收一个字节数据
+ 273          **************************************/
+ 274          BYTE BH1750_RecvByte()
+ 275          {
+ 276   1          BYTE i;
+ 277   1          BYTE dat = 0;
+ 278   1      
+ 279   1          SDA = 1;                    //使能内部上拉,准备读取数据,
+ 280   1          for (i=0; i<8; i++)         //8位计数器
+ 281   1          {
+ 282   2              dat <<= 1;
+ 283   2              SCL = 1;                //拉高时钟线
+ 284   2              Delay5us();             //延时
+ 285   2              dat |= SDA;             //读数据               
+ 286   2              SCL = 0;                //拉低时钟线
+ 287   2              Delay5us();             //延时
+ 288   2          }
+ 289   1          return dat;
+ 290   1      }
+ 291          
+ 292          //*********************************
+ 293          
+ 294          void Single_Write_BH1750(uchar REG_Address)
+ 295          {
+ 296   1          BH1750_Start();                  //起始信号
+ 297   1          BH1750_SendByte(SlaveAddress);   //发送设备地址+写信号
+ 298   1          BH1750_SendByte(REG_Address);    //内部寄存器地址，
+ 299   1        //  BH1750_SendByte(REG_data);       //内部寄存器数据，
+ 300   1          BH1750_Stop();                   //发送停止信号
+ 301   1      }
+ 302          
+ 303          //*********************************************************
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 6   
+
+ 304          //
+ 305          //连续读出BH1750内部数据
+ 306          //
+ 307          //*********************************************************
+ 308          void Multiple_read_BH1750(void)
+ 309          {   uchar i;    
+ 310   1          BH1750_Start();                          //起始信号
+ 311   1          BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 312   1              
+ 313   1               for (i=0; i<3; i++)                      //连续读取2个地址数据，存储中BUF
+ 314   1          {
+ 315   2              BUF[i] = BH1750_RecvByte();          //BUF[0]存储0x32地址中的数据
+ 316   2              if (i == 3)
+ 317   2              {
+ 318   3      
+ 319   3                 BH1750_SendACK(1);                //最后一个数据需要回NOACK
+ 320   3              }
+ 321   2              else
+ 322   2              {               
+ 323   3                BH1750_SendACK(0);                //回应ACK
+ 324   3             }
+ 325   2         }
+ 326   1      
+ 327   1          BH1750_Stop();                          //停止信号
+ 328   1          Delay5ms();
+ 329   1      }
+ 330          
+ 331          
+ 332          //初始化BH1750，根据需要请参考pdf进行修改****
+ 333          void Init_BH1750()
+ 334          {
+ 335   1         Single_Write_BH1750(0x01);  
+ 336   1      
+ 337   1      }
+ 338          
+ 339          main()
+ 340          {
+ 341   1              float temp;
+ 342   1              //红外
+ 343   1         uchar m;
+ 344   1          
+ 345   1          IRIN=1;                    //I/O口初始化
+ 346   1      
+ 347   1          Delay(10);                 //延时
+ 348   1          InitLcd();                //初始化LCD             
+ 349   1      
+ 350   1           m = 0;
+ 351   1          while(cdis1[m] != '\0')
+ 352   1           {                         //显示字符
+ 353   2             WriteDataLCM(cdis1[m]);
+ 354   2             m++;
+ 355   2           }
+ 356   1      
+ 357   1          //lcd_pos(0x40);             //设置显示位置为第二行第1个字符
+ 358   1              WriteCommandLCM(0x40 | 0x80);
+ 359   1           m = 0;
+ 360   1          while(cdis2[m] != '\0')
+ 361   1           {
+ 362   2             WriteDataLCM(cdis2[m]);      //显示字符
+ 363   2             m++;
+ 364   2           }
+ 365   1         
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 7   
+
+ 366   1      
+ 367   1              IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+ 368   1              TCON = 0x01;               //触发方式为脉冲负边沿触发
+ 369   1      
+ 370   1              
+ 371   1              TMOD=0x21;                 //设T0为方式1，GATE=1；
+ 372   1              SCON=0x50;
+ 373   1              TH1=0xFD;
+ 374   1              TL1=0xFD;
+ 375   1              TH0=0;
+ 376   1              TL0=0; 
+ 377   1              TR0=1;  
+ 378   1              ET0=1;             //允许T0中断
+ 379   1              TR1=1;                     //开启定时器
+ 380   1              TI=1;
+ 381   1      
+ 382   1              EA=1;                      //开启总中断
+ 383   1      
+ 384   1         //光强
+ 385   1         Init_BH1750();       //初始化BH1750
+ 386   1              
+ 387   1              while(1)
+ 388   1              {
+ 389   2              //测距
+ 390   2               StartModule();
+ 391   2               while(!RX);            //当RX为零时等待
+ 392   2               TR0=1;                     //开启计数
+ 393   2               while(RX);                     //当RX为1计数并等待
+ 394   2               TR0=0;                         //关闭计数
+ 395   2           Conut();                   //计算
+ 396   2               delay_nms(100);                //100MS
+ 397   2               
+ 398   2                //光强
+ 399   2               Single_Write_BH1750(0x01);   // power on
+ 400   2          Single_Write_BH1750(0x10);   // H- resolution mode
+ 401   2      
+ 402   2           delay_nms(180);              //延时180ms
+ 403   2      
+ 404   2           Multiple_read_BH1750();       //连续读出数据，存储在BUF中
+ 405   2      
+ 406   2          dis_data=BUF[0];
+ 407   2          dis_data=(dis_data<<8)+BUF[1];//合成数据，即光照数据
+ 408   2          
+ 409   2          temp=(float)dis_data/1.2;
+ 410   2              conversion(temp);         //计算数据和显示      
+ 411   2              printf("Light: %c%c%c%c%c LX\n",wan,qian,bai,shi,ge);
+ 412   2              }
+ 413   1      
+ 414   1      } //end main
+ 415          
+ 416          /**********************************************************/
+ 417          void IR_IN() interrupt 0 using 0
+ 418          {
+ 419   1        unsigned char j,k,N=0;
+ 420   1           EX0 = 0;   
+ 421   1               Delay(200);
+ 422   1               if (IRIN==1) 
+ 423   1           { EX0 =1;
+ 424   2                 return;
+ 425   2                } 
+ 426   1                                 //确认IR信号出现
+ 427   1        while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+C51 COMPILER V9.01   红蚠_超蒧波_筥强                                                      10/18/2017 11:02:28 PAGE 8   
+
+ 428   1          {Delay(13);}
+ 429   1      
+ 430   1       for (j=0;j<4;j++)         //收集四组数据
+ 431   1       { 
+ 432   2        for (k=0;k<8;k++)        //每组数据有8位
+ 433   2        {
+ 434   3         while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+ 435   3           {Delay(13);}
+ 436   3          while (!IRIN)          //等 IR 变为高电平
+ 437   3           {Delay(13);}
+ 438   3           while (IRIN)           //计算IR高电平时长
+ 439   3            {
+ 440   4         Delay(13);
+ 441   4          N++;           
+ 442   4          if (N>=30)
+ 443   4               { EX0=1;
+ 444   5               return;}                  //0.14ms计数过长自动离开。
+ 445   4            }                        //高电平计数完毕                
+ 446   3           IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+ 447   3           if (N>=8) {IRCOM[j] = IRCOM[j] | 0x80;}  //数据最高位补“1”
+ 448   3           N=0;
+ 449   3        }//end for k
+ 450   2       }//end for j
+ 451   1         
+ 452   1         if (IRCOM[2]!=~IRCOM[3])
+ 453   1         { EX0=1;
+ 454   2           return; }
+ 455   1      
+ 456   1         IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+ 457   1         IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+ 458   1      
+ 459   1         if(IRCOM[5]>9)
+ 460   1          { IRCOM[5]=IRCOM[5]+0x37;}
+ 461   1         else
+ 462   1                IRCOM[5]=IRCOM[5]+0x30;
+ 463   1      
+ 464   1         if(IRCOM[6]>9)
+ 465   1          { IRCOM[6]=IRCOM[6]+0x37;}
+ 466   1         else
+ 467   1                IRCOM[6]=IRCOM[6]+0x30;
+ 468   1      
+ 469   1                 
+ 470   1           DisplayOneChar(10,1,IRCOM[6]);          //第一位数显示         
+ 471   1           DisplayOneChar(11,1,IRCOM[5]);        //第二位数显示
+ 472   1      
+ 473   1           EX0 = 1; 
+ 474   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1020    ----
+   CONSTANT SIZE    =     67    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     30       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

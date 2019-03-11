@@ -1,0 +1,116 @@
+BL51 BANKED LINKER/LOCATER V5.03                                                        11/11/2009  09:55:34  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE HAPPY.obj TO buzz RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  HAPPY.obj (HAPPY)
+
+
+LINK MAP OF MODULE:  buzz (HAPPY)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     01C6H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  buzz (HAPPY)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        HAPPY
+  D:00E0H         SYMBOL        ACC
+  C:013CH         SYMBOL        D1
+  C:0157H         SYMBOL        DELAY
+  C:0159H         SYMBOL        DELAY0
+  C:015BH         SYMBOL        DELAY1
+  B:00A8H.7       SYMBOL        EA
+  C:0142H         SYMBOL        ENDD
+  B:00A8H.1       SYMBOL        ET0
+  C:0146H         SYMBOL        INTT0
+  C:0100H         SYMBOL        MAIN
+  C:010FH         SYMBOL        NEXT
+  D:0090H         SYMBOL        P1
+  D:00D0H         SYMBOL        PSW
+  C:0125H         SYMBOL        SING
+  D:0081H         SYMBOL        SP
+  C:010CH         SYMBOL        START0
+  C:0166H         SYMBOL        TABLE
+  C:01A6H         SYMBOL        TABLE1
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0000H         LINE#         5
+  C:000BH         LINE#         7
+  C:0100H         LINE#         9
+  C:0103H         LINE#         10
+  C:0106H         LINE#         11
+  C:0108H         LINE#         12
+  C:010AH         LINE#         13
+  C:010CH         LINE#         15
+BL51 BANKED LINKER/LOCATER V5.03                                                      11/11/2009  09:55:34  PAGE 2
+
+
+  C:010FH         LINE#         16
+  C:0111H         LINE#         17
+  C:0114H         LINE#         18
+  C:0115H         LINE#         19
+  C:0116H         LINE#         20
+  C:0118H         LINE#         21
+  C:011AH         LINE#         22
+  C:011BH         LINE#         23
+  C:011CH         LINE#         24
+  C:011DH         LINE#         25
+  C:011FH         LINE#         26
+  C:0121H         LINE#         27
+  C:0123H         LINE#         28
+  C:0125H         LINE#         29
+  C:0126H         LINE#         30
+  C:0128H         LINE#         31
+  C:0129H         LINE#         32
+  C:012CH         LINE#         33
+  C:012DH         LINE#         34
+  C:012FH         LINE#         35
+  C:0131H         LINE#         36
+  C:0133H         LINE#         37
+  C:0134H         LINE#         38
+  C:0135H         LINE#         39
+  C:0136H         LINE#         40
+  C:0138H         LINE#         41
+  C:013AH         LINE#         42
+  C:013CH         LINE#         43
+  C:013EH         LINE#         44
+  C:0140H         LINE#         45
+  C:0142H         LINE#         46
+  C:0144H         LINE#         47
+  C:0146H         LINE#         50
+  C:0148H         LINE#         51
+  C:014AH         LINE#         52
+  C:014DH         LINE#         53
+  C:0150H         LINE#         54
+  C:0152H         LINE#         55
+  C:0154H         LINE#         56
+  C:0156H         LINE#         57
+  C:0157H         LINE#         58
+  C:0159H         LINE#         59
+  C:015BH         LINE#         60
+  C:015DH         LINE#         61
+  C:015FH         LINE#         62
+  C:0161H         LINE#         63
+  C:0163H         LINE#         64
+  C:0165H         LINE#         65
+  -------         ENDMOD        HAPPY
+
+Program Size: data=8.0 xdata=0 code=454
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

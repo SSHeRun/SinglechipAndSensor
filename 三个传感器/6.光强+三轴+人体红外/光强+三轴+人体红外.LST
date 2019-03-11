@@ -1,0 +1,23 @@
+C51 COMPILER V9.01   筥强_三_醎人体红蚠                                                    11/23/2017 21:08:20 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 筥强_三_醎人体红蚠
+OBJECT MODULE PLACED IN 光强+三轴+人体红外.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE 光强+三轴+人体红外.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1551    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     31    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

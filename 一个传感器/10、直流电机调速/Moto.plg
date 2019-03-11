@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\stone\Desktop\SensorKit\实验案例\直流电机调速\MOTO.uvproj
+Project File Date:  07/05/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling Moto.c...
+linking...
+Program Size: data=12.0 xdata=0 code=148
+creating hex file from "Moto"...
+"Moto" - 0 Error(s), 0 Warning(s).

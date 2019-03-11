@@ -1,0 +1,98 @@
+C51 COMPILER V9.01   8X8LED                                                                07/23/2016 17:44:08 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 8X8LED
+OBJECT MODULE PLACED IN 8X8LED.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 8X8LED.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*******************************************************************************
+   2          *  点阵显示（译码器位选 共阴极）            *
+   3          ********************************************************************************/
+   4          
+   5          #include <reg51.h> 
+   6          
+   7          sbit LS138A = P2^0;     //定义138译码器的输入A脚由P2.0控制 
+   8          sbit LS138B = P2^1;         //定义138译码器的输入脚B由P2.1控制
+   9          sbit LS138C = P2^2;     //定义138译码器的输入脚C由P2.2控制
+  10          
+  11          void delay(unsigned int i);      //函数声名
+  12          
+  13          
+  14          
+  15          /************主函数**********************/ 
+  16          main()
+  17          {  
+  18   1         unsigned int i,j ;
+  19   1      
+  20   1        while(1)  //进入循环状态
+  21   1        {     
+  22   2               for( i=0; i<8; i++)  //实现8位动态扫描循环
+  23   2               {                      
+  24   3                switch(i)       //使用switch 语句控制位选  也可以是用查表的方式 学员可以试着自己修改                            
+  25   3                   {      
+  26   4                              case 0:LS138A=0; LS138B=0; LS138C=0; P0 = 0X18; break;         
+  27   4                      case 1:LS138A=1; LS138B=0; LS138C=0; P0 = 0X1C; break;                  
+  28   4                      case 2:LS138A=0; LS138B=1; LS138C=0; P0 = 0X18; break; 
+  29   4                      case 3:LS138A=1; LS138B=1; LS138C=0; P0 = 0X18; break; 
+  30   4                              case 4:LS138A=0; LS138B=0; LS138C=1; P0 = 0X18; break;
+  31   4                              case 5:LS138A=1; LS138B=0; LS138C=1; P0 = 0X18; break;
+  32   4                              case 6:LS138A=0; LS138B=1; LS138C=1; P0 = 0X3C; break;
+  33   4                              case 7:LS138A=1; LS138B=1; LS138C=1; P0 = 0X3C; break;    
+  34   4                   }
+  35   3                        delay(150);
+  36   3               }
+  37   2               //delay(150000);
+  38   2      
+  39   2      
+  40   2      /*       for( j=0; j<8; j++)  //实现8位动态扫描循环
+  41   2               {       
+  42   2                switch(j)       //使用switch 语句控制位选  也可以是用查表的方式 学员可以试着自己修改                            
+  43   2                   {      
+  44   2                              case 0:LS138A=0; LS138B=0; LS138C=0; P0 = 0XFF; break;         
+  45   2                      case 1:LS138A=1; LS138B=0; LS138C=0; P0 = 0XFF; break;                  
+  46   2                      case 2:LS138A=0; LS138B=1; LS138C=0; P0 = 0XFF; break; 
+  47   2                      case 3:LS138A=1; LS138B=1; LS138C=0; P0 = 0XFF; break; 
+  48   2                              case 4:LS138A=0; LS138B=0; LS138C=1; P0 = 0XFF; break;
+  49   2                              case 5:LS138A=1; LS138B=0; LS138C=1; P0 = 0XFF; break;
+  50   2                              case 6:LS138A=0; LS138B=1; LS138C=1; P0 = 0XFF; break;
+  51   2                              case 7:LS138A=1; LS138B=1; LS138C=1; P0 = 0XFF; break;    
+  52   2                   }
+  53   2                        delay(150);
+  54   2               }
+  55   2              delay(150000);                  */
+C51 COMPILER V9.01   8X8LED                                                                07/23/2016 17:44:08 PAGE 2   
+
+  56   2      
+  57   2               
+  58   2        }   
+  59   1      }       
+*** WARNING C280 IN LINE 18 OF 8X8LED.C: 'j': unreferenced local variable
+  60          
+  61          /***************************************************************************
+  62          *                                                                                                                                                  *
+  63          *                                   延时程序                                                           *
+  64          ****************************************************************************/
+  65          void delay(unsigned int i)
+  66          {
+  67   1          char j;
+  68   1          for(i; i > 0; i--)
+  69   1              for(j = 200; j > 0; j--);
+  70   1      }
+  71          
+  72          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    170    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

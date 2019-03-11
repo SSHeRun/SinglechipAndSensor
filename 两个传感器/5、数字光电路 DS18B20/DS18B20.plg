@@ -1,0 +1,166 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\传感器实训套件\程序\14、DS18B20\DS18B20.uvproj
+Project File Date:  07/05/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=11.0 xdata=0 code=448
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=26.0 xdata=0 code=448
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+BL51 BANKED LINKER/LOCATER V6.22 - SN: K1AMC-52C58C
+COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009
+"STARTUP.obj",
+"DS18B20.obj" 
+TO "DS18B20" 
+RAMSIZE(256) 
+*** FATAL ERROR L256: MODULE CONTAINS DUPLICATE SEGMENT NAMES
+    SEGMENT: ?PR?_DELAY?DS18B20
+    MODULE:  DS18B20.obj (DS18B20)
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DISPLAYONECHAR?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_NMS?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_BH1750?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_BH1750?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?DS18B20
+Program Size: data=26.1 xdata=0 code=930
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DISPLAYONECHAR?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_CONVERSION?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_NMS?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MULTIPLE_READ_BH1750?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT_BH1750?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INITLCD?DS18B20
+Program Size: data=26.1 xdata=0 code=930
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+DS18B20.C(435): error C141: syntax error near 'float'
+DS18B20.C(435): error C202: 'temp1': undefined identifier
+DS18B20.C(466): error C202: 'temp1': undefined identifier
+DS18B20.C(468): error C202: 'temp1': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+DS18B20.C(435): error C141: syntax error near 'float'
+DS18B20.C(435): error C202: 'temp1': undefined identifier
+DS18B20.C(469): error C202: 'temp1': undefined identifier
+DS18B20.C(471): error C202: 'temp1': undefined identifier
+Target not created
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=32.1 xdata=0 code=1496
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).
+compiling DS18B20.c...
+DS18B20.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=32.1 xdata=0 code=1496
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+DS18B20.C(433): warning C280: 'temp': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAY_1MS?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RESET?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READ_BYTE?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE_BYTE?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?CO?DS18B20
+Program Size: data=32.1 xdata=0 code=1364
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 7 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=30.1 xdata=0 code=1503
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=30.1 xdata=0 code=1503
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling DS18B20.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_1?DS18B20
+Program Size: data=30.1 xdata=0 code=1503
+creating hex file from "DS18B20"...
+"DS18B20" - 0 Error(s), 1 Warning(s).

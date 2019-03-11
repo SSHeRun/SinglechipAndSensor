@@ -1,0 +1,25 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+I:\WorkSpace\Keil\人体红外传感器\人体红外.uvproj
+Project File Date:  11/27/2017
+
+<h2>Output:</h2>
+Build target 'Target 1'
+Target has no object modules
+Target not created
+compiling 人体红外.c...
+人体红外.c - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+linking...
+Program Size: data=9.0 xdata=0 code=128
+creating hex file from "人体红外"...
+"人体红外" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling 人体红外.c...
+linking...
+Program Size: data=9.0 xdata=0 code=128
+creating hex file from "人体红外"...
+"人体红外" - 0 Error(s), 0 Warning(s).

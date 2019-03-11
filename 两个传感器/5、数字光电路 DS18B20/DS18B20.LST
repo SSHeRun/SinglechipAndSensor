@@ -1,0 +1,532 @@
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN DS18B20.OBJ
+COMPILER INVOKED BY: N:\keil\C51\BIN\C51.EXE DS18B20.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************
+   2          *该示例实现了用温度传感器件DS18B20对温度的采集，并在数码管上显示出来。
+   3          ***********************************************************************/
+   4          #include<reg52.h>
+   5          #include  <math.h>    //Keil library  
+   6          #include  <stdio.h>   //Keil library
+   7          #include  <INTRINS.H>   
+   8          #define uchar unsigned char
+   9          #define uint  unsigned int
+  10          
+  11          #define jump_ROM 0xCC
+  12          #define start 0x44
+  13          #define read_EEROM 0xBE
+  14          
+  15          sbit DQ = P3^5;            //DS18B20数据口
+  16          
+  17          unsigned char TMPH,TMPL; 
+  18          
+  19          uchar code table[10] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+  20          sbit E=P2^3;
+  21          sbit RW=P2^4;
+  22          sbit RS=P2^5;
+  23          
+  24          #define LCM_Data  P0
+  25          
+  26          #define   uchar unsigned char
+  27          #define   uint unsigned int     
+  28          
+  29          sbit      SCL=P1^0;      //IIC时钟引脚定义
+  30          sbit      SDA=P1^1;      //IIC数据引脚定义
+  31          
+  32          #define   SlaveAddress   0x46 //定义器件在IIC总线中的从地址,根据ALT  ADDRESS地址引脚不同修改
+  33                                        //ALT  ADDRESS引脚接地时地址为0x46，接电源时地址为0xB8
+  34          typedef   unsigned char BYTE;
+  35          typedef   unsigned short WORD;
+  36          
+  37          BYTE    BUF[8];                         //接收数据缓存区        
+  38          uchar   ge,shi,bai,qian,wan;            //显示变量
+  39          int     dis_data;                       //变量
+  40          
+  41          /********************************************************************
+  42          * 名称 : delay()
+  43          * 功能 : 延时,延时时间大概为140US。
+  44          * 输入 : 无
+  45          * 输出 : 无
+  46          ***********************************************************************/
+  47          
+  48          void delay_1()
+  49          {
+  50   1              int i,j;
+  51   1              for(i=0; i<=10; i++)
+  52   1              for(j=0; j<=2; j++)
+  53   1      ;
+  54   1      }
+  55          
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 2   
+
+  56          void Delay1(unsigned int t)   // delay 40us
+  57          {
+  58   1       for(;t!=0;t--) ;
+  59   1      }
+  60          
+  61          //写指令
+  62          void WriteCommandLCM(unsigned char ch)
+  63          {
+  64   1         RS=0;
+  65   1         RW=0;
+  66   1         E=1;
+  67   1         LCM_Data=ch;
+  68   1         Delay1(1);
+  69   1         E=0;
+  70   1         Delay1(100);  //delay 40us
+  71   1      }
+  72          
+  73          //写数据
+  74          void WriteDataLCM(unsigned char ch)
+  75          {  RS=1;
+  76   1         RW=0;
+  77   1         E=1;
+  78   1         LCM_Data=ch;
+  79   1         Delay1(1);
+  80   1         E=0;
+  81   1         Delay1(100); //delay 40us
+  82   1      }
+  83          
+  84          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  85          {                                               
+  86   1              Y&=1;                                           
+  87   1              X&=15;                                          
+  88   1              if(Y)X|=0x40;                                   
+  89   1              X|=0x80;                        
+  90   1              WriteCommandLCM(X);             
+  91   1              WriteDataLCM(DData);            
+  92   1      }                                       
+  93          
+  94          
+  95          //*********************************************************
+  96          void conversion(uint temp_data)  //  数据转换出 个，十，百，千，万
+  97          {  
+  98   1          wan=temp_data/10000+0x30 ;
+  99   1          temp_data=temp_data%10000;   //取余运算
+ 100   1              qian=temp_data/1000+0x30 ;
+ 101   1          temp_data=temp_data%1000;    //取余运算
+ 102   1          bai=temp_data/100+0x30   ;
+ 103   1          temp_data=temp_data%100;     //取余运算
+ 104   1          shi=temp_data/10+0x30    ;
+ 105   1          temp_data=temp_data%10;      //取余运算
+ 106   1          ge=temp_data+0x30;  
+ 107   1      }
+ 108          
+ 109          //毫秒延时**************************
+ 110          void delay_nms(unsigned int k)  
+ 111          {                                               
+ 112   1      unsigned int i,j;                               
+ 113   1      for(i=0;i<k;i++)
+ 114   1      {                       
+ 115   2      for(j=0;j<121;j++)                      
+ 116   2      {;}}                                            
+ 117   1      }
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 3   
+
+ 118          
+ 119          /**************************************
+ 120          延时5微秒(STC90C52RC@12M)
+ 121          不同的工作环境,需要调整此函数，注意时钟过快时需要修改
+ 122          当改用1T的MCU时,请调整此延时函数
+ 123          **************************************/
+ 124          void Delay5us()
+ 125          {
+ 126   1          _nop_();_nop_();_nop_();_nop_();
+ 127   1          _nop_();_nop_();_nop_();_nop_();
+ 128   1              _nop_();_nop_();_nop_();_nop_();
+ 129   1              _nop_();_nop_();_nop_();_nop_();
+ 130   1      }
+ 131          
+ 132          /**************************************
+ 133          延时5毫秒(STC90C52RC@12M)
+ 134          不同的工作环境,需要调整此函数
+ 135          当改用1T的MCU时,请调整此延时函数
+ 136          **************************************/
+ 137          void Delay5ms()
+ 138          {
+ 139   1          WORD n = 560;
+ 140   1      
+ 141   1          while (n--);
+ 142   1      }
+ 143          
+ 144          /**************************************
+ 145          起始信号
+ 146          **************************************/
+ 147          void BH1750_Start()
+ 148          {
+ 149   1          SDA = 1;                    //拉高数据线
+ 150   1          SCL = 1;                    //拉高时钟线
+ 151   1          Delay5us();                 //延时
+ 152   1          SDA = 0;                    //产生下降沿
+ 153   1          Delay5us();                 //延时
+ 154   1          SCL = 0;                    //拉低时钟线
+ 155   1      }
+ 156          
+ 157          /**************************************
+ 158          停止信号
+ 159          **************************************/
+ 160          void BH1750_Stop()
+ 161          {
+ 162   1          SDA = 0;                    //拉低数据线
+ 163   1          SCL = 1;                    //拉高时钟线
+ 164   1          Delay5us();                 //延时
+ 165   1          SDA = 1;                    //产生上升沿
+ 166   1          Delay5us();                 //延时
+ 167   1      }
+ 168          
+ 169          /**************************************
+ 170          发送应答信号
+ 171          入口参数:ack (0:ACK 1:NAK)
+ 172          **************************************/
+ 173          void BH1750_SendACK(bit ack)
+ 174          {
+ 175   1          SDA = ack;                  //写应答信号
+ 176   1          SCL = 1;                    //拉高时钟线
+ 177   1          Delay5us();                 //延时
+ 178   1          SCL = 0;                    //拉低时钟线
+ 179   1          Delay5us();                 //延时
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 4   
+
+ 180   1      }
+ 181          
+ 182          /**************************************
+ 183          接收应答信号
+ 184          **************************************/
+ 185          bit BH1750_RecvACK()
+ 186          {
+ 187   1          SCL = 1;                    //拉高时钟线
+ 188   1          Delay5us();                 //延时
+ 189   1          CY = SDA;                   //读应答信号
+ 190   1          SCL = 0;                    //拉低时钟线
+ 191   1          Delay5us();                 //延时
+ 192   1      
+ 193   1          return CY;
+ 194   1      }
+ 195          
+ 196          /**************************************
+ 197          向IIC总线发送一个字节数据
+ 198          **************************************/
+ 199          void BH1750_SendByte(BYTE dat)
+ 200          {
+ 201   1          BYTE i;
+ 202   1      
+ 203   1          for (i=0; i<8; i++)         //8位计数器
+ 204   1          {
+ 205   2              dat <<= 1;              //移出数据的最高位
+ 206   2              SDA = CY;               //送数据口
+ 207   2              SCL = 1;                //拉高时钟线
+ 208   2              Delay5us();             //延时
+ 209   2              SCL = 0;                //拉低时钟线
+ 210   2              Delay5us();             //延时
+ 211   2          }
+ 212   1          BH1750_RecvACK();
+ 213   1      }
+ 214          
+ 215          /**************************************
+ 216          从IIC总线接收一个字节数据
+ 217          **************************************/
+ 218          BYTE BH1750_RecvByte()
+ 219          {
+ 220   1          BYTE i;
+ 221   1          BYTE dat = 0;
+ 222   1      
+ 223   1          SDA = 1;                    //使能内部上拉,准备读取数据,
+ 224   1          for (i=0; i<8; i++)         //8位计数器
+ 225   1          {
+ 226   2              dat <<= 1;
+ 227   2              SCL = 1;                //拉高时钟线
+ 228   2              Delay5us();             //延时
+ 229   2              dat |= SDA;             //读数据               
+ 230   2              SCL = 0;                //拉低时钟线
+ 231   2              Delay5us();             //延时
+ 232   2          }
+ 233   1          return dat;
+ 234   1      }
+ 235          
+ 236          //*********************************
+ 237          
+ 238          void Single_Write_BH1750(uchar REG_Address)
+ 239          {
+ 240   1          BH1750_Start();                  //起始信号
+ 241   1          BH1750_SendByte(SlaveAddress);   //发送设备地址+写信号
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 5   
+
+ 242   1          BH1750_SendByte(REG_Address);    //内部寄存器地址，
+ 243   1        //  BH1750_SendByte(REG_data);       //内部寄存器数据，
+ 244   1          BH1750_Stop();                   //发送停止信号
+ 245   1      }
+ 246          
+ 247          //********单字节读取*****************************************
+ 248          /*
+ 249          uchar Single_Read_BH1750(uchar REG_Address)
+ 250          {  uchar REG_data;
+ 251              BH1750_Start();                          //起始信号
+ 252              BH1750_SendByte(SlaveAddress);           //发送设备地址+写信号
+ 253              BH1750_SendByte(REG_Address);                   //发送存储单元地址，从0开始 
+ 254              BH1750_Start();                          //起始信号
+ 255              BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 256              REG_data=BH1750_RecvByte();              //读出寄存器数据
+ 257                  BH1750_SendACK(1);   
+ 258                  BH1750_Stop();                           //停止信号
+ 259              return REG_data; 
+ 260          }
+ 261          */
+ 262          //*********************************************************
+ 263          //
+ 264          //连续读出BH1750内部数据
+ 265          //
+ 266          //*********************************************************
+ 267          void Multiple_read_BH1750(void)
+ 268          {   uchar i;    
+ 269   1          BH1750_Start();                          //起始信号
+ 270   1          BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 271   1              
+ 272   1               for (i=0; i<3; i++)                      //连续读取2个地址数据，存储中BUF
+ 273   1          {
+ 274   2              BUF[i] = BH1750_RecvByte();          //BUF[0]存储0x32地址中的数据
+ 275   2              if (i == 3)
+ 276   2              {
+ 277   3      
+ 278   3                 BH1750_SendACK(1);                //最后一个数据需要回NOACK
+ 279   3              }
+ 280   2              else
+ 281   2              {               
+ 282   3                BH1750_SendACK(0);                //回应ACK
+ 283   3             }
+ 284   2         }
+ 285   1      
+ 286   1          BH1750_Stop();                          //停止信号
+ 287   1          Delay5ms();
+ 288   1      }
+ 289          
+ 290          
+ 291          //初始化BH1750，根据需要请参考pdf进行修改****
+ 292          void Init_BH1750()
+ 293          {
+ 294   1         Single_Write_BH1750(0x01);  
+ 295   1      
+ 296   1      }
+ 297          
+ 298          
+ 299          
+ 300          //LCD初始化
+ 301          void InitLcd()
+ 302          {WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+ 303   1       WriteCommandLCM(0x30);
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 6   
+
+ 304   1       WriteCommandLCM(0x30);
+ 305   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+ 306   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+ 307   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+ 308   1       WriteCommandLCM(0x01); //清屏
+ 309   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+ 310   1      }
+ 311          /********************************************************************
+ 312          * 名称 : delay()
+ 313          * 功能 : 延时函数
+ 314          * 输入 : 无
+ 315          * 输出 : 无
+ 316          ***********************************************************************/
+ 317          void delay(uint N)
+ 318          {
+ 319   1              int i;
+ 320   1              for(i=0; i<N; i++)
+ 321   1              ;
+ 322   1      }
+ 323          
+ 324          /********************************************************************
+ 325          * 名称 : Delay_1ms()
+ 326          * 功能 : 延时子程序，延时时间为 1ms * x
+ 327          * 输入 : x (延时一毫秒的个数)
+ 328          * 输出 : 无
+ 329          ***********************************************************************/
+ 330          void Delay_1ms(uint i)//1ms延时
+ 331          {
+ 332   1              uchar x,j;
+ 333   1              for(j=0;j<i;j++)
+ 334   1              for(x=0;x<=148;x++);    
+ 335   1      }
+ 336          /********************************************************************
+ 337          * 名称 : Reset()
+ 338          * 功能 : 复位DS18B20
+ 339          * 输入 : 无
+ 340          * 输出 : 无
+ 341          ***********************************************************************/
+ 342          uchar Reset(void)
+ 343          {
+ 344   1              uchar deceive_ready;
+ 345   1              DQ = 0;
+ 346   1              delay(29);
+ 347   1              DQ = 1;
+ 348   1              delay(3);
+ 349   1              deceive_ready = DQ;
+ 350   1              delay(25);
+ 351   1              return(deceive_ready);
+ 352   1      }
+ 353          
+ 354          /********************************************************************
+ 355          * 名称 : read_bit()
+ 356          * 功能 : 从DS18B20读一个位值
+ 357          * 输入 : 无
+ 358          * 输出 : 从DS18B20读出的一个位值
+ 359          ***********************************************************************/
+ 360          uchar read_bit(void)
+ 361          {
+ 362   1              uchar i;
+ 363   1              DQ = 0;
+ 364   1              DQ = 1;
+ 365   1              for(i=0; i<3; i++);
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 7   
+
+ 366   1              return(DQ);
+ 367   1      }
+ 368          
+ 369          /********************************************************************
+ 370          * 名称 : write_bit()
+ 371          * 功能 : 向DS18B20写一位
+ 372          * 输入 : bitval（要对DS18B20写入的位值）
+ 373          * 输出 : 无
+ 374          ***********************************************************************/
+ 375          void write_bit(uchar bitval)
+ 376          {
+ 377   1      DQ=0;if(bitval==1)
+ 378   1      DQ=1;
+ 379   1      delay(5);
+ 380   1      DQ=1;
+ 381   1      }
+ 382          
+ 383          /********************************************************************
+ 384          * 名称 : read_byte()
+ 385          * 功能 : 从DS18B20读一个字节
+ 386          * 输入 : 无
+ 387          * 输出 : 从DS18B20读到的值
+ 388          ***********************************************************************/
+ 389          uchar read_byte(void)
+ 390          {
+ 391   1              uchar i,m,receive_data;
+ 392   1              m = 1;
+ 393   1              receive_data = 0;
+ 394   1              for(i=0; i<8; i++)
+ 395   1              {
+ 396   2                      if(read_bit())
+ 397   2                      {
+ 398   3                              receive_data = receive_data + (m << i);
+ 399   3                      }
+ 400   2                      delay(6);
+ 401   2              }
+ 402   1              return(receive_data);
+ 403   1      }
+ 404          
+ 405          /********************************************************************
+ 406          * 名称 : write_byte()
+ 407          * 功能 : 向DS18B20写一个字节
+ 408          * 输入 : val（要对DS18B20写入的命令值）
+ 409          * 输出 : 无
+ 410          ***********************************************************************/
+ 411          void write_byte(uchar val)
+ 412          {
+ 413   1              uchar i,temp;
+ 414   1              for(i=0; i<8; i++)
+ 415   1              {
+ 416   2                      temp = val >> i;
+ 417   2                      temp = temp & 0x01;
+ 418   2                      write_bit(temp);
+ 419   2                      delay(5);
+ 420   2              }
+ 421   1      }
+ 422          
+ 423          
+ 424          /********************************************************************
+ 425          * 名称 : Main()
+ 426          * 功能 : 主函数
+ 427          * 输入 : 无
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 8   
+
+ 428          * 输出 : 无
+ 429          ***********************************************************************/
+ 430          void main()
+ 431          {
+ 432   1              float temp1;
+ 433   1              uint temp;
+ 434   1              P2 = 0x00;
+ 435   1      
+ 436   1              
+ 437   1         delay_nms(100);          //延时100ms 
+ 438   1         InitLcd();           //初始化LCD
+ 439   1         Init_BH1750();       //初始化BH1750  
+ 440   1              while(1)
+ 441   1              {
+ 442   2      
+ 443   2                        Single_Write_BH1750(0x01);   // power on
+ 444   2          Single_Write_BH1750(0x10);   // H- resolution mode
+ 445   2      
+ 446   2           delay_nms(180);              //延时180ms
+ 447   2      
+ 448   2           Multiple_read_BH1750();       //连续读出数据，存储在BUF中
+ 449   2      
+ 450   2          dis_data=BUF[0];
+ 451   2          dis_data=(dis_data<<8)+BUF[1];//合成数据，即光照数据
+ 452   2          
+ 453   2          temp1=(float)dis_data/1.2;
+ 454   2      
+ 455   2          conversion(temp1);         //计算数据和显示
+ 456   2              DisplayOneChar(0,0,'L'); 
+ 457   2              DisplayOneChar(1,0,'i'); 
+ 458   2              DisplayOneChar(2,0,'g'); 
+ 459   2              DisplayOneChar(3,0,'h'); 
+ 460   2              DisplayOneChar(4,0,'t'); 
+ 461   2          DisplayOneChar(5,0,':'); 
+ 462   2      
+ 463   2          DisplayOneChar(7,0,wan); //显示数据
+ 464   2          DisplayOneChar(8,0,qian);  
+ 465   2          DisplayOneChar(9,0,bai); 
+ 466   2          DisplayOneChar(10,0,shi); 
+ 467   2              DisplayOneChar(11,0,ge); 
+ 468   2      
+ 469   2              DisplayOneChar(13,0,'L'); ////显示数单位
+ 470   2              DisplayOneChar(14,0,'X');  
+ 471   2      
+ 472   2              if(bai >= '1'){
+ 473   3                      while(1){
+ 474   4                                      Reset();
+ 475   4                      write_byte(jump_ROM);
+ 476   4                      write_byte(start);
+ 477   4                      Reset();
+ 478   4                      write_byte(jump_ROM);
+ 479   4                      write_byte(read_EEROM);
+ 480   4                      TMPL = read_byte();
+ 481   4                      TMPH = read_byte();
+ 482   4                      temp = TMPL / 16 + TMPH * 16;
+ 483   4                      P0 = table[temp/10%10];
+ 484   4                      P2 = 6;
+ 485   4                      Delay_1ms(5);
+ 486   4                      P0 = table[temp%10];
+ 487   4                      P2 = 7;
+ 488   4                      Delay_1ms(5);
+ 489   4                      }
+C51 COMPILER V9.01   DS18B20                                                               11/23/2017 00:18:43 PAGE 9   
+
+ 490   3              }
+ 491   2      
+ 492   2              }
+ 493   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1028    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     17       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

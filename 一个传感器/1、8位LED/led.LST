@@ -1,0 +1,57 @@
+C51 COMPILER V9.01   LED                                                                   07/28/2016 11:36:46 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE LED
+OBJECT MODULE PLACED IN led.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE led.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include<intrins.h>
+   3          #define uchar unsigned char
+   4          #define uint  unsigned int
+   5          
+   6          /********************************************************************
+   7          * 名称 : Delay()
+   8          * 功能 : 延时,延时时间为 10ms * del
+   9          * 输入 : del
+  10          * 输出 : 无
+  11          ***********************************************************************/
+  12          void Delay(uint del)
+  13          {
+  14   1              uint i,j;
+  15   1              for(i=0; i<del; i++)
+  16   1              for(j=0; j<1827; j++)   
+  17   1              ;
+  18   1      }
+  19          
+  20          
+  21          void Main(void)
+  22          {
+  23   1              uchar i;
+  24   1              while(1)
+  25   1              {
+  26   2                      P1 = 0x1;                               
+  27   2                      for(i=0; i<=7; i++)             
+  28   2                      {
+  29   3                              P1 = _cror_(P1, 1);             //_crol_()这个函数在intrins.h中定义了，用于循环右移
+  30   3                              Delay(15);
+  31   3                      }
+  32   2      
+  33   2              }
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     63    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

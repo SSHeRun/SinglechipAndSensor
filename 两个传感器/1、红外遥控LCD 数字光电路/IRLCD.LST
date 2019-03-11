@@ -1,0 +1,481 @@
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE IRLCD
+OBJECT MODULE PLACED IN IRLCD.OBJ
+COMPILER INVOKED BY: N:\keil\C51\BIN\C51.EXE IRLCD.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /********************************************************************************
+   2          *          lcd1602显示 遥控键值读取器                                          *
+   3          *         lcd1602显示 遥控器接p3.2                                             *
+   4          ********************************************************************************/
+   5          
+   6          #include <reg51.h>
+   7          #include <intrins.h>
+   8          #include  <math.h>    //Keil library  
+   9          #include  <stdio.h>   //Keil library    
+  10          
+  11          #define uchar unsigned char
+  12          #define uint  unsigned int
+  13          
+  14          
+  15          sbit IRIN = P3^2;         //红外接收器数据线
+  16          
+  17          uchar IRCOM[7];
+  18          
+  19          sbit E=P2^3;
+  20          sbit RW=P2^4;
+  21          sbit RS=P2^5;
+  22          
+  23          #define LCM_Data  P0
+  24          
+  25          uchar code  cdis1[ ] = {"  Red Control  "};
+  26          uchar code  cdis2[ ] = {"  IR-CODE:--H  "};
+  27          
+  28          
+  29          //延时设置
+  30          void Delay(unsigned int t)   // delay 40us
+  31          {
+  32   1       for(;t!=0;t--) ;
+  33   1      }
+  34          
+  35          
+  36          #define   uchar unsigned char
+  37          #define   uint unsigned int     
+  38          
+  39          sbit      SCL=P1^0;      //IIC时钟引脚定义
+  40          sbit      SDA=P1^1;      //IIC数据引脚定义
+  41          
+  42          #define   SlaveAddress   0x46 //定义器件在IIC总线中的从地址,根据ALT  ADDRESS地址引脚不同修改
+  43                                        //ALT  ADDRESS引脚接地时地址为0x46，接电源时地址为0xB8
+  44          typedef   unsigned char BYTE;
+  45          typedef   unsigned short WORD;
+  46          
+  47          BYTE    BUF[8];                         //接收数据缓存区        
+  48          uchar   ge,shi,bai,qian,wan;            //显示变量
+  49          int     dis_data;                       //变量
+  50          
+  51          
+  52          //写指令
+  53          void WriteCommandLCM(unsigned char ch)
+  54          {
+  55   1         RS=0;
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 2   
+
+  56   1         RW=0;
+  57   1         E=1;
+  58   1         LCM_Data=ch;
+  59   1         Delay(1);
+  60   1         E=0;
+  61   1         Delay(100);  //delay 40us
+  62   1      }
+  63          
+  64          //写数据
+  65          void WriteDataLCM(unsigned char ch)
+  66          {  RS=1;
+  67   1         RW=0;
+  68   1         E=1;
+  69   1         LCM_Data=ch;
+  70   1         Delay(1);
+  71   1         E=0;
+  72   1         Delay(100); //delay 40us
+  73   1      }
+  74          
+  75          void DisplayOneChar(uchar X,uchar Y,uchar DData)
+  76          {                                               
+  77   1              Y&=1;                                           
+  78   1              X&=15;                                          
+  79   1              if(Y)X|=0x40;                                   
+  80   1              X|=0x80;                        
+  81   1              WriteCommandLCM(X);             
+  82   1              WriteDataLCM(DData);            
+  83   1      }                               
+  84          
+  85          //*********************************************************
+  86          void conversion(uint temp_data)  //  数据转换出 个，十，百，千，万
+  87          {  
+  88   1          wan=temp_data/10000+0x30 ;
+  89   1          temp_data=temp_data%10000;   //取余运算
+  90   1              qian=temp_data/1000+0x30 ;
+  91   1          temp_data=temp_data%1000;    //取余运算
+  92   1          bai=temp_data/100+0x30   ;
+  93   1          temp_data=temp_data%100;     //取余运算
+  94   1          shi=temp_data/10+0x30    ;
+  95   1          temp_data=temp_data%10;      //取余运算
+  96   1          ge=temp_data+0x30;  
+  97   1      }
+  98          
+  99          //毫秒延时**************************
+ 100          void delay_nms(unsigned int k)  
+ 101          {                                               
+ 102   1      unsigned int i,j;                               
+ 103   1      for(i=0;i<k;i++)
+ 104   1      {                       
+ 105   2      for(j=0;j<121;j++)                      
+ 106   2      {;}}                                            
+ 107   1      }
+ 108          
+ 109          /**************************************
+ 110          延时5微秒(STC90C52RC@12M)
+ 111          不同的工作环境,需要调整此函数，注意时钟过快时需要修改
+ 112          当改用1T的MCU时,请调整此延时函数
+ 113          **************************************/
+ 114          void Delay5us()
+ 115          {
+ 116   1          _nop_();_nop_();_nop_();_nop_();
+ 117   1          _nop_();_nop_();_nop_();_nop_();
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 3   
+
+ 118   1              _nop_();_nop_();_nop_();_nop_();
+ 119   1              _nop_();_nop_();_nop_();_nop_();
+ 120   1      }
+ 121          
+ 122          /**************************************
+ 123          延时5毫秒(STC90C52RC@12M)
+ 124          不同的工作环境,需要调整此函数
+ 125          当改用1T的MCU时,请调整此延时函数
+ 126          **************************************/
+ 127          void Delay5ms()
+ 128          {
+ 129   1          WORD n = 560;
+ 130   1      
+ 131   1          while (n--);
+ 132   1      }
+ 133          
+ 134          /**************************************
+ 135          起始信号
+ 136          **************************************/
+ 137          void BH1750_Start()
+ 138          {
+ 139   1          SDA = 1;                    //拉高数据线
+ 140   1          SCL = 1;                    //拉高时钟线
+ 141   1          Delay5us();                 //延时
+ 142   1          SDA = 0;                    //产生下降沿
+ 143   1          Delay5us();                 //延时
+ 144   1          SCL = 0;                    //拉低时钟线
+ 145   1      }
+ 146          
+ 147          /**************************************
+ 148          停止信号
+ 149          **************************************/
+ 150          void BH1750_Stop()
+ 151          {
+ 152   1          SDA = 0;                    //拉低数据线
+ 153   1          SCL = 1;                    //拉高时钟线
+ 154   1          Delay5us();                 //延时
+ 155   1          SDA = 1;                    //产生上升沿
+ 156   1          Delay5us();                 //延时
+ 157   1      }
+ 158          
+ 159          /**************************************
+ 160          发送应答信号
+ 161          入口参数:ack (0:ACK 1:NAK)
+ 162          **************************************/
+ 163          void BH1750_SendACK(bit ack)
+ 164          {
+ 165   1          SDA = ack;                  //写应答信号
+ 166   1          SCL = 1;                    //拉高时钟线
+ 167   1          Delay5us();                 //延时
+ 168   1          SCL = 0;                    //拉低时钟线
+ 169   1          Delay5us();                 //延时
+ 170   1      }
+ 171          
+ 172          /**************************************
+ 173          接收应答信号
+ 174          **************************************/
+ 175          bit BH1750_RecvACK()
+ 176          {
+ 177   1          SCL = 1;                    //拉高时钟线
+ 178   1          Delay5us();                 //延时
+ 179   1          CY = SDA;                   //读应答信号
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 4   
+
+ 180   1          SCL = 0;                    //拉低时钟线
+ 181   1          Delay5us();                 //延时
+ 182   1      
+ 183   1          return CY;
+ 184   1      }
+ 185          
+ 186          /**************************************
+ 187          向IIC总线发送一个字节数据
+ 188          **************************************/
+ 189          void BH1750_SendByte(BYTE dat)
+ 190          {
+ 191   1          BYTE i;
+ 192   1      
+ 193   1          for (i=0; i<8; i++)         //8位计数器
+ 194   1          {
+ 195   2              dat <<= 1;              //移出数据的最高位
+ 196   2              SDA = CY;               //送数据口
+ 197   2              SCL = 1;                //拉高时钟线
+ 198   2              Delay5us();             //延时
+ 199   2              SCL = 0;                //拉低时钟线
+ 200   2              Delay5us();             //延时
+ 201   2          }
+ 202   1          BH1750_RecvACK();
+ 203   1      }
+ 204          
+ 205          /**************************************
+ 206          从IIC总线接收一个字节数据
+ 207          **************************************/
+ 208          BYTE BH1750_RecvByte()
+ 209          {
+ 210   1          BYTE i;
+ 211   1          BYTE dat = 0;
+ 212   1      
+ 213   1          SDA = 1;                    //使能内部上拉,准备读取数据,
+ 214   1          for (i=0; i<8; i++)         //8位计数器
+ 215   1          {
+ 216   2              dat <<= 1;
+ 217   2              SCL = 1;                //拉高时钟线
+ 218   2              Delay5us();             //延时
+ 219   2              dat |= SDA;             //读数据               
+ 220   2              SCL = 0;                //拉低时钟线
+ 221   2              Delay5us();             //延时
+ 222   2          }
+ 223   1          return dat;
+ 224   1      }
+ 225          
+ 226          //*********************************
+ 227          
+ 228          void Single_Write_BH1750(uchar REG_Address)
+ 229          {
+ 230   1          BH1750_Start();                  //起始信号
+ 231   1          BH1750_SendByte(SlaveAddress);   //发送设备地址+写信号
+ 232   1          BH1750_SendByte(REG_Address);    //内部寄存器地址，
+ 233   1        //  BH1750_SendByte(REG_data);       //内部寄存器数据，
+ 234   1          BH1750_Stop();                   //发送停止信号
+ 235   1      }
+ 236          
+ 237          //********单字节读取*****************************************
+ 238          /*
+ 239          uchar Single_Read_BH1750(uchar REG_Address)
+ 240          {  uchar REG_data;
+ 241              BH1750_Start();                          //起始信号
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 5   
+
+ 242              BH1750_SendByte(SlaveAddress);           //发送设备地址+写信号
+ 243              BH1750_SendByte(REG_Address);                   //发送存储单元地址，从0开始 
+ 244              BH1750_Start();                          //起始信号
+ 245              BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 246              REG_data=BH1750_RecvByte();              //读出寄存器数据
+ 247                  BH1750_SendACK(1);   
+ 248                  BH1750_Stop();                           //停止信号
+ 249              return REG_data; 
+ 250          }
+ 251          */
+ 252          //*********************************************************
+ 253          //
+ 254          //连续读出BH1750内部数据
+ 255          //
+ 256          //*********************************************************
+ 257          void Multiple_read_BH1750(void)
+ 258          {   uchar i;    
+ 259   1          BH1750_Start();                          //起始信号
+ 260   1          BH1750_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 261   1              
+ 262   1               for (i=0; i<3; i++)                      //连续读取2个地址数据，存储中BUF
+ 263   1          {
+ 264   2              BUF[i] = BH1750_RecvByte();          //BUF[0]存储0x32地址中的数据
+ 265   2              if (i == 3)
+ 266   2              {
+ 267   3      
+ 268   3                 BH1750_SendACK(1);                //最后一个数据需要回NOACK
+ 269   3              }
+ 270   2              else
+ 271   2              {               
+ 272   3                BH1750_SendACK(0);                //回应ACK
+ 273   3             }
+ 274   2         }
+ 275   1      
+ 276   1          BH1750_Stop();                          //停止信号
+ 277   1          Delay5ms();
+ 278   1      }
+ 279          
+ 280          
+ 281          //初始化BH1750，根据需要请参考pdf进行修改****
+ 282          void Init_BH1750()
+ 283          {
+ 284   1         Single_Write_BH1750(0x01);  
+ 285   1      
+ 286   1      }
+ 287          
+ 288          /*******************************************************************/
+ 289          /*  LCD初始化设定                                                  */
+ 290          /*******************************************************************/
+ 291          void InitLcd()
+ 292          {
+ 293   1       WriteCommandLCM(0x30);          //功能设置，设置8位数据接口，
+ 294   1       WriteCommandLCM(0x30);
+ 295   1       WriteCommandLCM(0x30);
+ 296   1       WriteCommandLCM(0x38); //设置工作方式,8位数据接口，两行显示，5*7点阵
+ 297   1       WriteCommandLCM(0x08); //关显示，关闭显示，关闭光标，关闭闪烁
+ 298   1       WriteCommandLCM(0x0c); //显示状态设置，开显示，关闭光标与闪烁
+ 299   1       WriteCommandLCM(0x01); //清屏
+ 300   1       WriteCommandLCM(0x06); //输入方式设置 ,AC自动增一，画面不动
+ 301   1      }
+ 302          
+ 303          
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 6   
+
+ 304          
+ 305          main()
+ 306          {
+ 307   1      /*
+ 308   1                      */
+ 309   1      
+ 310   1         uchar m;
+ 311   1          
+ 312   1          IRIN=1;                    //I/O口初始化
+ 313   1      
+ 314   1          Delay(10);                 //延时
+ 315   1          InitLcd();                //初始化LCD             
+ 316   1      
+ 317   1           m = 0;
+ 318   1          while(cdis1[m] != '\0')
+ 319   1           {                         //显示字符
+ 320   2             WriteDataLCM(cdis1[m]);
+ 321   2             m++;
+ 322   2           }
+ 323   1      
+ 324   1          //lcd_pos(0x40);             //设置显示位置为第二行第1个字符
+ 325   1              WriteCommandLCM(0x40 | 0x80);
+ 326   1           m = 0;
+ 327   1          while(cdis2[m] != '\0')
+ 328   1           {
+ 329   2             WriteDataLCM(cdis2[m]);      //显示字符
+ 330   2             m++;
+ 331   2           }
+ 332   1         
+ 333   1      
+ 334   1              IE = 0x81;                 //允许总中断中断,使能 INT0 外部中断
+ 335   1              TCON = 0x01;               //触发方式为脉冲负边沿触发
+ 336   1      
+ 337   1         while(1)     ;        
+ 338   1      
+ 339   1      } //end main
+ 340          
+ 341          /**********************************************************/
+ 342          void IR_IN() interrupt 0 using 0
+ 343          {
+ 344   1      
+ 345   1        unsigned char j,k,N=0;
+ 346   1           EX0 = 0;   
+ 347   1               Delay(200);
+ 348   1               if (IRIN==1) 
+ 349   1           { EX0 =1;
+ 350   2                 return;
+ 351   2                } 
+ 352   1                                 //确认IR信号出现
+ 353   1        while (!IRIN)            //等IR变为高电平，跳过9ms的前导低电平信号。
+ 354   1          {Delay(13);}
+ 355   1      
+ 356   1       for (j=0;j<4;j++)         //收集四组数据
+ 357   1       { 
+ 358   2        for (k=0;k<8;k++)        //每组数据有8位
+ 359   2        {
+ 360   3         while (IRIN)            //等 IR 变为低电平，跳过4.5ms的前导高电平信号。
+ 361   3           {Delay(13);}
+ 362   3          while (!IRIN)          //等 IR 变为高电平
+ 363   3           {Delay(13);}
+ 364   3           while (IRIN)           //计算IR高电平时长
+ 365   3            {
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 7   
+
+ 366   4         Delay(13);
+ 367   4          N++;           
+ 368   4          if (N>=30)
+ 369   4               { EX0=1;
+ 370   5               return;}                  //0.14ms计数过长自动离开。
+ 371   4            }                        //高电平计数完毕                
+ 372   3           IRCOM[j]=IRCOM[j] >> 1;                  //数据最高位补“0”
+ 373   3           if (N>=8) {IRCOM[j] = IRCOM[j] | 0x80;}  //数据最高位补“1”
+ 374   3           N=0;
+ 375   3        }//end for k
+ 376   2       }//end for j
+ 377   1         
+ 378   1         if (IRCOM[2]!=~IRCOM[3])
+ 379   1         { EX0=1;
+ 380   2           return; }
+ 381   1      
+ 382   1         IRCOM[5]=IRCOM[2] & 0x0F;     //取键码的低四位
+ 383   1         IRCOM[6]=IRCOM[2] >> 4;       //右移4次，高四位变为低四位
+ 384   1      
+ 385   1         if(IRCOM[5]>9)
+ 386   1          { IRCOM[5]=IRCOM[5]+0x37;}
+ 387   1         else
+ 388   1                IRCOM[5]=IRCOM[5]+0x30;
+ 389   1      
+ 390   1         if(IRCOM[6]>9)
+ 391   1          { IRCOM[6]=IRCOM[6]+0x37;}
+ 392   1         else
+ 393   1                IRCOM[6]=IRCOM[6]+0x30;
+ 394   1      
+ 395   1           if(IRCOM[6] == '1' && IRCOM[5] == '6'){
+ 396   2                       float temp;
+ 397   2         delay_nms(100);          //延时100ms 
+ 398   2         InitLcd();           //初始化LCD
+ 399   2         Init_BH1750();       //初始化BH1750
+ 400   2       
+ 401   2        while(1)              //循环
+ 402   2        { 
+ 403   3      
+ 404   3          Single_Write_BH1750(0x01);   // power on
+ 405   3          Single_Write_BH1750(0x10);   // H- resolution mode
+ 406   3      
+ 407   3           delay_nms(180);              //延时180ms
+ 408   3      
+ 409   3           Multiple_read_BH1750();       //连续读出数据，存储在BUF中
+ 410   3      
+ 411   3          dis_data=BUF[0];
+ 412   3          dis_data=(dis_data<<8)+BUF[1];//合成数据，即光照数据
+ 413   3          
+ 414   3          temp=(float)dis_data/1.2;
+ 415   3      
+ 416   3          conversion(temp);         //计算数据和显示
+ 417   3              DisplayOneChar(0,0,'L'); 
+ 418   3              DisplayOneChar(1,0,'i'); 
+ 419   3              DisplayOneChar(2,0,'g'); 
+ 420   3              DisplayOneChar(3,0,'h'); 
+ 421   3              DisplayOneChar(4,0,'t'); 
+ 422   3          DisplayOneChar(5,0,':'); 
+ 423   3      
+ 424   3          DisplayOneChar(7,0,wan); //显示数据
+ 425   3          DisplayOneChar(8,0,qian);  
+ 426   3          DisplayOneChar(9,0,bai); 
+ 427   3          DisplayOneChar(10,0,shi); 
+C51 COMPILER V9.01   IRLCD                                                                 11/22/2017 16:57:28 PAGE 8   
+
+ 428   3              DisplayOneChar(11,0,ge); 
+ 429   3      
+ 430   3              DisplayOneChar(13,0,'L'); ////显示数单位
+ 431   3              DisplayOneChar(14,0,'X');  
+ 432   3                  
+ 433   3        }     
+ 434   2               }
+ 435   1                 
+ 436   1           DisplayOneChar(10,1,IRCOM[6]);          //第一位数显示         
+ 437   1           DisplayOneChar(11,1,IRCOM[5]);        //第二位数显示
+ 438   1      
+ 439   1           EX0 = 1;     
+ 440   1               
+ 441   1      } 
+ 442          
+ 443          
+ 444          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    984    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     22       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

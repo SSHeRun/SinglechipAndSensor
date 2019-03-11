@@ -1,0 +1,113 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/28/2016  11:31:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE DKEY.obj TO DKEY RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  DKEY.obj (DKEY)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  DKEY (DKEY)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     003FH     UNIT         ?PR?MAIN?DKEY
+            CODE    0042H     0016H     UNIT         ?PR?_DELAY?DKEY
+            CODE    0058H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   DKEY (DKEY)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?DKEY
+
+?PR?MAIN?DKEY
+  +--> ?PR?_DELAY?DKEY
+
+
+
+SYMBOL TABLE OF MODULE:  DKEY (DKEY)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DKEY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0090H.3       PUBLIC        K4
+  B:0090H.4       PUBLIC        K5
+  D:0080H         PUBLIC        P0
+  B:0090H.5       PUBLIC        K6
+  D:0090H         PUBLIC        P1
+  B:0090H.6       PUBLIC        K7
+  D:00A0H         PUBLIC        P2
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/28/2016  11:31:24  PAGE 2
+
+
+  B:0090H.7       PUBLIC        K8
+  C:0042H         PUBLIC        _delay
+  C:0003H         PUBLIC        main
+  B:0090H.0       PUBLIC        K1
+  B:0090H.1       PUBLIC        K2
+  B:0090H.2       PUBLIC        K3
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        ms
+  -------         DO            
+  D:0005H         SYMBOL        t
+  -------         ENDDO         
+  C:0042H         LINE#         22
+  C:0042H         LINE#         23
+  C:0042H         LINE#         25
+  C:004CH         LINE#         26
+  C:004CH         LINE#         27
+  C:0057H         LINE#         28
+  C:0057H         LINE#         29
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  C:0003H         LINE#         31
+  C:0003H         LINE#         32
+  C:0003H         LINE#         33
+  C:0006H         LINE#         34
+  C:0009H         LINE#         35
+  C:0009H         LINE#         36
+  C:0009H         LINE#         38
+  C:000CH         LINE#         39
+  C:000FH         LINE#         42
+  C:0012H         LINE#         43
+  C:0015H         LINE#         46
+  C:0018H         LINE#         47
+  C:001BH         LINE#         50
+  C:001EH         LINE#         51
+  C:0021H         LINE#         54
+  C:0024H         LINE#         55
+  C:0027H         LINE#         58
+  C:002AH         LINE#         59
+  C:002DH         LINE#         61
+  C:0030H         LINE#         62
+  C:0033H         LINE#         64
+  C:0036H         LINE#         65
+  C:0039H         LINE#         67
+  C:0040H         LINE#         68
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        DKEY
+
+Program Size: data=9.0 xdata=0 code=100
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

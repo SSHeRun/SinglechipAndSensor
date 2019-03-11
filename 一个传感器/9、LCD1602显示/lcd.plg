@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\stone\Desktop\SensorKit\实验案例\LCD1602显示\lcd.uvproj
+Project File Date:  07/04/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling LCD.C...
+linking...
+Program Size: data=44.0 xdata=0 code=541
+creating hex file from "lcd"...
+"lcd" - 0 Error(s), 0 Warning(s).

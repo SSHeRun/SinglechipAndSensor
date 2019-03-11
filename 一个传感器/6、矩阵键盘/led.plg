@@ -1,0 +1,16 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\stone\Desktop\SensorKit\exp\æÿ’Ûº¸≈Ã\KEY.uvproj
+Project File Date:  07/01/2016
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling KEY.c...
+KEY.C(66): warning C291: not every exit path returns a value
+linking...
+Program Size: data=14.0 xdata=0 code=433
+creating hex file from "KEY"...
+"KEY" - 0 Error(s), 1 Warning(s).

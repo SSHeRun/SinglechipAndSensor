@@ -1,0 +1,207 @@
+C51 COMPILER V9.01   STEP                                                                  07/28/2016 12:03:10 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE STEP
+OBJECT MODULE PLACED IN STEP.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE STEP.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*************************************************************************************
+   2          *          步进电机试验                                                                                                                  *                                                                                                                               *
+   3          *    通过本例程了解步进马达使用及驱动程序编写                                                                            *
+   4          *    单双八拍工作方式：                                                                  *
+   5          *    A-AB-B-BC-C-CD-D-DA (即一个脉冲,转 3.75 度)                                                                 *                                                
+             -                                                                         *
+   6          **************************************************************************************/  
+   7          
+   8          #include "reg52.h"
+   9          //步进电机驱动引脚定义
+  10          sbit A = P1^0;    
+  11          sbit b = P1^1;
+  12          sbit C = P1^2;
+  13          sbit D = P1^3;
+  14          
+  15           ///////////////////////////////////////
+  16          //步进电机驱动
+  17          unsigned char MotorStep=0;
+  18          unsigned int  MotorTimer = 0;
+  19          unsigned int  MotorDelay,Speed=1,TIM,CT;
+  20          
+  21          #define speed 5   // 调整速度 数值不要设的太低 低了会引起震动。
+  22          
+  23          /*****************************************************
+  24          *           初始化马达                                                           *
+  25          ******************************************************/
+  26          void InitMotor()
+  27          {
+  28   1        A = 1;
+  29   1        b = 1;
+  30   1        C = 1;
+  31   1        D = 1;
+  32   1      }
+  33          
+  34          
+  35           
+  36          void SetMotor()
+  37          {
+  38   1        //  if(Speed == 0) return;
+  39   1      
+  40   1          MotorDelay=Speed;   //调整速度
+  41   1          switch(MotorStep)
+  42   1          {
+  43   2             case 0:
+  44   2                if(TIM)   // A
+  45   2                {                                 
+  46   3                  A = 0;                  //0xf1  
+  47   3                  b = 1;
+  48   3                              C = 1;
+  49   3                  D = 1;
+  50   3                  MotorStep = 1;
+  51   3                              TIM=0;
+  52   3                }
+  53   2             break;
+  54   2      
+C51 COMPILER V9.01   STEP                                                                  07/28/2016 12:03:10 PAGE 2   
+
+  55   2             case 1:           // AB
+  56   2               if(TIM)
+  57   2                {     
+  58   3                  A = 0;                 //0xf3 
+  59   3                  b = 0;
+  60   3                      C = 1;
+  61   3                  D = 1;
+  62   3                  MotorStep = 2;
+  63   3                              TIM=0;
+  64   3                }
+  65   2             break;
+  66   2      
+  67   2             case 2:     //B
+  68   2               if(TIM)
+  69   2                {
+  70   3                 
+  71   3                      A = 1;
+  72   3                  b = 0;                //0xf2 
+  73   3                  C = 1;
+  74   3                  D = 1;
+  75   3                 
+  76   3                  MotorStep = 3;
+  77   3                              TIM=0;
+  78   3                }
+  79   2             break;
+  80   2      
+  81   2      
+  82   2             case 3:          //BC
+  83   2               if(TIM)
+  84   2                {     
+  85   3                  A = 1;
+  86   3                  b = 0;                  //0xf6
+  87   3                  C = 0;
+  88   3                  D = 1;
+  89   3                  MotorStep = 4;
+  90   3                              TIM=0;
+  91   3                }
+  92   2             break;
+  93   2           case 4:             //C
+  94   2               if(TIM)
+  95   2                {     
+  96   3                  A = 1;
+  97   3                  b = 1;                  //0xf4
+  98   3                  C = 0;
+  99   3                  D = 1;
+ 100   3                  MotorStep = 5;
+ 101   3                              TIM=0;
+ 102   3                 }
+ 103   2             break;
+ 104   2              case 5:                   //CD
+ 105   2               if(TIM)
+ 106   2                {     
+ 107   3                  A = 1;
+ 108   3                  b = 1;                  //0xfc
+ 109   3                  C = 0;
+ 110   3                  D = 0;
+ 111   3                  MotorStep = 6;
+ 112   3                              TIM=0;
+ 113   3                }
+ 114   2             break;
+ 115   2              case 6:                   //D
+ 116   2               if(TIM)
+C51 COMPILER V9.01   STEP                                                                  07/28/2016 12:03:10 PAGE 3   
+
+ 117   2                {     
+ 118   3                  A = 1;
+ 119   3                  b = 1;                  //0xf8
+ 120   3                  C = 1;
+ 121   3                  D = 0;
+ 122   3                  MotorStep = 7;
+ 123   3                              TIM=0;
+ 124   3                }
+ 125   2             break;
+ 126   2              case 7:                 //DA
+ 127   2               if(TIM)
+ 128   2                {     
+ 129   3                  A = 0;
+ 130   3                  b = 1;                  //0xf9
+ 131   3                  C = 1;
+ 132   3                  D = 0;
+ 133   3                  MotorStep = 0;
+ 134   3                              TIM=0;
+ 135   3                }
+ 136   2             break;
+ 137   2              
+ 138   2              }
+ 139   1      
+ 140   1      }
+ 141          
+ 142          
+ 143          void system_Ini()
+ 144          {
+ 145   1          TMOD|= 0x11;
+ 146   1          TH0=0xDC; //11.0592M
+ 147   1          TL0=0x00;   
+ 148   1              IE = 0x8A;      
+ 149   1          TR0  = 1;
+ 150   1      
+ 151   1      
+ 152   1      }
+ 153          
+ 154          main() 
+ 155           { system_Ini();
+ 156   1         InitMotor();
+ 157   1          while(1)
+ 158   1              {
+ 159   2               SetMotor();
+ 160   2               }
+ 161   1      
+ 162   1        }
+ 163          
+ 164          /************************************************
+ 165          *                                                                                               *
+ 166          *             定时中断延时                                                  *
+ 167          ************************************************/
+ 168            void Tzd(void) interrupt 1
+ 169          {
+ 170   1         TH0 = 0xfe;    //11.0592
+ 171   1               TL0 = 0x33;
+ 172   1      
+ 173   1              if( CT++==speed) 
+ 174   1                {TIM=1;
+ 175   2                 CT=0;
+ 176   2                }
+ 177   1       }
+
+C51 COMPILER V9.01   STEP                                                                  07/28/2016 12:03:10 PAGE 4   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    291    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

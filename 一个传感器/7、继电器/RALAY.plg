@@ -1,0 +1,17 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+C:\Users\stone\Desktop\SensorKit\实验案例\继电器\RALAY.uvproj
+Project File Date:  04/19/2013
+
+<h2>Output:</h2>
+Build target 'Target 1'
+assembling STARTUP.A51...
+compiling RALAY.C...
+RALAY.C(23): warning C290: missing return value
+linking...
+Program Size: data=9.0 xdata=0 code=24
+creating hex file from "RALAY"...
+"RALAY" - 0 Error(s), 1 Warning(s).

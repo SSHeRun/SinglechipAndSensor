@@ -1,0 +1,69 @@
+C51 COMPILER V9.01   HX711                                                                 11/23/2017 16:18:53 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE HX711
+OBJECT MODULE PLACED IN HX711.OBJ
+COMPILER INVOKED BY: N:\keil\C51\BIN\C51.EXE HX711.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "HX711.h"
+   2          
+   3          
+   4          //****************************************************
+   5          //延时函数
+   6          //****************************************************
+   7          void Delay__hx711_us(void)
+   8          {
+   9   1              _nop_();
+  10   1              _nop_();
+  11   1      }
+  12          
+  13          //****************************************************
+  14          //读取HX711
+  15          //****************************************************
+  16          unsigned long HX711_Read(void)  //增益128
+  17          {
+  18   1              unsigned long count; 
+  19   1              unsigned char i; 
+  20   1              HX711_DOUT=1; 
+  21   1              Delay__hx711_us();
+  22   1              HX711_SCK=0; 
+  23   1              count=0; 
+  24   1              while(HX711_DOUT); 
+  25   1              for(i=0;i<24;i++)
+  26   1              { 
+  27   2                      HX711_SCK=1; 
+  28   2                      count=count<<1; 
+  29   2                      HX711_SCK=0; 
+  30   2                      if(HX711_DOUT)
+  31   2                              count++; 
+  32   2              } 
+  33   1              HX711_SCK=1; 
+  34   1          count=count^0x800000;//第25个脉冲下降沿来时，转换数据
+  35   1              Delay__hx711_us();
+  36   1              HX711_SCK=0;  
+  37   1              return(count);
+  38   1      }
+  39          
+  40          
+  41          
+  42          
+  43          
+  44          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     64    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.01   HX711                                                                 11/23/2017 16:18:53 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

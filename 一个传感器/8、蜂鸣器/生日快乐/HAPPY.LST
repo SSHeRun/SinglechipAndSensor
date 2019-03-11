@@ -1,0 +1,133 @@
+A51 MACRO ASSEMBLER  HAPPY                                                                11/11/2009 09:56:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V7.09
+OBJECT MODULE PLACED IN HAPPY.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE HAPPY.ASM SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1          
+                       2              
+                       3              
+0000                   4                 ORG     0000H
+0000 2100              5             JMP     MAIN
+000B                   6             ORG     000BH
+000B 2146              7             JMP     INTT0
+0100                   8             ORG     0100H        
+0100 758160            9     MAIN:   MOV     SP,#60H
+0103 758901           10             MOV     TMOD,#01H
+0106 D2A9             11             SETB    ET0
+0108 D2AF             12             SETB    EA
+010A D28C             13             SETB    TR0
+010C                  14     START0: ;clr    P1.5
+010C 753000           15             MOV     30H,#00H
+010F E530             16     NEXT:   MOV     A,30H
+0111 900166           17             MOV     DPTR,#TABLE
+0114 93               18             MOVC    A,@A+DPTR
+0115 FA               19             MOV     R2,A
+0116 602A             20             JZ      ENDD
+0118 540F             21             ANL     A,#0FH
+011A FD               22             MOV     R5,A
+011B EA               23             MOV     A,R2
+011C C4               24             SWAP    A
+011D 540F             25             ANL     A,#0FH
+011F 7004             26             JNZ     SING
+0121 C28C             27             CLR     TR0
+0123 8017             28             JMP     D1
+0125 14               29     SING:   DEC     A
+0126 F522             30             MOV     22H,A
+0128 23               31             RL      A
+0129                  32             MOV     DPTR,#TABLE1
+*** _______________________________________________^
+*** ERROR #A45 IN 32 (HAPPY.ASM, LINE 32): UNDEFINED SYMBOL (PASS-2)
+012C 93               33             MOVC    A,@A+DPTR
+012D F58C             34             MOV     TH0,A
+012F F521             35             MOV     21H,A
+0131 E522             36             MOV     A,22H
+0133 23               37             RL      A
+0134 04               38             INC     A
+0135 93               39             MOVC    A,@A+DPTR
+0136 F58A             40             MOV     TL0,A
+0138 F520             41             MOV     20H,A
+013A D28C             42             SETB    TR0
+013C 3157             43     D1:     CALL    DELAY
+013E 0530             44             INC     30H
+0140 80CD             45             JMP     NEXT
+0142 C28C             46     ENDD:   CLR     TR0
+0144 80C6             47             JMP     START0
+                      48     
+0146                  49     INTT0:
+0146 C0D0             50             PUSH    PSW
+0148 C0E0             51             PUSH    ACC
+014A 85208A           52             MOV     TL0,20H
+014D 85218C           53             MOV     TH0,21H
+0150 B295             54             CPL     P1.5
+0152 D0E0             55             POP     ACC
+0154 D0D0             56             POP     PSW
+A51 MACRO ASSEMBLER  HAPPY                                                                11/11/2009 09:56:52 PAGE     2
+
+0156 32               57             RETI
+0157 7F02             58     DELAY:  MOV     R7,#02
+0159 7CBB             59     DELAY0: MOV     R4,#187
+015B 7BF8             60     DELAY1: MOV     R3,#248
+015D DBFE             61             DJNZ    R3,$
+015F DCFA             62             DJNZ    R4,DELAY1
+0161 DFF6             63             DJNZ    R7,DELAY0
+0163 DDF2             64             DJNZ    R5,DELAY
+0165 22               65             RET
+0166 82018194         66     TABLE:  DB 82H,01H,81H,94H,84H,0B4H,0A4H,04H
+016A 84B4A404                
+016E 82018194         67             DB 82H,01H,81H,94H,84H,0C4H,0B4H,04H
+0172 84C4B404                
+0176 820181F4         68             DB 82H,01H,81H,0F4H,0D4H,0B4H,0A4H,94H
+017A D4B4A494                
+017E E201E1D4         69             DB 0E2H,01H,0E1H,0D4H,0B4H,0C4H,0B4H,04H
+0182 B4C4B404                
+0186 82018194         70             DB 82H,01H,81H,94H,84H,0B4H,0A4H,04H
+018A 84B4A404                
+018E 82018194         71             DB 82H,01H,81H,94H,84H,0C4H,0B4H,04H
+0192 84C4B404                
+0196 820181F4         72             DB 82H,01H,81H,0F4H,0D4H,0B4H,0A4H,94H
+019A D4B4A494                
+019E E201E1D4         73             DB 0E2H,01H,0E1H,0D4H,0B4H,0C4H,0B4H,04H
+01A2 B4C4B404                
+                      74     
+                      75      
+                      76             END                                                                    
+A51 MACRO ASSEMBLER  HAPPY                                                                11/11/2009 09:56:52 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+D1 . . . . . . . .  C ADDR   013CH   A   
+DELAY. . . . . . .  C ADDR   0157H   A   
+DELAY0 . . . . . .  C ADDR   0159H   A   
+DELAY1 . . . . . .  C ADDR   015BH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ENDD . . . . . . .  C ADDR   0142H   A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+INTT0. . . . . . .  C ADDR   0146H   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+NEXT . . . . . . .  C ADDR   010FH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+SING . . . . . . .  C ADDR   0125H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START0 . . . . . .  C ADDR   010CH   A   
+TABLE. . . . . . .  C ADDR   0166H   A   
+TABLE1 . . . . . .    ----   -----       
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 1 ERROR(S)

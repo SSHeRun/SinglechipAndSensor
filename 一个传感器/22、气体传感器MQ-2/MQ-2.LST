@@ -1,0 +1,60 @@
+C51 COMPILER V9.01   MQ_2                                                                  11/27/2017 20:35:24 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MQ_2
+OBJECT MODULE PLACED IN MQ-2.OBJ
+COMPILER INVOKED BY: I:\Program Files\Keil\C51\BIN\C51.EXE MQ-2.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>        
+   2          #define uchar unsigned char
+   3          #define uint unsigned int  
+   4          
+   5          sbit LED=P1^0;   
+   6          sbit DOUT=P2^0;  
+   7          
+   8          void delay()
+   9          {
+  10   1      uchar m,n,s;
+  11   1      for(m=20;m>0;m--)
+  12   1      for(n=20;n>0;n--)
+  13   1      for(s=248;s>0;s--);
+  14   1      }
+  15          
+  16          void main()
+  17          {
+  18   1                      DOUT=1;
+  19   1              LED=0;
+  20   1              while(1) 
+  21   1              {
+  22   2               
+  23   2              if(DOUT==0)
+  24   2               {
+  25   3                       delay();
+  26   3      
+  27   3                       if(DOUT==0)
+  28   3                  {
+  29   4                         LED=1;          
+  30   4                               delay();
+  31   4                               DOUT=1;
+  32   4                               LED=0;
+  33   4                       }
+  34   3       }
+  35   2                      
+  36   2              }
+  37   1      }       
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     37    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

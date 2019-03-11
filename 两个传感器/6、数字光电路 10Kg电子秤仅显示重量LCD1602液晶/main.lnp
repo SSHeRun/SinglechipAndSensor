@@ -1,0 +1,6 @@
+"main.obj",
+"LCD1602.obj",
+"HX711.obj",
+"keyboard.obj" 
+TO "main" 
+RAMSIZE(256) 
